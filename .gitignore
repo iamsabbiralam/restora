@@ -1,5 +1,5 @@
-/hrm/env/config
-/hrm/hrm
+/server/env/config
+/server/server
 
 /client/env/config
 /client/client
