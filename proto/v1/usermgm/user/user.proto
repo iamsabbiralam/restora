@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option go_package = "./proto/v1/usermgm/user";
+
+package user;
+
+import "google/protobuf/timestamp.proto";
+
+message CreateUserRequest {
+      string FirstName = 1;
+      string LastName = 2;
+      string Email = 3;
+      string Password = 4;
+      string UserName = 5;
+      string Image = 6;
+      string PhoneNumber = 7;
+      int64  Gender = 8;
+      string Birthday = 9;
+      string Address = 10;
+      string City = 11;
+      string Country = 12;
+      bool   Status = 13;
+      google.protobuf.Timestamp CreatedAt = 14;
+      string CreatedBy = 15;
+      google.protobuf.Timestamp UpdatedAt = 16;
+      string UpdatedBy = 17;
+}
+
+message CreateUserResponse {
+      string ID = 1;
+}
+
+service UserService {
+      rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+}
