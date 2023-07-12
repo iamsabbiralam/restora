@@ -1,0 +1,8 @@
+/hrm/env/config
+/hrm/hrm
+
+/client/env/config
+/client/client
+/client/assets/node_modules
+
+.DS_Store
