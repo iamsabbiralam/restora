@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	// "github.com/Masterminds/sprig"
+	"github.com/Masterminds/sprig/v3"
 	"github.com/gorilla/csrf"
 	tspb "google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -79,7 +79,7 @@ func (s *Server) ParseTemplates() error {
 			}
 			return url
 		},
-	}).Funcs(/* sprig.FuncMap() */)
+	}).Funcs(sprig.FuncMap())
 
 	tmpl, err := templates.ParseFS(s.Assets, "templates/*/*.html")
 	if err != nil {

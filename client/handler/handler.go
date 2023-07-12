@@ -4,14 +4,14 @@ import (
 	"io/fs"
 	"net/http"
 
-	"github.com/iamsabbiralam/restora/client/conn"
-	"github.com/iamsabbiralam/restora/client/handler/common"
-
 	"github.com/benbjohnson/hashfs"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+
+	"github.com/iamsabbiralam/restora/client/conn"
+	"github.com/iamsabbiralam/restora/client/handler/common"
 )
 
 type Svc struct {

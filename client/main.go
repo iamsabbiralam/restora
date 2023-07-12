@@ -7,11 +7,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/iamsabbiralam/client/conn"
-	"github.com/iamsabbiralam/client/handler"
-	"github.com/iamsabbiralam/utility"
-	"github.com/iamsabbiralam/utility/logging"
-
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 	"github.com/sirupsen/logrus"
@@ -19,6 +14,11 @@ import (
 	"github.com/spf13/viper"
 	"github.com/urfave/negroni"
 	"github.com/yookoala/realpath"
+
+	"github.com/iamsabbiralam/restora/client/conn"
+	"github.com/iamsabbiralam/restora/client/handler"
+	"github.com/iamsabbiralam/restora/utility"
+	"github.com/iamsabbiralam/restora/utility/logging"
 )
 
 const (

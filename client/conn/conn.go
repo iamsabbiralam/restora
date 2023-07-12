@@ -2,12 +2,12 @@ package conn
 
 import (
 	"log"
-	
+
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
-	
-	"github.com/iamsabbiralam/restro/utility/middleware"
+
+	"github.com/iamsabbiralam/restora/utility/middleware"
 )
 
 type Conn struct {

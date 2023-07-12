@@ -5,13 +5,13 @@ import (
 	"log"
 	"net"
 
-	"github.com/iamsabbiralam/restro/hrm/storage/postgres"
-	"github.com/iamsabbiralam/restro/utility"
-	"github.com/iamsabbiralam/restro/utility/logging"
-
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
+
+	"github.com/iamsabbiralam/restora/server/storage/postgres"
+	"github.com/iamsabbiralam/restora/utility"
+	"github.com/iamsabbiralam/restora/utility/logging"
 )
 
 var (
