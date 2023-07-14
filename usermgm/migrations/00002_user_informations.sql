@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS user_information
 
     id                          VARCHAR(100)    PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id                     VARCHAR(100)    UNIQUE NOT NULL DEFAULT '',
+    image                       VARCHAR(255)    DEFAULT '',
     first_name                  VARCHAR(150)    NOT NULL DEFAULT '',
     last_name                   VARCHAR(150)    NOT NULL DEFAULT '',
     mobile                      VARCHAR(20)     UNIQUE NOT NULL DEFAULT '',

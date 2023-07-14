@@ -31,15 +31,46 @@ var (
 	InvCodeExists = errors.New("invitation code already exists")
 )
 
+type ActiveStatus int32
+
+const (
+	_ ActiveStatus = iota
+	Active
+	Inactive
+)
+
 type (
 	User struct {
 		ID        string         `db:"id"`
 		Username  string         `db:"username"`
 		Email     string         `db:"email"`
 		Password  string         `db:"password"`
+		Image     string         `db:"image"`
 		Status    int32          `db:"status"`
 		IsMFA     bool           `db:"is_mfa"`
 		MFAType   string         `db:"mfa_type"`
+		CreatedAt time.Time      `db:"created_at"`
+		CreatedBy string         `db:"created_by"`
+		UpdatedAt time.Time      `db:"updated_at"`
+		UpdatedBy sql.NullString `db:"updated_by"`
+		DeletedAt sql.NullTime   `db:"deleted_at,omitempty"`
+		DeletedBy sql.NullString `db:"deleted_by,omitempty"`
+		RoleNames sql.NullString `db:"role_names"`
+		Count     int32
+		RoleID    []string
+	}
+
+	UserInformation struct {
+		ID        string         `db:"id"`
+		UserID    string         `db:"user_id"`
+		FirstName string         `db:"first_name"`
+		LastName  string         `db:"last_name"`
+		Mobile    string         `db:"mobile"`
+		Gender    int            `db:"gender"`
+		DOB       time.Time      `db:"dob"`
+		Address   string         `db:"address"`
+		City      string         `db:"city"`
+		Country   string         `db:"country"`
 		CreatedAt time.Time      `db:"created_at"`
 		CreatedBy string         `db:"created_by"`
 		UpdatedAt time.Time      `db:"updated_at"`
@@ -54,7 +85,9 @@ type (
 		Offset       int32
 		SortBy       string
 		SortByColumn string
-		Status       []string
+		Status       ActiveStatus
+		StartDate    string
+		EndDate      string
 	}
 
 	Credential struct {

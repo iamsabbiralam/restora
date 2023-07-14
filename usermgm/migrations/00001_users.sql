@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS users
     username                    VARCHAR(100)    UNIQUE NOT NULL DEFAULT '',
     email                       VARCHAR(150)    UNIQUE NOT NULL DEFAULT '',
     password                    VARCHAR(255)    NOT NULL DEFAULT '',
-    image                       VARCHAR(255)    DEFAULT '',
     status                      SMALLINT        DEFAULT 0,
     is_mfa                      BOOLEAN         DEFAULT FALSE,
     mfa_type                    VARCHAR(255)    DEFAULT 'EMAIL',
