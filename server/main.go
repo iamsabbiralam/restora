@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	svcName = "hrm"
+	svcName = "server"
 	version = "development"
 )
 

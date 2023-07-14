@@ -2,7 +2,7 @@
 environment="development"
 
 [project]
-mfaissuer="Codemen"
+mfaissuer="WebexFirm"
 mfatimeout="30m"
 
 [server]

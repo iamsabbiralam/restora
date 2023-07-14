@@ -4,6 +4,10 @@
 
 ### Restaurant owner can also create a new account for the restaurant and update the restaurant's data to the website and promote themselves, through event's in this website.
 
+## Database diagrams
+
+* [Restora Database Diagram](https://dbdiagram.io/d/61fa967e85022f4ee52aa6c7)
+
 ## Technology uses for build this project
 
 * Built with go version 1.20

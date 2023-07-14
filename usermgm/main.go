@@ -59,7 +59,7 @@ func main() {
 		logger.WithError(err).Error("unable to serve the GRPC server")
 	}
 
-	log.Println("server stoped")
+	log.Println("server stopped")
 }
 
 func setupGRPCServer(store *postgres.Storage, config *viper.Viper, logger *logrus.Entry) (*grpc.Server, error) {
