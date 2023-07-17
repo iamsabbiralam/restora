@@ -124,4 +124,10 @@ type (
 		Offset     int32  `db:"offset"`
 		Status     int32  `db:"status"`
 	}
+
+	ResAct struct {
+		Resource string
+		Action   string
+		Public   bool
+	}
 )

@@ -458,14 +458,14 @@ func TestDeleteUser(t *testing.T) {
 			}
 
 			tc.in.ID = uID
-			got, err := s.DeleteUser(context.TODO(), tc.in)
+			err := s.DeleteUser(context.TODO(), tc.in)
 			if (err != nil) != tc.wantErr {
 				t.Errorf("Storage.DeleteUser() gotErr = %v, wantErr %v", err, tc.wantErr)
 				return
 			}
 
-			if !tc.wantErr && got != uID {
-				t.Errorf("Storage.DeleteUser() want %v,  got %v", uID, got)
+			if !tc.wantErr {
+				t.Errorf("Storage.DeleteUser() want %v,  got %v", uID)
 			}
 
 			if tc.teardown != nil {

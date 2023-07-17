@@ -7,6 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -25,6 +26,256 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type Status int32
+
+const (
+	Status_Unknown  Status = 0
+	Status_Active   Status = 1
+	Status_Inactive Status = 2
+)
+
+var Status_name = map[int32]string{
+	0: "Unknown",
+	1: "Active",
+	2: "Inactive",
+}
+
+var Status_value = map[string]int32{
+	"Unknown":  0,
+	"Active":   1,
+	"Inactive": 2,
+}
+
+func (x Status) String() string {
+	return proto.EnumName(Status_name, int32(x))
+}
+
+func (Status) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{0}
+}
+
+type SortBy int32
+
+const (
+	SortBy_DESC SortBy = 0
+	SortBy_ASC  SortBy = 1
+)
+
+var SortBy_name = map[int32]string{
+	0: "DESC",
+	1: "ASC",
+}
+
+var SortBy_value = map[string]int32{
+	"DESC": 0,
+	"ASC":  1,
+}
+
+func (x SortBy) String() string {
+	return proto.EnumName(SortBy_name, int32(x))
+}
+
+func (SortBy) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{1}
+}
+
+type SortByColumn int32
+
+const (
+	SortByColumn_UserName SortByColumn = 0
+)
+
+var SortByColumn_name = map[int32]string{
+	0: "UserName",
+}
+
+var SortByColumn_value = map[string]int32{
+	"UserName": 0,
+}
+
+func (x SortByColumn) String() string {
+	return proto.EnumName(SortByColumn_name, int32(x))
+}
+
+func (SortByColumn) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{2}
+}
+
+type User struct {
+	ID                   string               `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	FirstName            string               `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName,omitempty"`
+	LastName             string               `protobuf:"bytes,3,opt,name=LastName,proto3" json:"LastName,omitempty"`
+	Email                string               `protobuf:"bytes,4,opt,name=Email,proto3" json:"Email,omitempty"`
+	Password             string               `protobuf:"bytes,5,opt,name=Password,proto3" json:"Password,omitempty"`
+	UserName             string               `protobuf:"bytes,6,opt,name=UserName,proto3" json:"UserName,omitempty"`
+	Image                string               `protobuf:"bytes,7,opt,name=Image,proto3" json:"Image,omitempty"`
+	PhoneNumber          string               `protobuf:"bytes,8,opt,name=PhoneNumber,proto3" json:"PhoneNumber,omitempty"`
+	Gender               int64                `protobuf:"varint,9,opt,name=Gender,proto3" json:"Gender,omitempty"`
+	Birthday             string               `protobuf:"bytes,10,opt,name=Birthday,proto3" json:"Birthday,omitempty"`
+	Address              string               `protobuf:"bytes,11,opt,name=Address,proto3" json:"Address,omitempty"`
+	City                 string               `protobuf:"bytes,12,opt,name=City,proto3" json:"City,omitempty"`
+	Country              string               `protobuf:"bytes,13,opt,name=Country,proto3" json:"Country,omitempty"`
+	Status               Status               `protobuf:"varint,14,opt,name=Status,proto3,enum=user.Status" json:"Status,omitempty"`
+	CreatedAt            *timestamp.Timestamp `protobuf:"bytes,15,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
+	CreatedBy            string               `protobuf:"bytes,16,opt,name=CreatedBy,proto3" json:"CreatedBy,omitempty"`
+	UpdatedAt            *timestamp.Timestamp `protobuf:"bytes,17,opt,name=UpdatedAt,proto3" json:"UpdatedAt,omitempty"`
+	UpdatedBy            string               `protobuf:"bytes,18,opt,name=UpdatedBy,proto3" json:"UpdatedBy,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *User) Reset()         { *m = User{} }
+func (m *User) String() string { return proto.CompactTextString(m) }
+func (*User) ProtoMessage()    {}
+func (*User) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{0}
+}
+
+func (m *User) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_User.Unmarshal(m, b)
+}
+func (m *User) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_User.Marshal(b, m, deterministic)
+}
+func (m *User) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_User.Merge(m, src)
+}
+func (m *User) XXX_Size() int {
+	return xxx_messageInfo_User.Size(m)
+}
+func (m *User) XXX_DiscardUnknown() {
+	xxx_messageInfo_User.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_User proto.InternalMessageInfo
+
+func (m *User) GetID() string {
+	if m != nil {
+		return m.ID
+	}
+	return ""
+}
+
+func (m *User) GetFirstName() string {
+	if m != nil {
+		return m.FirstName
+	}
+	return ""
+}
+
+func (m *User) GetLastName() string {
+	if m != nil {
+		return m.LastName
+	}
+	return ""
+}
+
+func (m *User) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+func (m *User) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+func (m *User) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
+
+func (m *User) GetImage() string {
+	if m != nil {
+		return m.Image
+	}
+	return ""
+}
+
+func (m *User) GetPhoneNumber() string {
+	if m != nil {
+		return m.PhoneNumber
+	}
+	return ""
+}
+
+func (m *User) GetGender() int64 {
+	if m != nil {
+		return m.Gender
+	}
+	return 0
+}
+
+func (m *User) GetBirthday() string {
+	if m != nil {
+		return m.Birthday
+	}
+	return ""
+}
+
+func (m *User) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *User) GetCity() string {
+	if m != nil {
+		return m.City
+	}
+	return ""
+}
+
+func (m *User) GetCountry() string {
+	if m != nil {
+		return m.Country
+	}
+	return ""
+}
+
+func (m *User) GetStatus() Status {
+	if m != nil {
+		return m.Status
+	}
+	return Status_Unknown
+}
+
+func (m *User) GetCreatedAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return nil
+}
+
+func (m *User) GetCreatedBy() string {
+	if m != nil {
+		return m.CreatedBy
+	}
+	return ""
+}
+
+func (m *User) GetUpdatedAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return nil
+}
+
+func (m *User) GetUpdatedBy() string {
+	if m != nil {
+		return m.UpdatedBy
+	}
+	return ""
+}
+
 type CreateUserRequest struct {
 	FirstName            string               `protobuf:"bytes,1,opt,name=FirstName,proto3" json:"FirstName,omitempty"`
 	LastName             string               `protobuf:"bytes,2,opt,name=LastName,proto3" json:"LastName,omitempty"`
@@ -38,7 +289,7 @@ type CreateUserRequest struct {
 	Address              string               `protobuf:"bytes,10,opt,name=Address,proto3" json:"Address,omitempty"`
 	City                 string               `protobuf:"bytes,11,opt,name=City,proto3" json:"City,omitempty"`
 	Country              string               `protobuf:"bytes,12,opt,name=Country,proto3" json:"Country,omitempty"`
-	Status               bool                 `protobuf:"varint,13,opt,name=Status,proto3" json:"Status,omitempty"`
+	Status               Status               `protobuf:"varint,13,opt,name=Status,proto3,enum=user.Status" json:"Status,omitempty"`
 	CreatedAt            *timestamp.Timestamp `protobuf:"bytes,14,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
 	CreatedBy            string               `protobuf:"bytes,15,opt,name=CreatedBy,proto3" json:"CreatedBy,omitempty"`
 	UpdatedAt            *timestamp.Timestamp `protobuf:"bytes,16,opt,name=UpdatedAt,proto3" json:"UpdatedAt,omitempty"`
@@ -52,7 +303,7 @@ func (m *CreateUserRequest) Reset()         { *m = CreateUserRequest{} }
 func (m *CreateUserRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateUserRequest) ProtoMessage()    {}
 func (*CreateUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_dded8084a41e518e, []int{0}
+	return fileDescriptor_dded8084a41e518e, []int{1}
 }
 
 func (m *CreateUserRequest) XXX_Unmarshal(b []byte) error {
@@ -157,11 +408,11 @@ func (m *CreateUserRequest) GetCountry() string {
 	return ""
 }
 
-func (m *CreateUserRequest) GetStatus() bool {
+func (m *CreateUserRequest) GetStatus() Status {
 	if m != nil {
 		return m.Status
 	}
-	return false
+	return Status_Unknown
 }
 
 func (m *CreateUserRequest) GetCreatedAt() *timestamp.Timestamp {
@@ -203,7 +454,7 @@ func (m *CreateUserResponse) Reset()         { *m = CreateUserResponse{} }
 func (m *CreateUserResponse) String() string { return proto.CompactTextString(m) }
 func (*CreateUserResponse) ProtoMessage()    {}
 func (*CreateUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_dded8084a41e518e, []int{1}
+	return fileDescriptor_dded8084a41e518e, []int{2}
 }
 
 func (m *CreateUserResponse) XXX_Unmarshal(b []byte) error {
@@ -231,9 +482,1149 @@ func (m *CreateUserResponse) GetID() string {
 	return ""
 }
 
+type GetUserByIDRequest struct {
+	ID                   string   `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetUserByIDRequest) Reset()         { *m = GetUserByIDRequest{} }
+func (m *GetUserByIDRequest) String() string { return proto.CompactTextString(m) }
+func (*GetUserByIDRequest) ProtoMessage()    {}
+func (*GetUserByIDRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{3}
+}
+
+func (m *GetUserByIDRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetUserByIDRequest.Unmarshal(m, b)
+}
+func (m *GetUserByIDRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetUserByIDRequest.Marshal(b, m, deterministic)
+}
+func (m *GetUserByIDRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetUserByIDRequest.Merge(m, src)
+}
+func (m *GetUserByIDRequest) XXX_Size() int {
+	return xxx_messageInfo_GetUserByIDRequest.Size(m)
+}
+func (m *GetUserByIDRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetUserByIDRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetUserByIDRequest proto.InternalMessageInfo
+
+func (m *GetUserByIDRequest) GetID() string {
+	if m != nil {
+		return m.ID
+	}
+	return ""
+}
+
+type GetUserByIDResponse struct {
+	ID                   string               `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	FirstName            string               `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName,omitempty"`
+	LastName             string               `protobuf:"bytes,3,opt,name=LastName,proto3" json:"LastName,omitempty"`
+	Email                string               `protobuf:"bytes,4,opt,name=Email,proto3" json:"Email,omitempty"`
+	Password             string               `protobuf:"bytes,5,opt,name=Password,proto3" json:"Password,omitempty"`
+	UserName             string               `protobuf:"bytes,6,opt,name=UserName,proto3" json:"UserName,omitempty"`
+	Image                string               `protobuf:"bytes,7,opt,name=Image,proto3" json:"Image,omitempty"`
+	PhoneNumber          string               `protobuf:"bytes,8,opt,name=PhoneNumber,proto3" json:"PhoneNumber,omitempty"`
+	Gender               int64                `protobuf:"varint,9,opt,name=Gender,proto3" json:"Gender,omitempty"`
+	Birthday             string               `protobuf:"bytes,10,opt,name=Birthday,proto3" json:"Birthday,omitempty"`
+	Address              string               `protobuf:"bytes,11,opt,name=Address,proto3" json:"Address,omitempty"`
+	City                 string               `protobuf:"bytes,12,opt,name=City,proto3" json:"City,omitempty"`
+	Country              string               `protobuf:"bytes,13,opt,name=Country,proto3" json:"Country,omitempty"`
+	Status               Status               `protobuf:"varint,14,opt,name=Status,proto3,enum=user.Status" json:"Status,omitempty"`
+	CreatedAt            *timestamp.Timestamp `protobuf:"bytes,15,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
+	CreatedBy            string               `protobuf:"bytes,16,opt,name=CreatedBy,proto3" json:"CreatedBy,omitempty"`
+	UpdatedAt            *timestamp.Timestamp `protobuf:"bytes,17,opt,name=UpdatedAt,proto3" json:"UpdatedAt,omitempty"`
+	UpdatedBy            string               `protobuf:"bytes,18,opt,name=UpdatedBy,proto3" json:"UpdatedBy,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *GetUserByIDResponse) Reset()         { *m = GetUserByIDResponse{} }
+func (m *GetUserByIDResponse) String() string { return proto.CompactTextString(m) }
+func (*GetUserByIDResponse) ProtoMessage()    {}
+func (*GetUserByIDResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{4}
+}
+
+func (m *GetUserByIDResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetUserByIDResponse.Unmarshal(m, b)
+}
+func (m *GetUserByIDResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetUserByIDResponse.Marshal(b, m, deterministic)
+}
+func (m *GetUserByIDResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetUserByIDResponse.Merge(m, src)
+}
+func (m *GetUserByIDResponse) XXX_Size() int {
+	return xxx_messageInfo_GetUserByIDResponse.Size(m)
+}
+func (m *GetUserByIDResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetUserByIDResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetUserByIDResponse proto.InternalMessageInfo
+
+func (m *GetUserByIDResponse) GetID() string {
+	if m != nil {
+		return m.ID
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetFirstName() string {
+	if m != nil {
+		return m.FirstName
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetLastName() string {
+	if m != nil {
+		return m.LastName
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetImage() string {
+	if m != nil {
+		return m.Image
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetPhoneNumber() string {
+	if m != nil {
+		return m.PhoneNumber
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetGender() int64 {
+	if m != nil {
+		return m.Gender
+	}
+	return 0
+}
+
+func (m *GetUserByIDResponse) GetBirthday() string {
+	if m != nil {
+		return m.Birthday
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetCity() string {
+	if m != nil {
+		return m.City
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetCountry() string {
+	if m != nil {
+		return m.Country
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetStatus() Status {
+	if m != nil {
+		return m.Status
+	}
+	return Status_Unknown
+}
+
+func (m *GetUserByIDResponse) GetCreatedAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return nil
+}
+
+func (m *GetUserByIDResponse) GetCreatedBy() string {
+	if m != nil {
+		return m.CreatedBy
+	}
+	return ""
+}
+
+func (m *GetUserByIDResponse) GetUpdatedAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return nil
+}
+
+func (m *GetUserByIDResponse) GetUpdatedBy() string {
+	if m != nil {
+		return m.UpdatedBy
+	}
+	return ""
+}
+
+type GetUserByEmailRequest struct {
+	Email                string   `protobuf:"bytes,1,opt,name=Email,proto3" json:"Email,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetUserByEmailRequest) Reset()         { *m = GetUserByEmailRequest{} }
+func (m *GetUserByEmailRequest) String() string { return proto.CompactTextString(m) }
+func (*GetUserByEmailRequest) ProtoMessage()    {}
+func (*GetUserByEmailRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{5}
+}
+
+func (m *GetUserByEmailRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetUserByEmailRequest.Unmarshal(m, b)
+}
+func (m *GetUserByEmailRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetUserByEmailRequest.Marshal(b, m, deterministic)
+}
+func (m *GetUserByEmailRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetUserByEmailRequest.Merge(m, src)
+}
+func (m *GetUserByEmailRequest) XXX_Size() int {
+	return xxx_messageInfo_GetUserByEmailRequest.Size(m)
+}
+func (m *GetUserByEmailRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetUserByEmailRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetUserByEmailRequest proto.InternalMessageInfo
+
+func (m *GetUserByEmailRequest) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+type GetUserByEmailResponse struct {
+	ID                   string               `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	FirstName            string               `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName,omitempty"`
+	LastName             string               `protobuf:"bytes,3,opt,name=LastName,proto3" json:"LastName,omitempty"`
+	Email                string               `protobuf:"bytes,4,opt,name=Email,proto3" json:"Email,omitempty"`
+	Password             string               `protobuf:"bytes,5,opt,name=Password,proto3" json:"Password,omitempty"`
+	UserName             string               `protobuf:"bytes,6,opt,name=UserName,proto3" json:"UserName,omitempty"`
+	Image                string               `protobuf:"bytes,7,opt,name=Image,proto3" json:"Image,omitempty"`
+	PhoneNumber          string               `protobuf:"bytes,8,opt,name=PhoneNumber,proto3" json:"PhoneNumber,omitempty"`
+	Gender               int64                `protobuf:"varint,9,opt,name=Gender,proto3" json:"Gender,omitempty"`
+	Birthday             string               `protobuf:"bytes,10,opt,name=Birthday,proto3" json:"Birthday,omitempty"`
+	Address              string               `protobuf:"bytes,11,opt,name=Address,proto3" json:"Address,omitempty"`
+	City                 string               `protobuf:"bytes,12,opt,name=City,proto3" json:"City,omitempty"`
+	Country              string               `protobuf:"bytes,13,opt,name=Country,proto3" json:"Country,omitempty"`
+	Status               Status               `protobuf:"varint,14,opt,name=Status,proto3,enum=user.Status" json:"Status,omitempty"`
+	CreatedAt            *timestamp.Timestamp `protobuf:"bytes,15,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
+	CreatedBy            string               `protobuf:"bytes,16,opt,name=CreatedBy,proto3" json:"CreatedBy,omitempty"`
+	UpdatedAt            *timestamp.Timestamp `protobuf:"bytes,17,opt,name=UpdatedAt,proto3" json:"UpdatedAt,omitempty"`
+	UpdatedBy            string               `protobuf:"bytes,18,opt,name=UpdatedBy,proto3" json:"UpdatedBy,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *GetUserByEmailResponse) Reset()         { *m = GetUserByEmailResponse{} }
+func (m *GetUserByEmailResponse) String() string { return proto.CompactTextString(m) }
+func (*GetUserByEmailResponse) ProtoMessage()    {}
+func (*GetUserByEmailResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{6}
+}
+
+func (m *GetUserByEmailResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetUserByEmailResponse.Unmarshal(m, b)
+}
+func (m *GetUserByEmailResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetUserByEmailResponse.Marshal(b, m, deterministic)
+}
+func (m *GetUserByEmailResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetUserByEmailResponse.Merge(m, src)
+}
+func (m *GetUserByEmailResponse) XXX_Size() int {
+	return xxx_messageInfo_GetUserByEmailResponse.Size(m)
+}
+func (m *GetUserByEmailResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetUserByEmailResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetUserByEmailResponse proto.InternalMessageInfo
+
+func (m *GetUserByEmailResponse) GetID() string {
+	if m != nil {
+		return m.ID
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetFirstName() string {
+	if m != nil {
+		return m.FirstName
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetLastName() string {
+	if m != nil {
+		return m.LastName
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetImage() string {
+	if m != nil {
+		return m.Image
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetPhoneNumber() string {
+	if m != nil {
+		return m.PhoneNumber
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetGender() int64 {
+	if m != nil {
+		return m.Gender
+	}
+	return 0
+}
+
+func (m *GetUserByEmailResponse) GetBirthday() string {
+	if m != nil {
+		return m.Birthday
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetCity() string {
+	if m != nil {
+		return m.City
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetCountry() string {
+	if m != nil {
+		return m.Country
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetStatus() Status {
+	if m != nil {
+		return m.Status
+	}
+	return Status_Unknown
+}
+
+func (m *GetUserByEmailResponse) GetCreatedAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return nil
+}
+
+func (m *GetUserByEmailResponse) GetCreatedBy() string {
+	if m != nil {
+		return m.CreatedBy
+	}
+	return ""
+}
+
+func (m *GetUserByEmailResponse) GetUpdatedAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return nil
+}
+
+func (m *GetUserByEmailResponse) GetUpdatedBy() string {
+	if m != nil {
+		return m.UpdatedBy
+	}
+	return ""
+}
+
+type GetUserByUsernameRequest struct {
+	UserName             string   `protobuf:"bytes,1,opt,name=UserName,proto3" json:"UserName,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetUserByUsernameRequest) Reset()         { *m = GetUserByUsernameRequest{} }
+func (m *GetUserByUsernameRequest) String() string { return proto.CompactTextString(m) }
+func (*GetUserByUsernameRequest) ProtoMessage()    {}
+func (*GetUserByUsernameRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{7}
+}
+
+func (m *GetUserByUsernameRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetUserByUsernameRequest.Unmarshal(m, b)
+}
+func (m *GetUserByUsernameRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetUserByUsernameRequest.Marshal(b, m, deterministic)
+}
+func (m *GetUserByUsernameRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetUserByUsernameRequest.Merge(m, src)
+}
+func (m *GetUserByUsernameRequest) XXX_Size() int {
+	return xxx_messageInfo_GetUserByUsernameRequest.Size(m)
+}
+func (m *GetUserByUsernameRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetUserByUsernameRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetUserByUsernameRequest proto.InternalMessageInfo
+
+func (m *GetUserByUsernameRequest) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
+
+type GetUserByUsernameResponse struct {
+	ID                   string               `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	FirstName            string               `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName,omitempty"`
+	LastName             string               `protobuf:"bytes,3,opt,name=LastName,proto3" json:"LastName,omitempty"`
+	Email                string               `protobuf:"bytes,4,opt,name=Email,proto3" json:"Email,omitempty"`
+	Password             string               `protobuf:"bytes,5,opt,name=Password,proto3" json:"Password,omitempty"`
+	UserName             string               `protobuf:"bytes,6,opt,name=UserName,proto3" json:"UserName,omitempty"`
+	Image                string               `protobuf:"bytes,7,opt,name=Image,proto3" json:"Image,omitempty"`
+	PhoneNumber          string               `protobuf:"bytes,8,opt,name=PhoneNumber,proto3" json:"PhoneNumber,omitempty"`
+	Gender               int64                `protobuf:"varint,9,opt,name=Gender,proto3" json:"Gender,omitempty"`
+	Birthday             string               `protobuf:"bytes,10,opt,name=Birthday,proto3" json:"Birthday,omitempty"`
+	Address              string               `protobuf:"bytes,11,opt,name=Address,proto3" json:"Address,omitempty"`
+	City                 string               `protobuf:"bytes,12,opt,name=City,proto3" json:"City,omitempty"`
+	Country              string               `protobuf:"bytes,13,opt,name=Country,proto3" json:"Country,omitempty"`
+	Status               Status               `protobuf:"varint,14,opt,name=Status,proto3,enum=user.Status" json:"Status,omitempty"`
+	CreatedAt            *timestamp.Timestamp `protobuf:"bytes,15,opt,name=CreatedAt,proto3" json:"CreatedAt,omitempty"`
+	CreatedBy            string               `protobuf:"bytes,16,opt,name=CreatedBy,proto3" json:"CreatedBy,omitempty"`
+	UpdatedAt            *timestamp.Timestamp `protobuf:"bytes,17,opt,name=UpdatedAt,proto3" json:"UpdatedAt,omitempty"`
+	UpdatedBy            string               `protobuf:"bytes,18,opt,name=UpdatedBy,proto3" json:"UpdatedBy,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *GetUserByUsernameResponse) Reset()         { *m = GetUserByUsernameResponse{} }
+func (m *GetUserByUsernameResponse) String() string { return proto.CompactTextString(m) }
+func (*GetUserByUsernameResponse) ProtoMessage()    {}
+func (*GetUserByUsernameResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{8}
+}
+
+func (m *GetUserByUsernameResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetUserByUsernameResponse.Unmarshal(m, b)
+}
+func (m *GetUserByUsernameResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetUserByUsernameResponse.Marshal(b, m, deterministic)
+}
+func (m *GetUserByUsernameResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetUserByUsernameResponse.Merge(m, src)
+}
+func (m *GetUserByUsernameResponse) XXX_Size() int {
+	return xxx_messageInfo_GetUserByUsernameResponse.Size(m)
+}
+func (m *GetUserByUsernameResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetUserByUsernameResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetUserByUsernameResponse proto.InternalMessageInfo
+
+func (m *GetUserByUsernameResponse) GetID() string {
+	if m != nil {
+		return m.ID
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetFirstName() string {
+	if m != nil {
+		return m.FirstName
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetLastName() string {
+	if m != nil {
+		return m.LastName
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetImage() string {
+	if m != nil {
+		return m.Image
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetPhoneNumber() string {
+	if m != nil {
+		return m.PhoneNumber
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetGender() int64 {
+	if m != nil {
+		return m.Gender
+	}
+	return 0
+}
+
+func (m *GetUserByUsernameResponse) GetBirthday() string {
+	if m != nil {
+		return m.Birthday
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetCity() string {
+	if m != nil {
+		return m.City
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetCountry() string {
+	if m != nil {
+		return m.Country
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetStatus() Status {
+	if m != nil {
+		return m.Status
+	}
+	return Status_Unknown
+}
+
+func (m *GetUserByUsernameResponse) GetCreatedAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return nil
+}
+
+func (m *GetUserByUsernameResponse) GetCreatedBy() string {
+	if m != nil {
+		return m.CreatedBy
+	}
+	return ""
+}
+
+func (m *GetUserByUsernameResponse) GetUpdatedAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return nil
+}
+
+func (m *GetUserByUsernameResponse) GetUpdatedBy() string {
+	if m != nil {
+		return m.UpdatedBy
+	}
+	return ""
+}
+
+type UpdateUserRequest struct {
+	ID                   string   `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	FirstName            string   `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName,omitempty"`
+	LastName             string   `protobuf:"bytes,3,opt,name=LastName,proto3" json:"LastName,omitempty"`
+	Email                string   `protobuf:"bytes,4,opt,name=Email,proto3" json:"Email,omitempty"`
+	Password             string   `protobuf:"bytes,5,opt,name=Password,proto3" json:"Password,omitempty"`
+	UserName             string   `protobuf:"bytes,6,opt,name=UserName,proto3" json:"UserName,omitempty"`
+	Image                string   `protobuf:"bytes,7,opt,name=Image,proto3" json:"Image,omitempty"`
+	PhoneNumber          string   `protobuf:"bytes,8,opt,name=PhoneNumber,proto3" json:"PhoneNumber,omitempty"`
+	Gender               int64    `protobuf:"varint,9,opt,name=Gender,proto3" json:"Gender,omitempty"`
+	Birthday             string   `protobuf:"bytes,10,opt,name=Birthday,proto3" json:"Birthday,omitempty"`
+	Address              string   `protobuf:"bytes,11,opt,name=Address,proto3" json:"Address,omitempty"`
+	City                 string   `protobuf:"bytes,12,opt,name=City,proto3" json:"City,omitempty"`
+	Country              string   `protobuf:"bytes,13,opt,name=Country,proto3" json:"Country,omitempty"`
+	Status               Status   `protobuf:"varint,14,opt,name=Status,proto3,enum=user.Status" json:"Status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateUserRequest) Reset()         { *m = UpdateUserRequest{} }
+func (m *UpdateUserRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateUserRequest) ProtoMessage()    {}
+func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{9}
+}
+
+func (m *UpdateUserRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateUserRequest.Unmarshal(m, b)
+}
+func (m *UpdateUserRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateUserRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateUserRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateUserRequest.Merge(m, src)
+}
+func (m *UpdateUserRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateUserRequest.Size(m)
+}
+func (m *UpdateUserRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateUserRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateUserRequest proto.InternalMessageInfo
+
+func (m *UpdateUserRequest) GetID() string {
+	if m != nil {
+		return m.ID
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetFirstName() string {
+	if m != nil {
+		return m.FirstName
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetLastName() string {
+	if m != nil {
+		return m.LastName
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetImage() string {
+	if m != nil {
+		return m.Image
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetPhoneNumber() string {
+	if m != nil {
+		return m.PhoneNumber
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetGender() int64 {
+	if m != nil {
+		return m.Gender
+	}
+	return 0
+}
+
+func (m *UpdateUserRequest) GetBirthday() string {
+	if m != nil {
+		return m.Birthday
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetCity() string {
+	if m != nil {
+		return m.City
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetCountry() string {
+	if m != nil {
+		return m.Country
+	}
+	return ""
+}
+
+func (m *UpdateUserRequest) GetStatus() Status {
+	if m != nil {
+		return m.Status
+	}
+	return Status_Unknown
+}
+
+type UpdateUserResponse struct {
+	ID                   string               `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	FirstName            string               `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName,omitempty"`
+	LastName             string               `protobuf:"bytes,3,opt,name=LastName,proto3" json:"LastName,omitempty"`
+	Email                string               `protobuf:"bytes,4,opt,name=Email,proto3" json:"Email,omitempty"`
+	Password             string               `protobuf:"bytes,5,opt,name=Password,proto3" json:"Password,omitempty"`
+	UserName             string               `protobuf:"bytes,6,opt,name=UserName,proto3" json:"UserName,omitempty"`
+	Image                string               `protobuf:"bytes,7,opt,name=Image,proto3" json:"Image,omitempty"`
+	PhoneNumber          string               `protobuf:"bytes,8,opt,name=PhoneNumber,proto3" json:"PhoneNumber,omitempty"`
+	Gender               int64                `protobuf:"varint,9,opt,name=Gender,proto3" json:"Gender,omitempty"`
+	Birthday             string               `protobuf:"bytes,10,opt,name=Birthday,proto3" json:"Birthday,omitempty"`
+	Address              string               `protobuf:"bytes,11,opt,name=Address,proto3" json:"Address,omitempty"`
+	City                 string               `protobuf:"bytes,12,opt,name=City,proto3" json:"City,omitempty"`
+	Country              string               `protobuf:"bytes,13,opt,name=Country,proto3" json:"Country,omitempty"`
+	Status               Status               `protobuf:"varint,14,opt,name=Status,proto3,enum=user.Status" json:"Status,omitempty"`
+	UpdatedAt            *timestamp.Timestamp `protobuf:"bytes,15,opt,name=UpdatedAt,proto3" json:"UpdatedAt,omitempty"`
+	UpdatedBy            string               `protobuf:"bytes,16,opt,name=UpdatedBy,proto3" json:"UpdatedBy,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *UpdateUserResponse) Reset()         { *m = UpdateUserResponse{} }
+func (m *UpdateUserResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateUserResponse) ProtoMessage()    {}
+func (*UpdateUserResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{10}
+}
+
+func (m *UpdateUserResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateUserResponse.Unmarshal(m, b)
+}
+func (m *UpdateUserResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateUserResponse.Marshal(b, m, deterministic)
+}
+func (m *UpdateUserResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateUserResponse.Merge(m, src)
+}
+func (m *UpdateUserResponse) XXX_Size() int {
+	return xxx_messageInfo_UpdateUserResponse.Size(m)
+}
+func (m *UpdateUserResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateUserResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateUserResponse proto.InternalMessageInfo
+
+func (m *UpdateUserResponse) GetID() string {
+	if m != nil {
+		return m.ID
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetFirstName() string {
+	if m != nil {
+		return m.FirstName
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetLastName() string {
+	if m != nil {
+		return m.LastName
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetImage() string {
+	if m != nil {
+		return m.Image
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetPhoneNumber() string {
+	if m != nil {
+		return m.PhoneNumber
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetGender() int64 {
+	if m != nil {
+		return m.Gender
+	}
+	return 0
+}
+
+func (m *UpdateUserResponse) GetBirthday() string {
+	if m != nil {
+		return m.Birthday
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetCity() string {
+	if m != nil {
+		return m.City
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetCountry() string {
+	if m != nil {
+		return m.Country
+	}
+	return ""
+}
+
+func (m *UpdateUserResponse) GetStatus() Status {
+	if m != nil {
+		return m.Status
+	}
+	return Status_Unknown
+}
+
+func (m *UpdateUserResponse) GetUpdatedAt() *timestamp.Timestamp {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return nil
+}
+
+func (m *UpdateUserResponse) GetUpdatedBy() string {
+	if m != nil {
+		return m.UpdatedBy
+	}
+	return ""
+}
+
+type ListUsersRequest struct {
+	SortBy               SortBy       `protobuf:"varint,1,opt,name=SortBy,proto3,enum=user.SortBy" json:"SortBy,omitempty"`
+	SortByColumn         SortByColumn `protobuf:"varint,2,opt,name=SortByColumn,proto3,enum=user.SortByColumn" json:"SortByColumn,omitempty"`
+	Status               Status       `protobuf:"varint,3,opt,name=Status,proto3,enum=user.Status" json:"Status,omitempty"`
+	Limit                int32        `protobuf:"varint,4,opt,name=Limit,proto3" json:"Limit,omitempty"`
+	Offset               int32        `protobuf:"varint,5,opt,name=Offset,proto3" json:"Offset,omitempty"`
+	SearchTerm           string       `protobuf:"bytes,6,opt,name=SearchTerm,proto3" json:"SearchTerm,omitempty"`
+	StartDate            string       `protobuf:"bytes,7,opt,name=StartDate,proto3" json:"StartDate,omitempty"`
+	EndDate              string       `protobuf:"bytes,8,opt,name=EndDate,proto3" json:"EndDate,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *ListUsersRequest) Reset()         { *m = ListUsersRequest{} }
+func (m *ListUsersRequest) String() string { return proto.CompactTextString(m) }
+func (*ListUsersRequest) ProtoMessage()    {}
+func (*ListUsersRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{11}
+}
+
+func (m *ListUsersRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListUsersRequest.Unmarshal(m, b)
+}
+func (m *ListUsersRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListUsersRequest.Marshal(b, m, deterministic)
+}
+func (m *ListUsersRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListUsersRequest.Merge(m, src)
+}
+func (m *ListUsersRequest) XXX_Size() int {
+	return xxx_messageInfo_ListUsersRequest.Size(m)
+}
+func (m *ListUsersRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListUsersRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListUsersRequest proto.InternalMessageInfo
+
+func (m *ListUsersRequest) GetSortBy() SortBy {
+	if m != nil {
+		return m.SortBy
+	}
+	return SortBy_DESC
+}
+
+func (m *ListUsersRequest) GetSortByColumn() SortByColumn {
+	if m != nil {
+		return m.SortByColumn
+	}
+	return SortByColumn_UserName
+}
+
+func (m *ListUsersRequest) GetStatus() Status {
+	if m != nil {
+		return m.Status
+	}
+	return Status_Unknown
+}
+
+func (m *ListUsersRequest) GetLimit() int32 {
+	if m != nil {
+		return m.Limit
+	}
+	return 0
+}
+
+func (m *ListUsersRequest) GetOffset() int32 {
+	if m != nil {
+		return m.Offset
+	}
+	return 0
+}
+
+func (m *ListUsersRequest) GetSearchTerm() string {
+	if m != nil {
+		return m.SearchTerm
+	}
+	return ""
+}
+
+func (m *ListUsersRequest) GetStartDate() string {
+	if m != nil {
+		return m.StartDate
+	}
+	return ""
+}
+
+func (m *ListUsersRequest) GetEndDate() string {
+	if m != nil {
+		return m.EndDate
+	}
+	return ""
+}
+
+type ListUsersResponse struct {
+	Users                []*User  `protobuf:"bytes,1,rep,name=Users,proto3" json:"Users,omitempty"`
+	Total                int32    `protobuf:"varint,2,opt,name=Total,proto3" json:"Total,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ListUsersResponse) Reset()         { *m = ListUsersResponse{} }
+func (m *ListUsersResponse) String() string { return proto.CompactTextString(m) }
+func (*ListUsersResponse) ProtoMessage()    {}
+func (*ListUsersResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{12}
+}
+
+func (m *ListUsersResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListUsersResponse.Unmarshal(m, b)
+}
+func (m *ListUsersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListUsersResponse.Marshal(b, m, deterministic)
+}
+func (m *ListUsersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListUsersResponse.Merge(m, src)
+}
+func (m *ListUsersResponse) XXX_Size() int {
+	return xxx_messageInfo_ListUsersResponse.Size(m)
+}
+func (m *ListUsersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListUsersResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListUsersResponse proto.InternalMessageInfo
+
+func (m *ListUsersResponse) GetUsers() []*User {
+	if m != nil {
+		return m.Users
+	}
+	return nil
+}
+
+func (m *ListUsersResponse) GetTotal() int32 {
+	if m != nil {
+		return m.Total
+	}
+	return 0
+}
+
+type DeleteUserRequest struct {
+	ID                   string   `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteUserRequest) Reset()         { *m = DeleteUserRequest{} }
+func (m *DeleteUserRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteUserRequest) ProtoMessage()    {}
+func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dded8084a41e518e, []int{13}
+}
+
+func (m *DeleteUserRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteUserRequest.Unmarshal(m, b)
+}
+func (m *DeleteUserRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteUserRequest.Marshal(b, m, deterministic)
+}
+func (m *DeleteUserRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteUserRequest.Merge(m, src)
+}
+func (m *DeleteUserRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteUserRequest.Size(m)
+}
+func (m *DeleteUserRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteUserRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteUserRequest proto.InternalMessageInfo
+
+func (m *DeleteUserRequest) GetID() string {
+	if m != nil {
+		return m.ID
+	}
+	return ""
+}
+
 func init() {
+	proto.RegisterEnum("user.Status", Status_name, Status_value)
+	proto.RegisterEnum("user.SortBy", SortBy_name, SortBy_value)
+	proto.RegisterEnum("user.SortByColumn", SortByColumn_name, SortByColumn_value)
+	proto.RegisterType((*User)(nil), "user.User")
 	proto.RegisterType((*CreateUserRequest)(nil), "user.CreateUserRequest")
 	proto.RegisterType((*CreateUserResponse)(nil), "user.CreateUserResponse")
+	proto.RegisterType((*GetUserByIDRequest)(nil), "user.GetUserByIDRequest")
+	proto.RegisterType((*GetUserByIDResponse)(nil), "user.GetUserByIDResponse")
+	proto.RegisterType((*GetUserByEmailRequest)(nil), "user.GetUserByEmailRequest")
+	proto.RegisterType((*GetUserByEmailResponse)(nil), "user.GetUserByEmailResponse")
+	proto.RegisterType((*GetUserByUsernameRequest)(nil), "user.GetUserByUsernameRequest")
+	proto.RegisterType((*GetUserByUsernameResponse)(nil), "user.GetUserByUsernameResponse")
+	proto.RegisterType((*UpdateUserRequest)(nil), "user.UpdateUserRequest")
+	proto.RegisterType((*UpdateUserResponse)(nil), "user.UpdateUserResponse")
+	proto.RegisterType((*ListUsersRequest)(nil), "user.ListUsersRequest")
+	proto.RegisterType((*ListUsersResponse)(nil), "user.ListUsersResponse")
+	proto.RegisterType((*DeleteUserRequest)(nil), "user.DeleteUserRequest")
 }
 
 func init() {
@@ -241,33 +1632,68 @@ func init() {
 }
 
 var fileDescriptor_dded8084a41e518e = []byte{
-	// 414 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0x4f, 0x6f, 0xd3, 0x40,
-	0x10, 0xc5, 0x71, 0x9a, 0xa6, 0xc9, 0x04, 0x0a, 0x5d, 0x21, 0x3a, 0x44, 0x48, 0x58, 0x11, 0x87,
-	0x9c, 0x6c, 0x51, 0x2e, 0x5c, 0xe3, 0x14, 0x50, 0x24, 0x54, 0x45, 0x2e, 0xbd, 0x70, 0xdb, 0xe0,
-	0xc1, 0xb5, 0xd4, 0xf5, 0x9a, 0xdd, 0x75, 0x91, 0x3f, 0x09, 0x5f, 0x17, 0xed, 0x1f, 0x3b, 0x95,
-	0x8a, 0xc4, 0x25, 0xd9, 0xdf, 0x7b, 0x33, 0x6f, 0x24, 0xcf, 0x40, 0xdc, 0x28, 0x69, 0x64, 0x7a,
-	0xff, 0x3e, 0x6d, 0x35, 0x29, 0x51, 0x0a, 0xf7, 0xef, 0x7e, 0x12, 0x67, 0xb1, 0xb1, 0x7d, 0x2f,
-	0xde, 0x96, 0x52, 0x96, 0x77, 0x94, 0x3a, 0x6d, 0xdf, 0xfe, 0x4c, 0x4d, 0x25, 0x48, 0x1b, 0x2e,
-	0x1a, 0x5f, 0xb6, 0xfc, 0x33, 0x86, 0xb3, 0x8d, 0x22, 0x6e, 0xe8, 0x46, 0x93, 0xca, 0xe9, 0x57,
-	0x4b, 0xda, 0xb0, 0x37, 0x30, 0xfb, 0x5c, 0x29, 0x6d, 0xae, 0xb8, 0x20, 0x8c, 0xe2, 0x68, 0x35,
-	0xcb, 0x0f, 0x02, 0x5b, 0xc0, 0xf4, 0x2b, 0x0f, 0xe6, 0xc8, 0x99, 0x03, 0xb3, 0x97, 0x70, 0xfc,
-	0x49, 0xf0, 0xea, 0x0e, 0x8f, 0x9c, 0xe1, 0xc1, 0x76, 0xec, 0xb8, 0xd6, 0xbf, 0xa5, 0x2a, 0x70,
-	0xec, 0x3b, 0x7a, 0xb6, 0x9e, 0x1d, 0xed, 0xd2, 0x8e, 0xbd, 0xd7, 0xb3, 0x4d, 0xdb, 0x0a, 0x5e,
-	0x12, 0x4e, 0x7c, 0x9a, 0x03, 0x16, 0xc3, 0x7c, 0x77, 0x2b, 0x6b, 0xba, 0x6a, 0xc5, 0x9e, 0x14,
-	0x9e, 0x38, 0xef, 0xa1, 0xc4, 0x5e, 0xc1, 0xe4, 0x0b, 0xd5, 0x05, 0x29, 0x9c, 0xc6, 0xd1, 0xea,
-	0x28, 0x0f, 0x64, 0x67, 0x65, 0x95, 0x32, 0xb7, 0x05, 0xef, 0x70, 0xe6, 0x67, 0xf5, 0xcc, 0x10,
-	0x4e, 0xd6, 0x45, 0xa1, 0x48, 0x6b, 0x04, 0x67, 0xf5, 0xc8, 0x18, 0x8c, 0x37, 0x95, 0xe9, 0x70,
-	0xee, 0x64, 0xf7, 0xb6, 0xd5, 0x1b, 0xd9, 0xd6, 0x46, 0x75, 0xf8, 0xd4, 0x57, 0x07, 0xb4, 0xb3,
-	0xaf, 0x0d, 0x37, 0xad, 0xc6, 0x67, 0x71, 0xb4, 0x9a, 0xe6, 0x81, 0xd8, 0x47, 0x98, 0xf9, 0x0f,
-	0x5d, 0xac, 0x0d, 0x9e, 0xc6, 0xd1, 0x6a, 0x7e, 0xb1, 0x48, 0xfc, 0x7a, 0x92, 0x7e, 0x3d, 0xc9,
-	0xb7, 0x7e, 0x3d, 0xf9, 0xa1, 0xd8, 0x6e, 0x23, 0x40, 0xd6, 0xe1, 0x73, 0xbf, 0x8d, 0x41, 0xb0,
-	0xb9, 0x37, 0x4d, 0x11, 0x72, 0x5f, 0xfc, 0x3f, 0x77, 0x28, 0xb6, 0xb9, 0x01, 0xb2, 0x0e, 0xcf,
-	0x7c, 0xee, 0x20, 0x2c, 0xdf, 0x01, 0x7b, 0x78, 0x18, 0xba, 0x91, 0xb5, 0x26, 0x76, 0x0a, 0xa3,
-	0xed, 0x65, 0x38, 0x89, 0xd1, 0xf6, 0xf2, 0x62, 0x07, 0x73, 0xeb, 0x5f, 0x93, 0xba, 0xaf, 0x7e,
-	0x10, 0x5b, 0x03, 0x1c, 0x9a, 0xd8, 0x79, 0xe2, 0x0e, 0xf2, 0xd1, 0x7d, 0x2d, 0xf0, 0xb1, 0xe1,
-	0xf3, 0x97, 0x4f, 0xb2, 0xd7, 0xdf, 0xcf, 0x93, 0xf4, 0x9f, 0xe7, 0xbd, 0x9f, 0x38, 0xf9, 0xc3,
-	0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0xe8, 0x48, 0x4a, 0xd5, 0xfe, 0x02, 0x00, 0x00,
+	// 969 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x98, 0xdd, 0x6e, 0xe3, 0x44,
+	0x14, 0xc7, 0xe3, 0xd8, 0xf9, 0x3a, 0xc9, 0xa6, 0xce, 0xb0, 0xb4, 0x53, 0xb7, 0xda, 0x8d, 0xcc,
+	0x5e, 0x44, 0x95, 0x48, 0x44, 0x90, 0x56, 0xdc, 0x80, 0x94, 0x8f, 0xb2, 0x8a, 0x28, 0xcb, 0xca,
+	0x69, 0xb9, 0xe0, 0xce, 0x6d, 0xa6, 0xad, 0x45, 0x6c, 0x07, 0x7b, 0xd2, 0xca, 0x0f, 0xc0, 0x5b,
+	0x70, 0x8b, 0xc4, 0x1b, 0x20, 0x21, 0xf1, 0x2a, 0xbc, 0x0a, 0x68, 0x66, 0x3c, 0x8e, 0x63, 0x27,
+	0xa1, 0xea, 0x05, 0xdc, 0xe4, 0xc6, 0xf5, 0xf9, 0x98, 0xe3, 0xf1, 0xfc, 0x7f, 0x67, 0x3a, 0x0e,
+	0xb4, 0x17, 0x81, 0x4f, 0xfd, 0xde, 0xc3, 0x67, 0xbd, 0x65, 0x48, 0x02, 0xf7, 0xce, 0xe5, 0x7f,
+	0xf9, 0xa5, 0xcb, 0x43, 0x48, 0x63, 0xf7, 0xc6, 0xeb, 0x3b, 0xdf, 0xbf, 0x9b, 0x93, 0x1e, 0xf7,
+	0x5d, 0x2f, 0x6f, 0x7b, 0xd4, 0x71, 0x49, 0x48, 0x6d, 0x77, 0x21, 0xd2, 0x8c, 0x93, 0x6c, 0x02,
+	0x71, 0x17, 0x34, 0x12, 0x41, 0xf3, 0x37, 0x0d, 0xb4, 0xab, 0x90, 0x04, 0xa8, 0x09, 0xc5, 0xc9,
+	0x18, 0x2b, 0x6d, 0xa5, 0x53, 0xb3, 0x8a, 0x93, 0x31, 0x3a, 0x85, 0xda, 0xd7, 0x4e, 0x10, 0xd2,
+	0xf7, 0xb6, 0x4b, 0x70, 0x91, 0xbb, 0x57, 0x0e, 0x64, 0x40, 0xf5, 0xc2, 0x8e, 0x83, 0x2a, 0x0f,
+	0x26, 0x36, 0x7a, 0x09, 0xa5, 0x73, 0xd7, 0x76, 0xe6, 0x58, 0xe3, 0x01, 0x61, 0xb0, 0x11, 0x1f,
+	0xec, 0x30, 0x7c, 0xf4, 0x83, 0x19, 0x2e, 0x89, 0x11, 0xd2, 0x66, 0x31, 0x36, 0x07, 0x5e, 0xad,
+	0x2c, 0x62, 0xd2, 0x66, 0xd5, 0x26, 0xae, 0x7d, 0x47, 0x70, 0x45, 0x54, 0xe3, 0x06, 0x6a, 0x43,
+	0xfd, 0xc3, 0xbd, 0xef, 0x91, 0xf7, 0x4b, 0xf7, 0x9a, 0x04, 0xb8, 0xca, 0x63, 0x69, 0x17, 0x3a,
+	0x84, 0xf2, 0x3b, 0xe2, 0xcd, 0x48, 0x80, 0x6b, 0x6d, 0xa5, 0xa3, 0x5a, 0xb1, 0xc5, 0x9e, 0x35,
+	0x74, 0x02, 0x7a, 0x3f, 0xb3, 0x23, 0x0c, 0xe2, 0x59, 0xd2, 0x46, 0x18, 0x2a, 0x83, 0xd9, 0x2c,
+	0x20, 0x61, 0x88, 0xeb, 0x3c, 0x24, 0x4d, 0x84, 0x40, 0x1b, 0x39, 0x34, 0xc2, 0x0d, 0xee, 0xe6,
+	0xf7, 0x2c, 0x7b, 0xe4, 0x2f, 0x3d, 0x1a, 0x44, 0xf8, 0x85, 0xc8, 0x8e, 0x4d, 0xf4, 0x06, 0xca,
+	0x53, 0x6a, 0xd3, 0x65, 0x88, 0x9b, 0x6d, 0xa5, 0xd3, 0xec, 0x37, 0xba, 0x5c, 0x35, 0xe1, 0xb3,
+	0xe2, 0x18, 0xfa, 0x02, 0x6a, 0xa3, 0x80, 0xd8, 0x94, 0xcc, 0x06, 0x14, 0x1f, 0xb4, 0x95, 0x4e,
+	0xbd, 0x6f, 0x74, 0x85, 0x56, 0x5d, 0xa9, 0x55, 0xf7, 0x52, 0x8a, 0x69, 0xad, 0x92, 0x99, 0x36,
+	0xb1, 0x31, 0x8c, 0xb0, 0x2e, 0xb4, 0x49, 0x1c, 0xac, 0xee, 0xd5, 0x62, 0x16, 0xd7, 0x6d, 0xfd,
+	0x7b, 0xdd, 0x24, 0x99, 0xd5, 0x8d, 0x8d, 0x61, 0x84, 0x91, 0xa8, 0x9b, 0x38, 0xcc, 0x5f, 0x35,
+	0x68, 0x89, 0xa7, 0x30, 0x71, 0x2c, 0xf2, 0xd3, 0x92, 0x84, 0x74, 0x9d, 0x13, 0x65, 0x17, 0x27,
+	0xc5, 0x6d, 0x9c, 0xa8, 0xdb, 0x38, 0xd1, 0x76, 0x70, 0x52, 0xda, 0xc6, 0x49, 0x79, 0x07, 0x27,
+	0x95, 0x5d, 0x9c, 0x54, 0xb7, 0x72, 0x52, 0xdb, 0xce, 0x09, 0x6c, 0xe6, 0xa4, 0xbe, 0x99, 0x93,
+	0xc6, 0x36, 0x4e, 0x5e, 0x3c, 0x95, 0x93, 0xe6, 0xb3, 0x39, 0x39, 0xd8, 0xc9, 0x89, 0xfe, 0x6c,
+	0x4e, 0x5a, 0x59, 0x4e, 0xde, 0x00, 0x4a, 0x63, 0x12, 0x2e, 0x7c, 0x2f, 0x24, 0xd9, 0xfd, 0x85,
+	0x65, 0xbd, 0x23, 0x94, 0xa5, 0x0c, 0xa3, 0xc9, 0x58, 0xd2, 0x94, 0xcd, 0xfa, 0x5d, 0x83, 0x8f,
+	0xd6, 0xd2, 0x36, 0x57, 0xdb, 0xef, 0x56, 0xfb, 0xdd, 0x2a, 0x43, 0xe1, 0xa7, 0xf0, 0x71, 0x02,
+	0x0e, 0xd7, 0x54, 0x22, 0x96, 0x08, 0xae, 0xa4, 0x04, 0x37, 0xff, 0xd0, 0xe0, 0x30, 0x9b, 0xbf,
+	0x67, 0x6d, 0xcf, 0xda, 0x93, 0x58, 0x7b, 0x0b, 0x38, 0x61, 0x87, 0x5d, 0x3d, 0xdb, 0x25, 0x12,
+	0xb7, 0xb4, 0x82, 0xca, 0xba, 0x82, 0xe6, 0x9f, 0x1a, 0x1c, 0x6f, 0x18, 0xb8, 0xe7, 0x6e, 0xcf,
+	0xdd, 0x93, 0xb8, 0xfb, 0x59, 0x85, 0x96, 0xb0, 0xd2, 0x27, 0xb2, 0x3d, 0x37, 0xff, 0x31, 0x37,
+	0xe6, 0x5f, 0x2a, 0xa0, 0xb4, 0x0e, 0xfb, 0x06, 0xfe, 0xff, 0x1a, 0x78, 0xd5, 0x68, 0x07, 0xcf,
+	0x6e, 0x34, 0x3d, 0xdb, 0x68, 0xbf, 0x14, 0x41, 0xbf, 0x70, 0x42, 0xbe, 0x53, 0x87, 0xb2, 0xcf,
+	0xd8, 0x94, 0xfc, 0x80, 0x0e, 0x23, 0x2e, 0xf1, 0x6a, 0x4a, 0xdc, 0x67, 0xc5, 0x31, 0xf4, 0x16,
+	0x1a, 0xe2, 0x6e, 0xe4, 0xcf, 0x97, 0xae, 0xc7, 0x75, 0x6f, 0xf6, 0x51, 0x3a, 0x57, 0x44, 0xac,
+	0xb5, 0xbc, 0xd4, 0x0b, 0xab, 0x3b, 0x5e, 0xf8, 0x25, 0x94, 0x2e, 0x1c, 0xd7, 0xa1, 0x1c, 0x8c,
+	0x92, 0x25, 0x0c, 0x26, 0xd4, 0x77, 0xb7, 0xb7, 0x21, 0xa1, 0x1c, 0x8b, 0x92, 0x15, 0x5b, 0xe8,
+	0x15, 0xc0, 0x94, 0xd8, 0xc1, 0xcd, 0xfd, 0x25, 0x09, 0xdc, 0x18, 0x8b, 0x94, 0x87, 0x2d, 0xc2,
+	0x94, 0xda, 0x01, 0x1d, 0xdb, 0x54, 0xc2, 0xb1, 0x72, 0x30, 0x71, 0xce, 0xbd, 0x19, 0x8f, 0x09,
+	0x38, 0xa4, 0x69, 0x7e, 0x03, 0xad, 0xd4, 0xea, 0xc4, 0xf4, 0xb7, 0xa1, 0xc4, 0x1d, 0x58, 0x69,
+	0xab, 0x9d, 0x7a, 0x1f, 0xc4, 0xfc, 0x79, 0x83, 0x88, 0x00, 0x9b, 0xfc, 0xa5, 0x4f, 0xed, 0x39,
+	0x5f, 0x93, 0x92, 0x25, 0x0c, 0xf3, 0x13, 0x68, 0x8d, 0xc9, 0x9c, 0xec, 0xdc, 0xd3, 0xce, 0x7a,
+	0x72, 0x75, 0x50, 0x1d, 0x2a, 0x57, 0xde, 0x8f, 0x9e, 0xff, 0xe8, 0xe9, 0x05, 0x04, 0x50, 0x1e,
+	0xdc, 0x50, 0xe7, 0x81, 0xe8, 0x0a, 0x6a, 0x40, 0x75, 0xe2, 0xd9, 0xc2, 0x2a, 0x9e, 0x9d, 0x48,
+	0xb1, 0x50, 0x15, 0xb4, 0xf1, 0xf9, 0x74, 0xa4, 0x17, 0x50, 0x05, 0xd4, 0xc1, 0x74, 0xa4, 0x2b,
+	0x67, 0xa7, 0xeb, 0x1a, 0xb1, 0xa1, 0xb2, 0x59, 0xf4, 0x42, 0xff, 0x6f, 0x15, 0xea, 0xcc, 0x9c,
+	0x92, 0xe0, 0xc1, 0xb9, 0x21, 0x68, 0x00, 0xb0, 0xfa, 0xbe, 0x41, 0x47, 0xe2, 0xbd, 0x72, 0x1f,
+	0xc6, 0x06, 0xce, 0x07, 0xc4, 0xca, 0x98, 0x05, 0x34, 0x86, 0x7a, 0xea, 0xab, 0x06, 0xc5, 0xa9,
+	0xf9, 0xef, 0x21, 0xe3, 0x78, 0x43, 0x24, 0xa9, 0xf2, 0x2d, 0x34, 0xd7, 0x8f, 0xac, 0xe8, 0x24,
+	0x93, 0x9e, 0x3e, 0xf8, 0x1a, 0xa7, 0x9b, 0x83, 0x49, 0xb9, 0xef, 0xa1, 0x95, 0x3b, 0x8c, 0xa0,
+	0x57, 0x99, 0x41, 0x99, 0xe3, 0x8d, 0xf1, 0x7a, 0x6b, 0x3c, 0xa9, 0x3b, 0x00, 0x58, 0x6d, 0x8e,
+	0x72, 0xbd, 0x72, 0xff, 0xb6, 0xe4, 0x7a, 0xe5, 0xf7, 0x51, 0xb3, 0x80, 0xbe, 0x82, 0x5a, 0x02,
+	0x18, 0x3a, 0x14, 0x89, 0xd9, 0x7e, 0x34, 0x8e, 0x72, 0xfe, 0x64, 0xfc, 0x97, 0x00, 0x2b, 0xa6,
+	0xe4, 0x14, 0x72, 0x94, 0x19, 0x87, 0xb9, 0xbd, 0xe2, 0xdc, 0x5d, 0xd0, 0x68, 0x78, 0xfc, 0xc3,
+	0x51, 0xb7, 0xb7, 0xf1, 0xe7, 0xb8, 0xeb, 0x32, 0x77, 0x7f, 0xfe, 0x4f, 0x00, 0x00, 0x00, 0xff,
+	0xff, 0xaa, 0xa5, 0x0f, 0x44, 0xae, 0x13, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -283,6 +1709,12 @@ const _ = grpc.SupportPackageIsVersion6
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type UserServiceClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	GetUserByID(ctx context.Context, in *GetUserByIDRequest, opts ...grpc.CallOption) (*GetUserByIDResponse, error)
+	GetUserByEmail(ctx context.Context, in *GetUserByEmailRequest, opts ...grpc.CallOption) (*GetUserByEmailResponse, error)
+	GetUserByUsername(ctx context.Context, in *GetUserByUsernameRequest, opts ...grpc.CallOption) (*GetUserByUsernameResponse, error)
+	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
+	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
+	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
 type userServiceClient struct {
@@ -302,9 +1734,69 @@ func (c *userServiceClient) CreateUser(ctx context.Context, in *CreateUserReques
 	return out, nil
 }
 
+func (c *userServiceClient) GetUserByID(ctx context.Context, in *GetUserByIDRequest, opts ...grpc.CallOption) (*GetUserByIDResponse, error) {
+	out := new(GetUserByIDResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetUserByID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetUserByEmail(ctx context.Context, in *GetUserByEmailRequest, opts ...grpc.CallOption) (*GetUserByEmailResponse, error) {
+	out := new(GetUserByEmailResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetUserByEmail", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetUserByUsername(ctx context.Context, in *GetUserByUsernameRequest, opts ...grpc.CallOption) (*GetUserByUsernameResponse, error) {
+	out := new(GetUserByUsernameResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetUserByUsername", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
+	out := new(UpdateUserResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/UpdateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error) {
+	out := new(ListUsersResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/ListUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/user.UserService/DeleteUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 type UserServiceServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
+	GetUserByID(context.Context, *GetUserByIDRequest) (*GetUserByIDResponse, error)
+	GetUserByEmail(context.Context, *GetUserByEmailRequest) (*GetUserByEmailResponse, error)
+	GetUserByUsername(context.Context, *GetUserByUsernameRequest) (*GetUserByUsernameResponse, error)
+	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
+	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
+	DeleteUser(context.Context, *DeleteUserRequest) (*empty.Empty, error)
 }
 
 // UnimplementedUserServiceServer can be embedded to have forward compatible implementations.
@@ -313,6 +1805,24 @@ type UnimplementedUserServiceServer struct {
 
 func (*UnimplementedUserServiceServer) CreateUser(ctx context.Context, req *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (*UnimplementedUserServiceServer) GetUserByID(ctx context.Context, req *GetUserByIDRequest) (*GetUserByIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserByID not implemented")
+}
+func (*UnimplementedUserServiceServer) GetUserByEmail(ctx context.Context, req *GetUserByEmailRequest) (*GetUserByEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserByEmail not implemented")
+}
+func (*UnimplementedUserServiceServer) GetUserByUsername(ctx context.Context, req *GetUserByUsernameRequest) (*GetUserByUsernameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserByUsername not implemented")
+}
+func (*UnimplementedUserServiceServer) UpdateUser(ctx context.Context, req *UpdateUserRequest) (*UpdateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (*UnimplementedUserServiceServer) ListUsers(ctx context.Context, req *ListUsersRequest) (*ListUsersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
+}
+func (*UnimplementedUserServiceServer) DeleteUser(ctx context.Context, req *DeleteUserRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 
 func RegisterUserServiceServer(s *grpc.Server, srv UserServiceServer) {
@@ -337,6 +1847,114 @@ func _UserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_GetUserByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetUserByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetUserByID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetUserByID(ctx, req.(*GetUserByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetUserByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserByEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetUserByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetUserByEmail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetUserByEmail(ctx, req.(*GetUserByEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetUserByUsername_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserByUsernameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetUserByUsername(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetUserByUsername",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetUserByUsername(ctx, req.(*GetUserByUsernameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UpdateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/UpdateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUsersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ListUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ListUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ListUsers(ctx, req.(*ListUsersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).DeleteUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/DeleteUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).DeleteUser(ctx, req.(*DeleteUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _UserService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "user.UserService",
 	HandlerType: (*UserServiceServer)(nil),
@@ -344,6 +1962,30 @@ var _UserService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateUser",
 			Handler:    _UserService_CreateUser_Handler,
+		},
+		{
+			MethodName: "GetUserByID",
+			Handler:    _UserService_GetUserByID_Handler,
+		},
+		{
+			MethodName: "GetUserByEmail",
+			Handler:    _UserService_GetUserByEmail_Handler,
+		},
+		{
+			MethodName: "GetUserByUsername",
+			Handler:    _UserService_GetUserByUsername_Handler,
+		},
+		{
+			MethodName: "UpdateUser",
+			Handler:    _UserService_UpdateUser_Handler,
+		},
+		{
+			MethodName: "ListUsers",
+			Handler:    _UserService_ListUsers_Handler,
+		},
+		{
+			MethodName: "DeleteUser",
+			Handler:    _UserService_DeleteUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

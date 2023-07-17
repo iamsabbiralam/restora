@@ -23,7 +23,7 @@ func New(rs UserStore, logger *logrus.Entry) *Svc {
 type UserStore interface {
 	CreateUser(ctx context.Context, user storage.User) (string, error)
 	UpdateUser(ctx context.Context, user storage.User) (*storage.User, error)
-	DeleteUser(ctx context.Context, user storage.User) (string, error)
+	DeleteUser(ctx context.Context, user storage.User) error
 	GetUserByEmail(ctx context.Context, email string) (*storage.User, error)
 	GetUserByID(ctx context.Context, id string) (*storage.User, error)
 	GetUserByUsername(ctx context.Context, username string) (*storage.User, error)

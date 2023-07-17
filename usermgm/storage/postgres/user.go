@@ -276,19 +276,19 @@ const softDeleteUser = `
 		id
 `
 
-func (s *Storage) DeleteUser(ctx context.Context, u storage.User) (string, error) {
+func (s *Storage) DeleteUser(ctx context.Context, u storage.User) error {
 	stmt, err := s.db.PrepareNamedContext(ctx, softDeleteUser)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	defer stmt.Close()
 	var user storage.User
 	if err := stmt.Get(&user, u); err != nil {
-		return "", err
+		return err
 	}
 
-	return user.ID, nil
+	return nil
 }
 
 const deleteUser = `DELETE FROM users where id = $1`

@@ -5,6 +5,43 @@ option go_package = "./proto/v1/usermgm/user";
 package user;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+enum Status {
+      Unknown = 0;
+      Active = 1;
+      Inactive = 2;
+}
+
+enum SortBy {
+      DESC = 0;
+      ASC = 1;
+}
+
+enum SortByColumn {
+      UserName = 0;
+}
+
+message User {
+      string ID = 1;
+      string FirstName = 2;
+      string LastName = 3;
+      string Email = 4;
+      string Password = 5;
+      string UserName = 6;
+      string Image = 7;
+      string PhoneNumber = 8;
+      int64  Gender = 9;
+      string Birthday = 10;
+      string Address = 11;
+      string City = 12;
+      string Country = 13;
+      Status Status = 14;
+      google.protobuf.Timestamp CreatedAt = 15;
+      string CreatedBy = 16;
+      google.protobuf.Timestamp UpdatedAt = 17;
+      string UpdatedBy = 18;
+}
 
 message CreateUserRequest {
       string FirstName = 1;
@@ -19,7 +56,7 @@ message CreateUserRequest {
       string Address = 10;
       string City = 11;
       string Country = 12;
-      bool   Status = 13;
+      Status Status = 13;
       google.protobuf.Timestamp CreatedAt = 14;
       string CreatedBy = 15;
       google.protobuf.Timestamp UpdatedAt = 16;
@@ -30,6 +67,144 @@ message CreateUserResponse {
       string ID = 1;
 }
 
+message GetUserByIDRequest {
+      string ID = 1;
+}
+
+message GetUserByIDResponse {
+      string ID = 1;
+      string FirstName = 2;
+      string LastName = 3;
+      string Email = 4;
+      string Password = 5;
+      string UserName = 6;
+      string Image = 7;
+      string PhoneNumber = 8;
+      int64  Gender = 9;
+      string Birthday = 10;
+      string Address = 11;
+      string City = 12;
+      string Country = 13;
+      Status Status = 14;
+      google.protobuf.Timestamp CreatedAt = 15;
+      string CreatedBy = 16;
+      google.protobuf.Timestamp UpdatedAt = 17;
+      string UpdatedBy = 18;
+}
+
+message GetUserByEmailRequest {
+      string Email = 1;
+}
+
+message GetUserByEmailResponse {
+      string ID = 1;
+      string FirstName = 2;
+      string LastName = 3;
+      string Email = 4;
+      string Password = 5;
+      string UserName = 6;
+      string Image = 7;
+      string PhoneNumber = 8;
+      int64  Gender = 9;
+      string Birthday = 10;
+      string Address = 11;
+      string City = 12;
+      string Country = 13;
+      Status Status = 14;
+      google.protobuf.Timestamp CreatedAt = 15;
+      string CreatedBy = 16;
+      google.protobuf.Timestamp UpdatedAt = 17;
+      string UpdatedBy = 18;
+}
+
+message GetUserByUsernameRequest {
+      string UserName = 1;
+}
+
+message GetUserByUsernameResponse {
+      string ID = 1;
+      string FirstName = 2;
+      string LastName = 3;
+      string Email = 4;
+      string Password = 5;
+      string UserName = 6;
+      string Image = 7;
+      string PhoneNumber = 8;
+      int64  Gender = 9;
+      string Birthday = 10;
+      string Address = 11;
+      string City = 12;
+      string Country = 13;
+      Status Status = 14;
+      google.protobuf.Timestamp CreatedAt = 15;
+      string CreatedBy = 16;
+      google.protobuf.Timestamp UpdatedAt = 17;
+      string UpdatedBy = 18;
+}
+
+
+message UpdateUserRequest {
+      string ID = 1;
+      string FirstName = 2;
+      string LastName = 3;
+      string Email = 4;
+      string Password = 5;
+      string UserName = 6;
+      string Image = 7;
+      string PhoneNumber = 8;
+      int64  Gender = 9;
+      string Birthday = 10;
+      string Address = 11;
+      string City = 12;
+      string Country = 13;
+      Status Status = 14;
+}
+
+message UpdateUserResponse {
+      string ID = 1;
+      string FirstName = 2;
+      string LastName = 3;
+      string Email = 4;
+      string Password = 5;
+      string UserName = 6;
+      string Image = 7;
+      string PhoneNumber = 8;
+      int64  Gender = 9;
+      string Birthday = 10;
+      string Address = 11;
+      string City = 12;
+      string Country = 13;
+      Status Status = 14;
+      google.protobuf.Timestamp UpdatedAt = 15;
+      string UpdatedBy = 16;
+}
+
+message ListUsersRequest {
+      SortBy       SortBy = 1;
+	SortByColumn SortByColumn = 2;
+	Status       Status = 3;
+	int32        Limit = 4;
+	int32        Offset = 5;
+	string       SearchTerm = 6;
+	string       StartDate = 7;    
+	string       EndDate = 8;
+}
+
+message ListUsersResponse {
+      repeated User Users = 1;
+      int32 Total = 2;
+}
+
+message DeleteUserRequest {
+      string ID = 1;
+}
+
 service UserService {
       rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+      rpc GetUserByID(GetUserByIDRequest) returns (GetUserByIDResponse) {}
+	rpc GetUserByEmail(GetUserByEmailRequest) returns (GetUserByEmailResponse) {}
+	rpc GetUserByUsername(GetUserByUsernameRequest) returns (GetUserByUsernameResponse) {}
+      rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {}
+	rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {}
+	rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
 }
