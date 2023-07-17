@@ -465,7 +465,7 @@ func TestDeleteUser(t *testing.T) {
 			}
 
 			if !tc.wantErr {
-				t.Errorf("Storage.DeleteUser() want %v,  got %v", uID)
+				t.Errorf("Storage.DeleteUser() want %v", uID)
 			}
 
 			if tc.teardown != nil {
