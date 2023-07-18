@@ -15,7 +15,7 @@
 * Uses the [gorilla session](https://github.com/gorilla/sessions)
 * Uses the [gorilla schema](https://github.com/gorilla/schema)
 * Uses the [proto buff](https://github.com/protocolbuffers/protobuf)
+* Uses postgreSQL
 
 ## Getting started
 
-* Steps to run OMS in local terminal
