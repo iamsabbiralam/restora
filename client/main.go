@@ -9,6 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
+	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
@@ -78,7 +79,7 @@ func setupServer(logger *logrus.Entry, cfg *viper.Viper, conn *conn.Conn) (*mux.
 	}
 	asst := afero.NewIOFS(afero.NewBasePathFs(afero.NewOsFs(), assetPath))
 
-	srv, err := handler.NewServer(cfg, logger, asst, decoder, conn)
+	srv, err := handler.NewServer(cfg, logger, asst, decoder, nil, &sessions.CookieStore{}, conn)
 	if err != nil {
 		return nil, err
 	}

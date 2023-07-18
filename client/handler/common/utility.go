@@ -12,9 +12,35 @@ import (
 	tspb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
+type SessionUser struct {
+	Id              string
+	Email           string
+	Image           string
+	RoleID          string
+	RoleName        string
+	UserName        string
+	FirstName       string
+	LastName        string
+	DesignationName string
+}
+
 type Authenticator struct {
 	BaseURL   string
 	LogoutURL string
+}
+
+func (s *Server) GetSessionUser(r *http.Request) *SessionUser {
+	sess, err := s.Sess.Store().Get(r, SessionCookieName)
+	if err != nil || sess.Values[SessionUserID] == nil {
+		s.Logger.Infof("Unable to get session %+v", err)
+		return &SessionUser{}
+	}
+
+	return &SessionUser{
+		Id:              sess.Values[SessionUserID].(string),
+		Email:           sess.Values[SessionEmail].(string),
+		UserName:        sess.Values[SessionUserName].(string),
+	}
 }
 
 func (s *Server) ParseTemplates() error {
