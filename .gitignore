@@ -5,4 +5,7 @@
 /client/client
 /client/assets/node_modules
 
+/usermgm/env/config
+/usermgm/usermgm
+
 .DS_Store
