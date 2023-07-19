@@ -21,7 +21,8 @@ func (h *Handler) CreateUser(ctx context.Context, req *upb.CreateUserRequest) (*
 	if err := h.ValidateRequestedData(ctx, storage.User{
 		Username: req.GetUserName(),
 		Email:    req.GetEmail(),
-		Status:   int32(req.GetStatus()),
+		Password: req.Password,
+		Status:   int32(upb.Status_Active),
 	}, ""); err != nil {
 		log.WithError(err).Error("validation error while creating user")
 		return nil, uErr.HandleServiceErr(err)
@@ -30,7 +31,7 @@ func (h *Handler) CreateUser(ctx context.Context, req *upb.CreateUserRequest) (*
 	dbUser := storage.User{
 		Username: req.UserName,
 		Email:    req.Email,
-		Status:   int32(req.GetStatus()),
+		Status:   int32(upb.Status_Active),
 		Password: req.GetPassword(),
 	}
 

@@ -11,24 +11,32 @@ import (
 )
 
 type Conn struct {
-	Hrm *grpc.ClientConn
+	Server, Urm *grpc.ClientConn
 }
 
 func NewConns(logger *logrus.Entry, cfg *viper.Viper) *Conn {
 	log.Printf("starting to dialing hrm service port: %s", cfg.GetString("services.hrmURL"))
 	opts := getGRPCOpts(cfg)
-	hrm, err := grpc.Dial(cfg.GetString("services.hrmURL"), opts...)
+	server, err := grpc.Dial(cfg.GetString("services.hrmURL"), opts...)
 	if err != nil {
 		logger.WithError(err).Fatal("failed to dial hrm service")
 	}
 
+	log.Printf("starting to dialing usermgm service port: %s", cfg.GetString("services.usermgmURL"))
+	urm, err := grpc.Dial(cfg.GetString("services.usermgmURL"), opts...)
+	if err != nil {
+		logger.WithError(err).Fatal("failed to dial usermgm service")
+	}
+
 	return &Conn{
-		Hrm: hrm,
+		Server: server,
+		Urm:    urm,
 	}
 }
 
 func (co *Conn) Close() {
-	co.Hrm.Close()
+	co.Server.Close()
+	co.Urm.Close()
 }
 
 func getGRPCOpts(cnf *viper.Viper) []grpc.DialOption {

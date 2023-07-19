@@ -12,6 +12,11 @@ import (
 	"github.com/iamsabbiralam/restora/usermgm/storage/postgres"
 	utility "github.com/iamsabbiralam/restora/utility"
 	"github.com/iamsabbiralam/restora/utility/logging"
+	"github.com/iamsabbiralam/restora/utility/middleware"
+
+	userG "github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
+	userC "github.com/iamsabbiralam/restora/usermgm/core/user"
+	userS "github.com/iamsabbiralam/restora/usermgm/service/user"
 )
 
 var (
@@ -66,10 +71,22 @@ func setupGRPCServer(store *postgres.Storage, config *viper.Viper, logger *logru
 	//	Authentication
 	/* userID from client */
 	// 	Authorization
-	
+
+	mw := middleware.New(
+		config.GetString("runtime.environment"),
+		logger,
+		middleware.Config{},
+		// iMD.UnaryServerInterceptor(),
+		// pv.UnaryServerInterceptor(),
+	)
 
 	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(mw),
 	)
+
+	coreUsr := userC.New(store, logger)
+	userSvc := userS.New(coreUsr, logger)
+	userG.RegisterUserServiceServer(grpcServer, userSvc)
 
 	return grpcServer, nil
 }

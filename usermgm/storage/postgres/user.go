@@ -81,13 +81,8 @@ const getUserByID = `
 func (s Storage) GetUserByID(ctx context.Context, id string) (*storage.User, error) {
 	var u storage.User
 	err := s.db.Get(&u, getUserByID, id)
-	if err != nil && err != sql.ErrNoRows {
+	if err != nil {
 		return nil, err
-	}
-
-	// ei error gula core e implement korte hbe
-	if err == sql.ErrNoRows {
-		return nil, storage.NotFound
 	}
 
 	return &u, nil
@@ -115,7 +110,7 @@ func (s Storage) GetUserByUsername(ctx context.Context, username string) (*stora
 		"username": username,
 	}
 
-	if err := stmt.Get(&u, arg); err != nil {
+	if err := stmt.Get(&u, arg); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 
@@ -143,7 +138,7 @@ func (s Storage) GetUserByEmail(ctx context.Context, email string) (*storage.Use
 	arg := map[string]interface{}{
 		"email": email,
 	}
-	if err := stmt.Get(&u, arg); err != nil {
+	if err := stmt.Get(&u, arg); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 

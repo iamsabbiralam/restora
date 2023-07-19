@@ -13,15 +13,15 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/iamsabbiralam/restora/client/conn"
+	urlAuth "github.com/iamsabbiralam/restora/client/handler/auth"
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	guest "github.com/iamsabbiralam/restora/client/handler/home"
-	urlAuth "github.com/iamsabbiralam/restora/client/handler/auth"
+	"github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 )
 
 type Svc struct {
 	*common.Server
 }
-
 
 func NewServer(
 	config *viper.Viper,
@@ -33,11 +33,12 @@ func NewServer(
 	conn *conn.Conn,
 ) (*mux.Router, error) {
 	cs := &common.Server{
-		Config:       config,
-		Logger:       logger,
-		Assets:       hashfs.NewFS(assets),
-		Decoder:      decoder,
-		Cookies:      cookies,
+		Config:  config,
+		Logger:  logger,
+		Assets:  hashfs.NewFS(assets),
+		Decoder: decoder,
+		Cookies: cookies,
+		User:    user.NewUserServiceClient(conn.Urm),
 	}
 
 	if err := cs.ParseTemplates(); err != nil {
