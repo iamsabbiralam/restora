@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/iamsabbiralam/restora/usermgm/storage"
 )
@@ -25,6 +26,10 @@ func (s *Svc) GetUserByID(ctx context.Context, id string) (*storage.User, error)
 	if err != nil {
 		log.WithError(err).Error(errMsg)
 		return nil, err
+	}
+
+	if err == sql.ErrNoRows {
+		return nil, storage.NotFound
 	}
 
 	return res, nil

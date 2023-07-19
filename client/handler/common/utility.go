@@ -9,6 +9,7 @@ import (
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/gorilla/csrf"
+	"golang.org/x/crypto/bcrypt"
 	tspb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -27,6 +28,12 @@ type SessionUser struct {
 type Authenticator struct {
 	BaseURL   string
 	LogoutURL string
+}
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+
+	return string(bytes), err
 }
 
 func (s *Server) GetSessionUser(r *http.Request) *SessionUser {

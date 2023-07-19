@@ -11,6 +11,8 @@ import (
 	"github.com/spf13/viper"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 )
 
 type Server struct {
@@ -23,6 +25,7 @@ type Server struct {
 	Cookies   *sessions.CookieStore
 	Templates *template.Template
 	Sess      *sessions.Session
+	User      user.UserServiceClient
 }
 
 type (
@@ -81,12 +84,12 @@ const (
 )
 
 const (
-	HomePath               = "/"
-	ErrorPath              = "/error"
+	HomePath  = "/"
+	ErrorPath = "/error"
 
-	RegistrationPathPath   = "/registration"
-	LoginInPath            = "/login"
-	
+	RegistrationPath = "/registration"
+	LoginInPath      = "/login"
+
 	ProfilePath            = "/profile"
 	ResendOtpPath          = "/resend-otp"
 	ChangePasswordPath     = "/change/password"

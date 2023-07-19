@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -55,10 +56,14 @@ func Permission(ctx context.Context) map[string]storage.ResAct {
 	return p
 }
 
-func (h *Handler) validateAdminUserName(value string, id string) validation.Rule {
+func (h *Handler) validateUserName(value string, id string) validation.Rule {
 	return validation.By(func(interface{}) error {
 		res, err := h.usr.GetUserByUsername(context.Background(), value)
-		if err != nil && status.Convert(err).Code().String() != "NotFound" {
+		if err != nil && err.Error() != "sql: no rows in result set" {
+			fmt.Println("error")
+			fmt.Println(err.Error())
+			fmt.Println(status.Convert(err).Code())
+			fmt.Println("error")
 			return err
 		}
 
@@ -104,7 +109,8 @@ func (h *Handler) validateUserEmail(email string, id string) validation.Rule {
 func (h *Handler) ValidateRequestedData(ctx context.Context, req storage.User, id string) error {
 	vre := validation.Required.Error
 	return validation.ValidateStruct(&req,
-		validation.Field(&req.Username, vre("Username is required"), h.validateAdminUserName(req.Username, id)),
+		validation.Field(&req.Username, vre("Username is required"), h.validateUserName(req.Username, id)),
+		validation.Field(&req.Password, vre("Password is required")),
 		validation.Field(&req.Email, vre("Email is required"), is.EmailFormat.Error("The email is not valid"), h.validateUserEmail(req.Email, id)),
 		validation.Field(&req.Status, vre("The status is required"), validation.Min(1).Error("Status is Invalid"), validation.Max(2).Error("Status is Invalid")),
 	)

@@ -3,16 +3,22 @@ package auth
 import (
 	"html/template"
 	"net/http"
+	"strings"
 
+	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/gorilla/csrf"
 
+	cmsErr "github.com/iamsabbiralam/restora/client/error"
 	"github.com/iamsabbiralam/restora/client/handler/common"
+	userG "github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 )
 
 type Registration struct {
-	UserName string
-	Email    string
-	Password string
+	UserName        string
+	Email           string
+	Password        string
+	ConfirmPassword string
 }
 
 type RegistrationTempData struct {
@@ -24,11 +30,11 @@ type RegistrationTempData struct {
 	FormMessage map[string]string
 }
 
-func (s *Svc) loadRegistrationForm(w http.ResponseWriter, r *http.Request) {
-	s.Logger.WithField("method", "handler.auth.loadRegistrationForm")
+func (s *Svc) getRegistrationHandler(w http.ResponseWriter, r *http.Request) {
+	s.Logger.WithField("method", "handler.auth.getRegistrationHandler")
 	data := RegistrationTempData{
 		CSRFField:  csrf.TemplateField(r),
-		FormAction: common.RegistrationPathPath,
+		FormAction: common.RegistrationPath,
 	}
 
 	s.loadRegistrationTemplate(w, r, data, "register.html")
@@ -54,42 +60,47 @@ func (s *Svc) postRegistrationHandler(w http.ResponseWriter, r *http.Request) {
 
 	errMessage := form.ValidateRegistration(s, r, "")
 	if errMessage != nil {
-		s.validateEmployeeMsg(w, r, errMessage, form, nil, "employee-create.html")
+		s.validateRegistrationMsg(w, r, errMessage, form, nil, "register.html")
 		return
 	}
 
-	password := common.RandomPassword(8)
-	pass, err := common.HashPassword(password)
+	pass, err := common.HashPassword(form.ConfirmPassword)
 	if err != nil {
 		errMsg := "error with hash password"
 		log.WithError(err).Error(errMsg)
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 		return
 	}
+
+	_, err = s.User.CreateUser(ctx, &userG.CreateUserRequest{
+		UserName: form.UserName,
+		Email:    form.Email,
+		Password: pass,
+	})
+	if err != nil {
+		hErr := cmsErr.ToHTTPError(err)
+		if hErr.Code == http.StatusUnprocessableEntity {
+			s.validateRegistrationMsg(w, r, hErr, form, hErr.ValidationErrors, "register.html")
+			return
+		}
+
+		errMsg := "failed to register user"
+		log.WithError(err).Error(errMsg)
+		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
+		return
+	}
+
+	http.Redirect(w, r, common.LoginInPath, http.StatusSeeOther)
 }
 
-func (rg *Registration) ValidateEmployee(server *Svc, r *http.Request, id string) error {
-	server.Logger.WithField("method", "handler.employee.ValidateEmployee")
+func (rg Registration) ValidateRegistration(server *Svc, r *http.Request, id string) error {
+	server.Logger.WithField("method", "handler.register.ValidateRegistration")
 	vre := validation.Required.Error
-	return validation.ValidateStruct(&s,
-		validation.Field(&s.Image, validateEmployeeImage(server, r, id)),
-		validation.Field(&s.FirstName, vre("The First name is required"), validation.Match(regexp.MustCompile("^[a-zA-Z_ ]*$")).Error("Enter characters only")),
-		validation.Field(&s.LastName, vre("The Last name is required"), validation.Match(regexp.MustCompile("^[a-zA-Z_ ]*$")).Error("Enter characters only")),
-		validation.Field(&s.Mobile, vre("The Mobile Number is required"), validation.Match(regexp.MustCompile(`((\+|\(|0)?\d{1,3})?((\s|\)|\-))?(\d{10})$`)).Error("The Mobile Number is invalid")),
-		validation.Field(&s.Email, vre("The email is required"), is.EmailFormat.Error("The email is not valid")),
-		validation.Field(&s.Address, vre("The address is required")),
-		validation.Field(&s.DesignationID, vre("The Designation is required")),
-		validation.Field(&s.DepartmentID, vre("The Department is required")),
-		validation.Field(&s.OfficeID, vre("The office id is required")),
-		validation.Field(&s.Status, vre("Please select status"), validation.Min(1).Error("Status is Invalid"), validation.Max(2).Error("Status is Invalid")),
-		validation.Field(&s.EndDate, validation.Date("2006-01-02"), validation.When(s.EndDate != "", validateEmployeeEndDate(server, s.StartDate, s.EndDate))),
-		validation.Field(&s.Position, validation.When(s.ID != "", vre("The position is required"))),
-		validation.Field(&s.RoleIDs, vre("The Role is required")),
-		validation.Field(&s.UserName, vre("The Username is required")),
-		validation.Field(&s.GuardianMobile, validation.Match(regexp.MustCompile(`((\+|\(|0)?\d{1,3})?((\s|\)|\-))?(\d{10})$`)).Error("The Mobile Number is invalid")),
-		validation.Field(&s.FacebookUrl, is.URL.Error("The Facebook URL is invalid")),
-		validation.Field(&s.GitHubUrl, is.URL.Error("The Github URL is invalid")),
-		validation.Field(&s.TwitterUrl, is.URL.Error("The Twitter URL is invalid")),
+	return validation.ValidateStruct(&rg,
+		validation.Field(&rg.UserName, vre("The Username is required")),
+		validation.Field(&rg.Email, vre("The email is required"), is.EmailFormat.Error("The email is not valid")),
+		validation.Field(&rg.Password, vre("The password is required")),
+		validation.Field(&rg.ConfirmPassword, vre("The confirm password is required")),
 	)
 }
 
@@ -107,4 +118,40 @@ func (s *Svc) loadRegistrationTemplate(w http.ResponseWriter, r *http.Request, d
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 		return
 	}
+}
+
+func (s *Svc) validateRegistrationMsg(w http.ResponseWriter, r *http.Request, err error, form Registration, errEmp map[string]string, temp string) error {
+	s.Logger.WithField("method", "handler.register.validateRegistrationMsg")
+	vErrs := map[string]string{}
+	if e, ok := err.(validation.Errors); ok {
+		if len(e) > 0 {
+			for key, value := range e {
+				vErrs[key] = value.Error()
+			}
+		}
+	}
+
+	if errEmp != nil {
+		vErrs = errEmp
+	}
+
+	data := RegistrationTempData{
+		CSRFField:  csrf.TemplateField(r),
+		Form:       form,
+		FormErrors: vErrs,
+		FormAction: common.RegistrationPath,
+	}
+
+	s.loadRegistrationTemplate(w, r, data, temp)
+	return nil
+}
+
+func getVErrs(err string) map[string]string {
+	vErrs := map[string]string{}
+	for _, v := range strings.Split(err, "; ") {
+		val := strings.Split(v, ": ")
+		vErrs[strings.Title(val[0])] = val[1]
+	}
+
+	return vErrs
 }
