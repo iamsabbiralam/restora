@@ -206,5 +206,5 @@ service UserService {
 	rpc GetUserByUsername(GetUserByUsernameRequest) returns (GetUserByUsernameResponse) {}
       rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {}
 	rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {}
-	rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
+	rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {}
 }
