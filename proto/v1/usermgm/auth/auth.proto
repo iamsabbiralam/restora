@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "./proto/v1/usermgm/user";
+
+package auth;
+
+message Login {
+      string value = 1;
+      string password = 2;
+}
+
+message LoginRequest {
+      Login login = 1;
+}
+
+message LoginResponse {
+      string token = 1;
+}
+
+service LoginService {
+      rpc Login(LoginRequest) returns (LoginResponse) {}
+}
