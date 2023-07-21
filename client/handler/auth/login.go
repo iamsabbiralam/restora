@@ -5,8 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/csrf"
-	
+
+	cmsErr "github.com/iamsabbiralam/restora/client/error"
 	"github.com/iamsabbiralam/restora/client/handler/common"
+	"github.com/iamsabbiralam/restora/proto/v1/usermgm/auth"
 )
 
 type Login struct {
@@ -26,25 +28,65 @@ type LoginTempData struct {
 func (s *Svc) loadLoginForm(w http.ResponseWriter, r *http.Request) {
 	s.Logger.WithField("method", "handler.auth.loadLoginForm")
 	data := LoginTempData{
-		CSRFField:   csrf.TemplateField(r),
-		FormAction:  common.LoginInPath,
+		CSRFField:  csrf.TemplateField(r),
+		FormAction: common.LoginInPath,
 	}
 
 	s.loadLoginTemplate(w, r, data, "login.html")
 }
 
-func (s *Svc) loadLoginTemplate(w http.ResponseWriter, r *http.Request, data LoginTempData, htmlFile string) {
-	log := s.Logger.WithField("method", "handler.auth.loadLoginTemplate")
-	tmpl := s.LookupTemplate(htmlFile)
-	if tmpl == nil {
-		log.Error("unable to load template")
+func (s *Svc) postLoginForm(w http.ResponseWriter, r *http.Request) {
+	log := s.Logger.WithField("method", "handler.auth.postLoginForm")
+	ctx := r.Context()
+	if err := r.ParseForm(); err != nil {
+		errMsg := "error with parse form"
+		log.WithError(err).Error(errMsg)
+		http.Error(w, errMsg, http.StatusBadRequest)
+		return
+	}
+
+	var form Login
+	if err := s.Decoder.Decode(&form, r.PostForm); err != nil {
+		errMsg := "error with decode form"
+		log.WithError(err).Error(errMsg)
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 		return
 	}
 
-	if err := tmpl.Execute(w, data); err != nil {
-		log.Errorf("unable to execute template: %s", err)
+	errMessage := form.ValidateLoginForm(s, r)
+	if errMessage != nil {
+		s.validationLoginMsg(w, r, errMessage, form, nil, "login.html")
+		return
+	}
+
+	res, err := s.Login.Login(ctx, &auth.LoginRequest{
+		Login: &auth.Login{
+			Email: form.Email,
+		},
+	})
+	if err != nil {
+		hErr := cmsErr.ToHTTPError(err)
+		if hErr.Code == http.StatusUnprocessableEntity {
+			s.validationLoginMsg(w, r, hErr, form, hErr.ValidationErrors, "login.html")
+			return
+		}
+
+		errMsg := "failed to login user"
+		log.WithError(err).Error(errMsg)
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 		return
 	}
+
+	session, err := s.Cookies.Get(r, common.SessionCookieName)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	session.Options.HttpOnly = true
+	session.Values["authUserID"] = res.ID
+	if err := session.Save(r, w); err != nil {
+		log.Fatal(err)
+	}
+
+	http.Redirect(w, r, common.DashboardPath, http.StatusSeeOther)
 }

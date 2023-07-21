@@ -17,6 +17,10 @@ import (
 	userG "github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 	userC "github.com/iamsabbiralam/restora/usermgm/core/user"
 	userS "github.com/iamsabbiralam/restora/usermgm/service/user"
+
+	authG "github.com/iamsabbiralam/restora/proto/v1/usermgm/auth"
+	authC "github.com/iamsabbiralam/restora/usermgm/core/auth"
+	authS "github.com/iamsabbiralam/restora/usermgm/service/auth"
 )
 
 var (
@@ -87,6 +91,10 @@ func setupGRPCServer(store *postgres.Storage, config *viper.Viper, logger *logru
 	coreUsr := userC.New(store, logger)
 	userSvc := userS.New(coreUsr, logger)
 	userG.RegisterUserServiceServer(grpcServer, userSvc)
+
+	coreAuth := authC.New(store, logger)
+	svcAuth := authS.New(coreAuth, coreUsr, logger)
+	authG.RegisterLoginServiceServer(grpcServer, svcAuth)
 
 	return grpcServer, nil
 }

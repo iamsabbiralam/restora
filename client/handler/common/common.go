@@ -12,6 +12,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/iamsabbiralam/restora/proto/v1/usermgm/auth"
 	"github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 )
 
@@ -26,6 +27,7 @@ type Server struct {
 	Templates *template.Template
 	Sess      *sessions.Session
 	User      user.UserServiceClient
+	Login     auth.LoginServiceClient
 }
 
 type (
@@ -101,26 +103,7 @@ const (
 	ConsentPath            = "/consent"
 	LogoutPath             = "/logout"
 
-	AdminDashboardPath    = "/admin/dashboard"
-	EmployeeDashboardPath = "/employee/dashboard"
-
-	DesignationListPath   = "/admin/designations"
-	DesignationCreatePath = "/admin/designations/create"
-	DesignationUpdatePath = "/admin/designations/update/{id}"
-	DesignationDeletePath = "/admin/designations/delete/{id}"
-
-	DepartmentListPath   = "/admin/departments"
-	DepartmentCreatePath = "/admin/departments/create"
-	DepartmentUpdatePath = "/admin/departments/update/{id}"
-	DepartmentDeletePath = "/admin/departments/delete/{id}"
-
-	SettingPath = "/admin/settings/{groupSetting}"
-
-	CreateRolePath       = "/admin/roles/create"
-	UpdateRolePath       = "/admin/roles/update/{id}"
-	UpdateRoleStatusPath = "/admin/roles/update-status/{id}"
-	RoleListPath         = "/admin/roles"
-	DeleteRolePath       = "/admin/roles/delete/{id}"
+	DashboardPath = "/dashboard"
 )
 
 // regex validation

@@ -32,6 +32,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	env := cfg.GetString("runtime.environment")
 	logger := logging.NewLogger(cfg).WithFields(logrus.Fields{
 		"environment": env,
@@ -42,6 +43,7 @@ func main() {
 	conns := conn.NewConns(logger, cfg)
 	defer conns.Close()
 
+	
 	server, err := setupServer(logger, cfg, conns)
 	if err != nil {
 		logger.WithError(err).Error("failed to run setup server")
@@ -68,21 +70,23 @@ func main() {
 func setupServer(logger *logrus.Entry, cfg *viper.Viper, conn *conn.Conn) (*mux.Router, error) {
 	decoder := schema.NewDecoder()
 	decoder.IgnoreUnknownKeys(true)
-
+	cookie := sessions.NewCookieStore([]byte(cfg.GetString("session.key")))
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
+
 	assetPath, err := realpath.Realpath(filepath.Join(wd, "assets"))
 	if err != nil {
 		return nil, err
 	}
-	asst := afero.NewIOFS(afero.NewBasePathFs(afero.NewOsFs(), assetPath))
 
-	srv, err := handler.NewServer(cfg, logger, asst, decoder, nil, &sessions.CookieStore{}, conn)
+	asst := afero.NewIOFS(afero.NewBasePathFs(afero.NewOsFs(), assetPath))
+	srv, err := handler.NewServer(cfg, logger, asst, decoder, nil, cookie, conn)
 	if err != nil {
 		return nil, err
 	}
+
 	return srv, nil
 }
 

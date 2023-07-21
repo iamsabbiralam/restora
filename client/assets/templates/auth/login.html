@@ -37,37 +37,44 @@
                                     class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 ltr:before:mr-6 rtl:before:ml-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 ltr:after:ml-6 rtl:after:mr-6 dark:text-white/70 dark:before:border-white/10 dark:after:border-white/10">
                                     Or</div>
                               <div>
-                                    <div class="grid gap-y-4">
-                                          <div> <label for="email" class="block text-sm mb-2 dark:text-white">Email
-                                                      address</label>
-                                                <div class="relative"> <input type="email" id="email" name="email"
-                                                            class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
-                                                            required> </div>
+                                    <form action="login" method="POST">
+                                          {{.CSRFField}}
+                                          <div class="grid gap-y-4">
+                                                <div> <label for="email"
+                                                            class="block text-sm mb-2 dark:text-white">Email
+                                                            address</label>
+                                                      <div class="relative"> <input type="email" id="email" name="Email"
+                                                                  class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
+                                                                  required> </div>
+                                                </div>
+                                                <div>
+                                                      <div class="flex justify-between items-center"> <label
+                                                                  for="password"
+                                                                  class="block text-sm mb-2 dark:text-white">Password</label>
+                                                            <a class="text-sm text-primary decoration-2 hover:underline font-medium"
+                                                                  href="forgot.html">Forgot
+                                                                  password?</a>
+                                                      </div>
+                                                      <div class="relative"> <input type="password" id="password"
+                                                                  name="Password"
+                                                                  class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
+                                                                  required> </div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                      <div class="flex"> <input id="remember-me" name="remember-me"
+                                                                  type="checkbox"
+                                                                  class="shrink-0 mt-0.5 border-gray-200 rounded text-primary pointer-events-none focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:checked:bg-primary dark:checked:border-primary dark:focus:ring-offset-white/10">
+                                                      </div>
+                                                      <div class="ltr:ml-3 rtl:mr-3"> <label for="remember-me"
+                                                                  class="text-sm dark:text-white">Remember me</label>
+                                                      </div>
+                                                </div>
+                                                <button type="submit"
+                                                      class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-sm border border-transparent font-semibold bg-primary text-white hover:bg-primary focus:outline-none focus:ring-0 focus:ring-primary focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">Sign
+                                                      in
+                                                </button>
                                           </div>
-                                          <div>
-                                                <div class="flex justify-between items-center"> <label for="password"
-                                                            class="block text-sm mb-2 dark:text-white">Password</label>
-                                                      <a class="text-sm text-primary decoration-2 hover:underline font-medium"
-                                                            href="forgot.html">Forgot
-                                                            password?</a>
-                                                </div>
-                                                <div class="relative"> <input type="password" id="password"
-                                                            name="password"
-                                                            class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
-                                                            required> </div>
-                                          </div>
-                                          <div class="flex items-center">
-                                                <div class="flex"> <input id="remember-me" name="remember-me"
-                                                            type="checkbox"
-                                                            class="shrink-0 mt-0.5 border-gray-200 rounded text-primary pointer-events-none focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:checked:bg-primary dark:checked:border-primary dark:focus:ring-offset-white/10">
-                                                </div>
-                                                <div class="ltr:ml-3 rtl:mr-3"> <label for="remember-me"
-                                                            class="text-sm dark:text-white">Remember me</label>
-                                                </div>
-                                          </div> <a href="index.html"
-                                                class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-sm border border-transparent font-semibold bg-primary text-white hover:bg-primary focus:outline-none focus:ring-0 focus:ring-primary focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">Sign
-                                                in</a>
-                                    </div>
+                                    </form>
                               </div>
                         </div>
                   </div>
