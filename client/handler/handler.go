@@ -16,6 +16,7 @@ import (
 	urlAuth "github.com/iamsabbiralam/restora/client/handler/auth"
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	guest "github.com/iamsabbiralam/restora/client/handler/home"
+	loginG "github.com/iamsabbiralam/restora/proto/v1/usermgm/auth"
 	"github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 )
 
@@ -39,6 +40,7 @@ func NewServer(
 		Decoder: decoder,
 		Cookies: cookies,
 		User:    user.NewUserServiceClient(conn.Urm),
+		Login:   loginG.NewLoginServiceClient(conn.Urm),
 	}
 
 	if err := cs.ParseTemplates(); err != nil {

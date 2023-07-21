@@ -3,10 +3,7 @@ package auth
 import (
 	"html/template"
 	"net/http"
-	"strings"
 
-	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/gorilla/csrf"
 
 	cmsErr "github.com/iamsabbiralam/restora/client/error"
@@ -91,67 +88,4 @@ func (s *Svc) postRegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, common.LoginInPath, http.StatusSeeOther)
-}
-
-func (rg Registration) ValidateRegistration(server *Svc, r *http.Request, id string) error {
-	server.Logger.WithField("method", "handler.register.ValidateRegistration")
-	vre := validation.Required.Error
-	return validation.ValidateStruct(&rg,
-		validation.Field(&rg.UserName, vre("The Username is required")),
-		validation.Field(&rg.Email, vre("The email is required"), is.EmailFormat.Error("The email is not valid")),
-		validation.Field(&rg.Password, vre("The password is required")),
-		validation.Field(&rg.ConfirmPassword, vre("The confirm password is required")),
-	)
-}
-
-func (s *Svc) loadRegistrationTemplate(w http.ResponseWriter, r *http.Request, data RegistrationTempData, htmlFile string) {
-	log := s.Logger.WithField("method", "handler.auth.loadRegistrationTemplate")
-	tmpl := s.LookupTemplate(htmlFile)
-	if tmpl == nil {
-		log.Error("unable to load template")
-		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
-		return
-	}
-
-	if err := tmpl.Execute(w, data); err != nil {
-		log.Errorf("unable to execute template: %s", err)
-		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
-		return
-	}
-}
-
-func (s *Svc) validateRegistrationMsg(w http.ResponseWriter, r *http.Request, err error, form Registration, errEmp map[string]string, temp string) error {
-	s.Logger.WithField("method", "handler.register.validateRegistrationMsg")
-	vErrs := map[string]string{}
-	if e, ok := err.(validation.Errors); ok {
-		if len(e) > 0 {
-			for key, value := range e {
-				vErrs[key] = value.Error()
-			}
-		}
-	}
-
-	if errEmp != nil {
-		vErrs = errEmp
-	}
-
-	data := RegistrationTempData{
-		CSRFField:  csrf.TemplateField(r),
-		Form:       form,
-		FormErrors: vErrs,
-		FormAction: common.RegistrationPath,
-	}
-
-	s.loadRegistrationTemplate(w, r, data, temp)
-	return nil
-}
-
-func getVErrs(err string) map[string]string {
-	vErrs := map[string]string{}
-	for _, v := range strings.Split(err, "; ") {
-		val := strings.Split(v, ": ")
-		vErrs[strings.Title(val[0])] = val[1]
-	}
-
-	return vErrs
 }

@@ -8,13 +8,10 @@ import (
 
 const login = `
 	SELECT
-		username,
-		email,
-		password
+		*
 	FROM
 		users
 	WHERE
-		username = :username OR
 		email = :email AND
 		status = 1 AND
 		deleted_at IS NULL

@@ -3,7 +3,6 @@ package user
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -59,11 +58,7 @@ func Permission(ctx context.Context) map[string]storage.ResAct {
 func (h *Handler) validateUserName(value string, id string) validation.Rule {
 	return validation.By(func(interface{}) error {
 		res, err := h.usr.GetUserByUsername(context.Background(), value)
-		if err != nil && err.Error() != "sql: no rows in result set" {
-			fmt.Println("error")
-			fmt.Println(err.Error())
-			fmt.Println(status.Convert(err).Code())
-			fmt.Println("error")
+		if err != nil && status.Convert(err).Code().String() != "NotFound" {
 			return err
 		}
 
