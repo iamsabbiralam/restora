@@ -1,6 +1,72 @@
 {{ define "backoffice_footer"}}
 </main>
 <script src="{{assetHash "assets/js/app.js" }}"></script>
+<script>
+      // Function to validate password strength using regex
+      function validatePassword() {
+            var password = document.getElementById('password').value;
+            var strengthIndicator = document.getElementById('password-strength');
+            var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$@$!%*?&]).{8,}$/;
+
+            var strength = 0;
+            // Check if password meets the regex criteria
+            if (regex.test(password)) {
+                  strength = 8;
+            } else {
+                  // Check for individual criteria and assign strength accordingly
+                  if (/[A-Z]/.test(password)) {
+                        strength += 1;
+                  }
+                  if (/[a-z]/.test(password)) {
+                        strength += 1;
+                  }
+                  if (/\d/.test(password)) {
+                        strength += 1;
+                  }
+                  if (/[$@$!%*?&]/.test(password)) {
+                        strength += 1;
+                  }
+                  if (password.length >= 8) {
+                        strength += 1;
+                  }
+            }
+
+            // Update the password strength indicator
+            var indicators = ["Password is very weak", "Password is weak", "Password is moderate", "Password is strong", "Password is very Strong"];
+            var colors = ["#FF0000", "#FF9900", "#FFCC00", "#66CC33", "#00CC00"];
+            if (password.length <= 8) {
+                  strengthIndicator.innerHTML = indicators[strength];
+                  strengthIndicator.style.color = colors[strength];
+            }
+      }
+
+      // Function to validate password and confirm password match
+      function validatePasswordMatch() {
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+            var errorMessage = document.getElementById('error-message');
+
+            if (password !== confirmPassword) {
+                  errorMessage.style.display = 'block';
+            } else {
+                  errorMessage.style.display = 'none';
+            }
+      }
+
+      // Function to validate the form on submission
+      function validateForm() {
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                  document.getElementById('error-message').style.display = 'block';
+                  return false; // Prevent form submission
+            } else {
+                  document.getElementById('error-message').style.display = 'none';
+                  return true; // Allow form submission
+            }
+      }
+</script>
 </body>
 
 </html>
