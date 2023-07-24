@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Masterminds/sprig/v3"
+	"github.com/Masterminds/sprig"
 	"github.com/gorilla/csrf"
 	"golang.org/x/crypto/bcrypt"
 	tspb "google.golang.org/protobuf/types/known/timestamppb"
@@ -114,10 +114,11 @@ func (s *Server) ParseTemplates() error {
 		},
 	}).Funcs(sprig.FuncMap())
 
-	tmpl, err := templates.ParseFS(s.Assets, "templates/*/*.html")
+	tmpl, err := templates.ParseFS(s.Assets, "templates/*/*.html", "templates/*/*/*.html")
 	if err != nil {
 		return err
 	}
+
 	s.Templates = tmpl
 	return nil
 }
@@ -151,6 +152,7 @@ func (s *Server) LookupTemplate(name string) *template.Template {
 			return nil
 		}
 	}
+	
 	return s.Templates.Lookup(name)
 }
 

@@ -1,0 +1,24 @@
+{{ define "backoffice_header"}}
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="h-full">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Login | Restora</title>
+      <meta name="description"
+            content="A Tailwind CSS admin template is a pre-designed web page for an admin dashboard. Optimizing it for SEO includes using meta descriptions and ensuring it's responsive and fast-loading.">
+      <meta name="keywords"
+            content="analytics dashboard,jobs dashboard,crm dashboard examples,personal dashboard,sales dashboard sample,best crm dashboard,crypto dashboard template,sales analytics dashboard,stocks dashboard,hrm dashboard,ecommerce admin panel template,sales admin dashboard,admin panel for ecommerce website,website template ecommerce,template dashboard,course dashboard,template ecommerce website">
+      <link rel="shortcut icon" href="{{ assetHash "assets/image/brand-logos/favicon.ico" }}">
+      <link rel="stylesheet" href="{{ assetHash "assets/css/app.min.css" }}">
+</head>
+
+<body class="authentication-page">
+      <main id="content" class="w-full max-w-md mx-auto p-6"> <a href="/" class="header-logo"> <img
+                        src="{{ assetHash "assets/image/brand-logos/desktop-logo.png" }}" alt="logo"
+                        class="mx-auto block dark:hidden">
+                  <img src="{{ assetHash "assets/image/brand-logos/desktop-dark.png" }}" alt="logo"
+                        class="mx-auto hidden dark:block">
+            </a>
+{{end}}
