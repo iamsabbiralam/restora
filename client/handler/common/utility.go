@@ -2,6 +2,7 @@ package common
 
 import (
 	"html/template"
+	"log"
 	"net/http"
 	"path"
 	"strings"
@@ -193,3 +194,37 @@ func CacheStaticFiles(h http.Handler) http.Handler {
 		h.ServeHTTP(w, r)
 	})
 }
+
+func (s *Server) AuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		session, err := s.Cookies.Get(r, SessionCookieName)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		authUserID := session.Values["authUserID"]
+		if authUserID != nil {
+			next.ServeHTTP(w, r)
+		} else {
+			http.Redirect(w, r, LoginInPath, http.StatusTemporaryRedirect)
+		}
+	})
+}
+
+func (s *Server) GetLoginMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		session, err := s.Cookies.Get(r, SessionCookieName)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		authUserID := session.Values["authUserID"]
+		if authUserID != nil {
+			http.Redirect(w, r, HomePath, http.StatusTemporaryRedirect)
+			return
+		} else {
+			next.ServeHTTP(w, r)
+		}
+	})
+}
+

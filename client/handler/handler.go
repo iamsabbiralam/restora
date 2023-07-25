@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/benbjohnson/hashfs"
+	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 	"github.com/gorilla/sessions"
@@ -13,11 +14,13 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/iamsabbiralam/restora/client/conn"
+	dashboard "github.com/iamsabbiralam/restora/client/handler/admin/dashboard"
 	urlAuth "github.com/iamsabbiralam/restora/client/handler/auth"
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	guest "github.com/iamsabbiralam/restora/client/handler/home"
 	loginG "github.com/iamsabbiralam/restora/proto/v1/usermgm/auth"
 	"github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
+	"github.com/iamsabbiralam/restora/utility/middleware"
 )
 
 type Svc struct {
@@ -47,12 +50,16 @@ func NewServer(
 		return nil, err
 	}
 
-	// csrfSecure := config.GetBool("csrf.secure")
+	csrfSecure := config.GetBool("csrf.secure")
 	csrfSecret := config.GetString("csrf.secret")
 	if csrfSecret == "" {
 		return nil, errors.New("CSRF secret must not be empty")
 	}
+
 	r := mux.NewRouter()
+	middleware.ChainHTTPMiddleware(r, logger,
+		middleware.CSRF(logger, []byte(csrfSecret), csrf.Secure(csrfSecure), csrf.Path("/")),
+	)
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", common.CacheStaticFiles(http.FileServer(http.FS(cs.Assets)))))
 
 	r, err := guest.Register(cs, r)
@@ -61,6 +68,17 @@ func NewServer(
 	}
 
 	r, err = urlAuth.Register(cs, r)
+	if err != nil {
+		return nil, err
+	}
+
+	l := r.NewRoute().Subrouter()
+	l.Use(cs.GetLoginMiddleware)
+
+	m := r.NewRoute().Subrouter()
+	m.Use(cs.AuthMiddleware)
+	
+	r, err = dashboard.Register(cs, m)
 	if err != nil {
 		return nil, err
 	}
