@@ -22,13 +22,13 @@ type DashboardTempData struct {
 	FormMessage map[string]string
 }
 
-func Register(h *common.Server, m *mux.Router) (*mux.Router, error) {
+func Register(h *common.Server, mw *mux.Router) (*mux.Router, error) {
 	s := &Svc{
 		Server: h,
 	}
 
-	m.HandleFunc(common.DashboardPath, s.getDashboardHandler).Methods("GET").Name("dashboard")
-	return m, nil
+	mw.HandleFunc(common.DashboardPath, s.getDashboardHandler).Methods("GET").Name("dashboard")
+	return mw, nil
 }
 
 func (s *Svc) loadDashboardTemplate(w http.ResponseWriter, r *http.Request, data DashboardTempData, htmlFile string) {

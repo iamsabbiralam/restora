@@ -61,28 +61,24 @@ func NewServer(
 		middleware.CSRF(logger, []byte(csrfSecret), csrf.Secure(csrfSecure), csrf.Path("/")),
 	)
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", common.CacheStaticFiles(http.FileServer(http.FS(cs.Assets)))))
-
 	r, err := guest.Register(cs, r)
 	if err != nil {
 		return nil, err
-	}
+	}	
 
-	r, err = urlAuth.Register(cs, r)
+	mw := r.NewRoute().Subrouter()
+	mw.Use(cs.GetAuthMiddleware)
+	mw, err = urlAuth.Register(cs, mw)
 	if err != nil {
 		return nil, err
 	}
 
-	l := r.NewRoute().Subrouter()
-	l.Use(cs.GetLoginMiddleware)
-
-	m := r.NewRoute().Subrouter()
-	m.Use(cs.AuthMiddleware)
-	
-	r, err = dashboard.Register(cs, m)
+	mw, err = dashboard.Register(cs, mw)
 	if err != nil {
 		return nil, err
 	}
 
 	r.NotFoundHandler = cs.GetErrorHandler()
+	mw.NotFoundHandler = cs.GetErrorHandler()
 	return r, nil
 }

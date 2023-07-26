@@ -90,7 +90,7 @@ const (
 	ErrorPath = "/error"
 
 	RegistrationPath = "/registration"
-	LoginInPath      = "/login"
+	LoginPath      = "/login"
 
 	ProfilePath            = "/profile"
 	ResendOtpPath          = "/resend-otp"

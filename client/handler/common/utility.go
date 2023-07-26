@@ -14,6 +14,11 @@ import (
 	tspb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
+var (
+	IgnorePath       = []string{LoginPath, RegistrationPath}
+)
+
+
 type SessionUser struct {
 	Id              string
 	Email           string
@@ -45,9 +50,9 @@ func (s *Server) GetSessionUser(r *http.Request) *SessionUser {
 	}
 
 	return &SessionUser{
-		Id:              sess.Values[SessionUserID].(string),
-		Email:           sess.Values[SessionEmail].(string),
-		UserName:        sess.Values[SessionUserName].(string),
+		Id:       sess.Values[SessionUserID].(string),
+		Email:    sess.Values[SessionEmail].(string),
+		UserName: sess.Values[SessionUserName].(string),
 	}
 }
 
@@ -153,7 +158,7 @@ func (s *Server) LookupTemplate(name string) *template.Template {
 			return nil
 		}
 	}
-	
+
 	return s.Templates.Lookup(name)
 }
 
@@ -195,7 +200,17 @@ func CacheStaticFiles(h http.Handler) http.Handler {
 	})
 }
 
-func (s *Server) AuthMiddleware(next http.Handler) http.Handler {
+func checkGuestPath(r *http.Request) bool {
+	for _, val := range IgnorePath {
+		if strings.HasPrefix(r.URL.Path, val) {
+			return true
+		}
+	}
+	return false
+}
+
+func (s *Server) GetAuthMiddleware(next http.Handler) http.Handler {
+	s.Logger.WithField("method", "handler.utility.GetAuthMiddleware")
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		session, err := s.Cookies.Get(r, SessionCookieName)
 		if err != nil {
@@ -204,27 +219,19 @@ func (s *Server) AuthMiddleware(next http.Handler) http.Handler {
 
 		authUserID := session.Values["authUserID"]
 		if authUserID != nil {
+			if checkGuestPath(r) {
+				http.Redirect(w, r, DashboardPath, http.StatusSeeOther)
+			}
+
 			next.ServeHTTP(w, r)
-		} else {
-			http.Redirect(w, r, LoginInPath, http.StatusTemporaryRedirect)
-		}
-	})
-}
+		} else if authUserID == nil {
+			if !checkGuestPath(r) {
+				http.Redirect(w, r, LoginPath, http.StatusSeeOther)
+			}
 
-func (s *Server) GetLoginMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		session, err := s.Cookies.Get(r, SessionCookieName)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		authUserID := session.Values["authUserID"]
-		if authUserID != nil {
-			http.Redirect(w, r, HomePath, http.StatusTemporaryRedirect)
-			return
-		} else {
 			next.ServeHTTP(w, r)
 		}
+
+		http.Redirect(w, r, HomePath, http.StatusSeeOther)
 	})
 }
-

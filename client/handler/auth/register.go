@@ -87,5 +87,5 @@ func (s *Svc) postRegistrationHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, common.LoginInPath, http.StatusSeeOther)
+	http.Redirect(w, r, common.LoginPath, http.StatusSeeOther)
 }
