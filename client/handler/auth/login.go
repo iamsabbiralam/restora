@@ -29,7 +29,7 @@ func (s *Svc) loadLoginForm(w http.ResponseWriter, r *http.Request) {
 	s.Logger.WithField("method", "handler.auth.loadLoginForm")
 	data := LoginTempData{
 		CSRFField:  csrf.TemplateField(r),
-		FormAction: common.LoginInPath,
+		FormAction: common.LoginPath,
 	}
 
 	s.loadLoginTemplate(w, r, data, "login.html")

@@ -27,8 +27,8 @@ func Register(h *common.Server, r *mux.Router) (*mux.Router, error) {
 
 	r.HandleFunc(common.RegistrationPath, s.getRegistrationHandler).Methods("GET").Name("register.get")
 	r.HandleFunc(common.RegistrationPath, s.postRegistrationHandler).Methods("POST").Name("register.store")
-	r.HandleFunc(common.LoginInPath, s.loadLoginForm).Methods("GET").Name("login.get")
-	r.HandleFunc(common.LoginInPath, s.postLoginForm).Methods("POST").Name("login.post")
+	r.HandleFunc(common.LoginPath, s.loadLoginForm).Methods("GET").Name("login.get")
+	r.HandleFunc(common.LoginPath, s.postLoginForm).Methods("POST").Name("login.post")
 	// r.HandleFunc(common.LogoutPath, s.handleLogout).Methods("GET").Name("logout")
 	return r, nil
 }
@@ -139,7 +139,7 @@ func (s *Svc) validationLoginMsg(w http.ResponseWriter, r *http.Request, err err
 		data := LoginTempData{
 			CSRFField:  csrf.TemplateField(r),
 			FormErrors: vErrs,
-			FormAction: common.LoginInPath,
+			FormAction: common.LoginPath,
 			Form:       loginForm,
 		}
 
@@ -175,7 +175,7 @@ func (s *Svc) authMiddleware(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 		}
 
-		http.Redirect(w, r, common.LoginInPath, http.StatusTemporaryRedirect)
+		http.Redirect(w, r, common.LoginPath, http.StatusTemporaryRedirect)
 
 	})
 }
