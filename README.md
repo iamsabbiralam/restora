@@ -11,11 +11,28 @@
 ## Technology uses for build this project
 
 * Built with go version 1.20
-* Uses the [gorilla mux](https://github.com/gorilla/mux)
-* Uses the [gorilla session](https://github.com/gorilla/sessions)
-* Uses the [gorilla schema](https://github.com/gorilla/schema)
-* Uses the [proto buff](https://github.com/protocolbuffers/protobuf)
-* Uses postgreSQL
+* Use the [gorilla mux](https://github.com/gorilla/mux)
+* Use the [gorilla session](https://github.com/gorilla/sessions)
+* Use the [gorilla schema](https://github.com/gorilla/schema)
+* Use the [proto buff](https://github.com/protocolbuffers/protobuf)
+* Use postgreSQL
 
 ## Getting started
 
+### Let's dive into the project and explore the features of the project.
+
+* Registration
+
+> User can register themselves as a user with the following options:
+
+![Registration](images/registration.png)
+
+* Login
+
+> User can login with the following options:
+
+![Login](images/login.png)
+
+*Dashboard
+
+![Dashboard](images/dashboard.png)
