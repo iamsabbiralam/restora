@@ -25,15 +25,15 @@
 
 > User can register themselves as a user with the following options:
 
-![Registration](images/registration.png)
+![Registration](doc-images/registration.png)
 
 * Login
 
 > User can login with the following options:
 
-![Login](images/login.png)
+![Login](doc-images/login.png)
 
 * Dashboard
 > User can show the dashboard with the following data:
 
-![Dashboard](images/dashboard.png)
+![Dashboard](doc-images/dashboard.png)
