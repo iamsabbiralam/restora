@@ -33,6 +33,7 @@
 
 ![Login](images/login.png)
 
-*Dashboard
+* Dashboard
+> User can show the dashboard with the following data:
 
 ![Dashboard](images/dashboard.png)
