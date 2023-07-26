@@ -29,10 +29,12 @@ func (h *Handler) CreateUser(ctx context.Context, req *upb.CreateUserRequest) (*
 	}
 
 	dbUser := storage.User{
-		Username: req.UserName,
-		Email:    req.Email,
-		Status:   int32(upb.Status_Active),
-		Password: req.GetPassword(),
+		Username:  req.UserName,
+		Email:     req.Email,
+		Status:    int32(upb.Status_Active),
+		Password:  req.GetPassword(),
+		CreatedAt: req.CreatedAt.AsTime(),
+		UpdatedAt: req.UpdatedAt.AsTime(),
 	}
 
 	res, err := h.usr.CreateUser(ctx, dbUser)
