@@ -31,6 +31,8 @@ var (
 	InvCodeExists = errors.New("invitation code already exists")
 )
 
+var ErrNotFound = errors.New("not found")
+
 type ActiveStatus int32
 
 const (
@@ -63,6 +65,7 @@ type (
 	UserInformation struct {
 		ID        string         `db:"id"`
 		UserID    string         `db:"user_id"`
+		Image     string         `db:"image"`
 		FirstName string         `db:"first_name"`
 		LastName  string         `db:"last_name"`
 		Mobile    string         `db:"mobile"`
