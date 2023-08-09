@@ -181,17 +181,17 @@ func (s *Storage) UpdateUser(ctx context.Context, u storage.User) (*storage.User
 }
 
 const listUserQuery = `
-WITH cnt AS (select count(*) as count FROM users WHERE deleted_at IS NULL)
-SELECT
-	usr.*,
-	cnt.count,
-	string_agg(roles.name, ', ') as role_names
-FROM 
-	users as usr LEFT JOIN cnt on true 
-	LEFT JOIN user_role as usrole on usr.id = usrole.user_id
-	LEFT JOIN roles on usrole.role_id = roles.id
-WHERE 
-	usr.deleted_at IS NULL
+	WITH cnt AS (select count(*) as count FROM users WHERE deleted_at IS NULL)
+	SELECT
+		usr.*,
+		cnt.count,
+		string_agg(roles.name, ', ') as role_names
+	FROM 
+		users as usr LEFT JOIN cnt on true 
+		LEFT JOIN user_role as usrole on usr.id = usrole.user_id
+		LEFT JOIN roles on usrole.role_id = roles.id
+	WHERE 
+		usr.deleted_at IS NULL
 `
 
 func (s *Storage) ListUsers(ctx context.Context, f storage.FilterUser) ([]storage.User, error) {
