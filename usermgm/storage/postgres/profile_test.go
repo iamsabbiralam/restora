@@ -12,7 +12,7 @@ import (
 
 func insertTestUserInformation(t *testing.T, s *Storage) {
 	// insert test user into the "users" table
-	got, err := s.CreateUserInformation(context.TODO(), storage.UserInformation{
+	got, err := s.CreateUserInformation(context.TODO(), &storage.UserInformation{
 		Image:     "1.jpg",
 		FirstName: "Super",
 		LastName:  "Admin",
@@ -51,7 +51,7 @@ func TestCreateUserInformation(t *testing.T) {
 	s := newTestStorage(t)
 	testCases := []struct {
 		name     string
-		in       storage.UserInformation
+		in       *storage.UserInformation
 		want     string
 		wantErr  bool
 		setup    func(*testing.T, *Storage)
@@ -59,7 +59,7 @@ func TestCreateUserInformation(t *testing.T) {
 	}{
 		{
 			name: "user information creation success",
-			in: storage.UserInformation{
+			in: &storage.UserInformation{
 				Image:     "1.jpg",
 				FirstName: "Super",
 				LastName:  "Admin",
@@ -74,9 +74,9 @@ func TestCreateUserInformation(t *testing.T) {
 			teardown: deleteUserInformationPermanently,
 		}, {
 			name: "user information creation failed",
-			in: storage.UserInformation{
-				Image:     "1.jpg",
-				FirstName: "Super",
+			in: &storage.UserInformation{
+				Image:     "017",
+				FirstName: "",
 				LastName:  "Admin",
 				Mobile:    "01715039303",
 				Gender:    1,

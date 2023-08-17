@@ -32,8 +32,14 @@ const insertUserInformation = `
 		id
 `
 
-func (s *Storage) CreateUserInformation(ctx context.Context, ui storage.UserInformation) (string, error) {
-	stmt, err := s.db.PrepareNamed(insertUserInformation)
+func (s *Storage) CreateUserInformation(ctx context.Context, ui *storage.UserInformation) (string, error) {
+	log := s.logger.WithField("method", "storage.profile.CreateUserInformation")
+	if err := s.CreateUserInformationValidation(ctx, ui); err != nil {
+		log.WithError(err).Error("invalid request")
+		return "", storage.InvalidArgument
+	}
+
+	stmt, err := s.db.PrepareNamedContext(ctx, insertUserInformation)
 	if err != nil {
 		return "", err
 	}
@@ -67,6 +73,7 @@ const getUserInformation = `
 `
 
 func (s *Storage) GetUserInformation(ctx context.Context, userID string) (*storage.UserInformation, error) {
+	s.logger.WithField("method", "storage.profile.GetUserInformation")
 	var profile storage.UserInformation
 	stmt, err := s.db.PrepareNamed(getUserInformation)
 	if err != nil {
@@ -108,6 +115,7 @@ const updateUserInformation = `
 `
 
 func (s *Storage) UpdateUserInformation(ctx context.Context, ui storage.UserInformation) (storage.UserInformation, error) {
+	s.logger.WithField("method", "storage.profile.UpdateUserInformation")
 	var profile storage.UserInformation
 	stmt, err := s.db.PrepareNamedContext(ctx, updateUserInformation)
 	if err != nil {
@@ -134,6 +142,7 @@ const deleteUserInformation = `
 `
 
 func (s *Storage) DeleteUserInformation(ctx context.Context, userID, deletedBy string) error {
+	s.logger.WithField("method", "storage.profile.DeleteUserInformation")
 	stmt, err := s.db.PrepareNamedContext(ctx, deleteUserInformation)
 	if err != nil {
 		return err
@@ -154,6 +163,7 @@ func (s *Storage) DeleteUserInformation(ctx context.Context, userID, deletedBy s
 const deleteAllUserInformation = `DELETE FROM user_information`
 
 func (s Storage) DeleteUserInformationPermanently(ctx context.Context) error {
+	s.logger.WithField("method", "storage.profile.DeleteUserInformationPermanently")
 	row, err := s.db.ExecContext(ctx, deleteAllUserInformation)
 	if err != nil {
 		s.logger.WithError(err)

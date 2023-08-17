@@ -23,14 +23,14 @@ func NewConns(logger *logrus.Entry, cfg *viper.Viper) *Conn {
 	}
 
 	log.Printf("starting to dialing usermgm service port: %s", cfg.GetString("services.usermgmURL"))
-	urm, err := grpc.Dial(cfg.GetString("services.usermgmURL"), opts...)
+	userMgm, err := grpc.Dial(cfg.GetString("services.usermgmURL"), opts...)
 	if err != nil {
 		logger.WithError(err).Fatal("failed to dial usermgm service")
 	}
 
 	return &Conn{
 		Server: server,
-		Urm:    urm,
+		Urm:    userMgm,
 	}
 }
 
@@ -45,5 +45,6 @@ func getGRPCOpts(cnf *viper.Viper) []grpc.DialOption {
 		grpc.WithBlock(), grpc.WithChainUnaryInterceptor(
 			middleware.AuthForwarder(),
 		))
+
 	return opts
 }

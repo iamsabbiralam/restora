@@ -18,17 +18,21 @@ const (
 	EMail    string = "EMAIL"
 )
 
+const PAGESIZE int = 10
+
 var (
 	// NotFound is returned when the requested resource does not exist.
 	NotFound = status.Error(codes.NotFound, "not found")
 	// Conflict is returned when trying to create the same resource twice.
-	Conflict = errors.New("conflict")
+	Conflict = status.Error(codes.AlreadyExists, "conflict")
 	// UsernameExists is returned when the username already exists in storage.
 	UsernameExists = errors.New("username already exists")
 	// EmailExists is returned when signup email already exists in storage.
 	EmailExists = errors.New("email already exists")
 	// InvCodeExists is returned when invitation code already exists in storage.
 	InvCodeExists = errors.New("invitation code already exists")
+	// Triggers when request arguments are invalid
+	InvalidArgument = status.Error(codes.InvalidArgument, "invalid arguments")
 )
 
 var ErrNotFound = errors.New("not found")
