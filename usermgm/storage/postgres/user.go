@@ -291,18 +291,15 @@ const deleteUser = `DELETE FROM users where id = $1`
 func (s Storage) deleteUserPermanently(ctx context.Context, id string) error {
 	row, err := s.db.Exec(deleteUser, id)
 	if err != nil {
-		s.logger.WithError(err)
 		return err
 	}
 
 	rowCount, err := row.RowsAffected()
 	if err != nil {
-		s.logger.WithError(err)
 		return err
 	}
 
 	if rowCount <= 0 {
-		s.logger.Error("Unable to delete the targeted user")
 		return storage.NotFound
 	}
 

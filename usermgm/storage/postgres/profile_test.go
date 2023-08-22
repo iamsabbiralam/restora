@@ -3,10 +3,12 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/google/uuid"
 	"github.com/iamsabbiralam/restora/usermgm/storage"
 )
 
@@ -45,7 +47,6 @@ func deleteUserInformationPermanently(t *testing.T, s *Storage) {
 		t.Fatalf("Unable to delete users: %v", err)
 	}
 }
-
 
 func TestCreateUserInformation(t *testing.T) {
 	s := newTestStorage(t)
@@ -126,21 +127,27 @@ var UserInformation = []struct {
 		name: "Get User Information Successfully",
 		id:   "b6ddbe32-3d7e-4828-b2d7-da9927846e6b",
 		want: &storage.UserInformation{
-			Image:     "1.jpg",
+			Image:     "default.jpg",
 			FirstName: "Super",
 			LastName:  "Admin",
-			Mobile:    "01715039303",
+			Mobile:    "+8801715039303",
 			Gender:    1,
-			Address:   "Farazipara",
-			City:      "Khulna",
-			Country:   "Bangladesh",
+			Address:   "farazipara",
+			City:      "khulna",
+			Country:   "bangladesh",
+			UserID:    "b6ddbe32-3d7e-4828-b2d7-da9927846e6b",
 		},
+		teardown: deleteTestUser,
+	}, {
+		name:    "Get User Information Failed",
+		id:      "b6ddbe32-3d7e-4828-b2d7-da9927ue8ry",
+		wantErr: true,
 	},
 }
 
-func TestStorageUserInformation(t *testing.T) {
+func TestGetUserInformation(t *testing.T) {
 	ts := newTestStorage(t)
-	_, err := ts.db.Exec("INSERT INTO user_information (image, first_name, last_name, mobile, address, city, country, user_id) VALUES ('1.jpg', 'Super', 'Admin', '01715039303', 'Farazipara', 'khulna', 'bangladesh', 'b6ddbe32-3d7e-4828-b2d7-da9927846e6b')")
+	_, err := ts.db.Exec("INSERT INTO user_information (image, first_name, last_name, mobile, address, city, country, user_id) VALUES ('default.jpg', 'Super', 'Admin', '+8801715039303', 'farazipara', 'khulna', 'bangladesh', 'b6ddbe32-3d7e-4828-b2d7-da9927846e6b')")
 	if err != nil {
 		t.Fatalf("Unable to create user: %v", err)
 	}
@@ -197,6 +204,7 @@ var testUpdateProfile = []struct {
 			Address:   "Farazipara",
 			City:      "Khulna",
 			Country:   "Bangladesh",
+			UserID:    "b6ddbe32-3d7e-4828-b2d7-da9927846e6b",
 		},
 		want: &storage.UserInformation{
 			Image:     "2.jpg",
@@ -207,6 +215,7 @@ var testUpdateProfile = []struct {
 			Address:   "Farazipara",
 			City:      "Khulna",
 			Country:   "Bangladesh",
+			UserID:    "b6ddbe32-3d7e-4828-b2d7-da9927846e6b",
 		},
 		teardown: deleteTestUserInformation,
 	},
@@ -218,6 +227,7 @@ func TestUpdateProfile(t *testing.T) {
 		cmpopts.IgnoreFields(
 			storage.UserInformation{},
 			"ID",
+			"DOB",
 			"CreatedAt",
 			"CreatedBy",
 			"UpdatedAt",
@@ -229,13 +239,7 @@ func TestUpdateProfile(t *testing.T) {
 
 	for _, tc := range testUpdateProfile {
 		t.Run(tc.name, func(t *testing.T) {
-			user, err := ts.GetUserInformation(context.TODO(), tc.in.UserID)
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			tc.in.UserID = user.ID
-			tc.in.UpdatedBy = sql.NullString{String: user.ID, Valid: true}
+			tc.in.UpdatedBy = sql.NullString{String: tc.in.UserID, Valid: true}
 			got, err := ts.UpdateUserInformation(context.Background(), tc.in)
 			if (err != nil) != tc.wantErr {
 				t.Errorf("Storage.UpdateProfile() gotErr = %v, wantErr %v", err, tc.wantErr)
@@ -247,7 +251,80 @@ func TestUpdateProfile(t *testing.T) {
 			}
 
 			if tc.teardown != nil {
-				tc.teardown(t, ts, user.ID)
+				tc.teardown(t, ts, tc.in.UserID)
+			}
+		})
+	}
+}
+
+func TestDeleteUserInformation(t *testing.T) {
+	s := newTestStorage(t)
+	testCases := []struct {
+		name     string
+		in       storage.UserInformation
+		wantErr  bool
+		setup    func(*testing.T, *Storage)
+		teardown func(*testing.T, *Storage, string)
+	}{
+		{
+			name: "user information deletion success",
+			in: storage.UserInformation{
+				UserID: "b6ddbe32-3d7e-4828-b2d7-da9927846e6b",
+				DeletedBy: sql.NullString{
+					String: uuid.NewString(),
+					Valid:  true,
+				},
+			},
+			wantErr:  false,
+			teardown: deleteTestUserInformation,
+		}, {
+			name: "user information deletion failed",
+			in: storage.UserInformation{
+				UserID: "b6ddbe32-3d7e-4828-b2d7-jhf8eh88cd",
+				DeletedBy: sql.NullString{
+					String: uuid.NewString(),
+					Valid:  true,
+				},
+			},
+			wantErr: true,
+		},
+	}
+
+	uID, err := s.CreateUserInformation(context.TODO(), &storage.UserInformation{
+		Image:     "1.jpg",
+		FirstName: "Super",
+		LastName:  "Admin",
+		Mobile:    "01715039303",
+		Gender:    1,
+		Address:   "Farazipara",
+		City:      "Khulna",
+		Country:   "Bangladesh",
+		UserID:    "b6ddbe32-3d7e-4828-b2d7-da9927846e6b",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.setup != nil {
+				tc.setup(t, s)
+			}
+
+			tc.in.ID = uID
+			fmt.Println("user id", tc.in.UserID)
+			err := s.DeleteUserInformation(context.TODO(), tc.in.UserID, tc.in.ID)
+			if (err != nil) != tc.wantErr {
+				t.Errorf("Storage.DeleteUserInformation() gotErr = %v, wantErr %v", err, tc.wantErr)
+				return
+			}
+
+			if !tc.wantErr {
+				t.Errorf("Storage.DeleteUserInformation() want %v", tc.in.ID)
+			}
+
+			if tc.teardown != nil {
+				tc.teardown(t, s, tc.in.ID)
 			}
 		})
 	}

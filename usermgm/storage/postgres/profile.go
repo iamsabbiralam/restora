@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"github.com/iamsabbiralam/restora/usermgm/storage"
 )
@@ -33,9 +34,7 @@ const insertUserInformation = `
 `
 
 func (s *Storage) CreateUserInformation(ctx context.Context, ui *storage.UserInformation) (string, error) {
-	log := s.logger.WithField("method", "storage.profile.CreateUserInformation")
 	if err := s.CreateUserInformationValidation(ctx, ui); err != nil {
-		log.WithError(err).Error("invalid request")
 		return "", storage.InvalidArgument
 	}
 
@@ -63,7 +62,8 @@ const getUserInformation = `
 		dob,
 		address,
 		city,
-		country
+		country,
+		user_id
 	FROM
 		user_information
 	WHERE
@@ -73,16 +73,17 @@ const getUserInformation = `
 `
 
 func (s *Storage) GetUserInformation(ctx context.Context, userID string) (*storage.UserInformation, error) {
-	s.logger.WithField("method", "storage.profile.GetUserInformation")
 	var profile storage.UserInformation
-	stmt, err := s.db.PrepareNamed(getUserInformation)
+	stmt, err := s.db.PrepareNamedContext(ctx, getUserInformation)
 	if err != nil {
 		return nil, err
 	}
 
-	var ui storage.UserInformation
-	ui.UserID = userID
-	if err := stmt.Get(&profile, ui); err != nil {
+	arg := map[string]interface{}{
+		"user_id": userID,
+	}
+	if err := stmt.Get(&profile, arg); err != nil {
+		fmt.Println("err", err.Error())
 		return nil, err
 	}
 
@@ -101,8 +102,8 @@ const updateUserInformation = `
 		first_name = COALESCE(NULLIF(:first_name, ''), first_name),
 		last_name = COALESCE(NULLIF(:last_name, ''), last_name),
 		mobile = COALESCE(NULLIF(:mobile, ''), mobile),
-		gender = COALESCE(NULLIF(:gender, 0) gender),
-		dob = COALESCE(NULLIF(:dob, '0001-01-01') dob),
+		gender = COALESCE(NULLIF(:gender, 0), gender),
+		dob = COALESCE(NULLIF(:dob, DATE '0001-01-01'), dob),
 		address = COALESCE(NULLIF(:address, ''), address),
 		city = COALESCE(NULLIF(:city, ''), city),
 		country = COALESCE(NULLIF(:country, ''), country),
@@ -111,24 +112,22 @@ const updateUserInformation = `
 	WHERE
 		user_id = :user_id AND deleted_at IS NULL
 	RETURNING
-		id
+		*
 `
 
-func (s *Storage) UpdateUserInformation(ctx context.Context, ui storage.UserInformation) (storage.UserInformation, error) {
-	s.logger.WithField("method", "storage.profile.UpdateUserInformation")
-	var profile storage.UserInformation
-	stmt, err := s.db.PrepareNamedContext(ctx, updateUserInformation)
+func (s *Storage) UpdateUserInformation(ctx context.Context, ui storage.UserInformation) (*storage.UserInformation, error) {
+	stmt, err := s.db.PrepareNamed(updateUserInformation)
 	if err != nil {
-		return storage.UserInformation{}, err
+		return &storage.UserInformation{}, err
 	}
 
 	defer stmt.Close()
-	var id string
-	if err := stmt.Get(&id, ui); err != nil {
-		return storage.UserInformation{}, err
+	var profile storage.UserInformation
+	if err := stmt.Get(&profile, ui); err != nil {
+		return &storage.UserInformation{}, err
 	}
 
-	return profile, nil
+	return &profile, nil
 }
 
 const deleteUserInformation = `
@@ -142,7 +141,6 @@ const deleteUserInformation = `
 `
 
 func (s *Storage) DeleteUserInformation(ctx context.Context, userID, deletedBy string) error {
-	s.logger.WithField("method", "storage.profile.DeleteUserInformation")
 	stmt, err := s.db.PrepareNamedContext(ctx, deleteUserInformation)
 	if err != nil {
 		return err
@@ -154,6 +152,7 @@ func (s *Storage) DeleteUserInformation(ctx context.Context, userID, deletedBy s
 		"deleted_by": deletedBy,
 	}
 	if _, err := stmt.Exec(arg); err != nil {
+		fmt.Println("err", err)
 		return err
 	}
 
@@ -163,7 +162,6 @@ func (s *Storage) DeleteUserInformation(ctx context.Context, userID, deletedBy s
 const deleteAllUserInformation = `DELETE FROM user_information`
 
 func (s Storage) DeleteUserInformationPermanently(ctx context.Context) error {
-	s.logger.WithField("method", "storage.profile.DeleteUserInformationPermanently")
 	row, err := s.db.ExecContext(ctx, deleteAllUserInformation)
 	if err != nil {
 		s.logger.WithError(err)
