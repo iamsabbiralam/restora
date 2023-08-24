@@ -30,3 +30,11 @@ func (s *Storage) CreateUserInformationValidation(ctx context.Context, req *stor
 
 	return nil
 }
+
+func (s *Storage) DeleteUserInformationValidation(ctx context.Context, req string) error {
+	if req == "" {
+		return errors.New("invalid request")
+	}
+
+	return nil
+}
