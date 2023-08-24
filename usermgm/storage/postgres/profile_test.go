@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -280,7 +279,6 @@ func TestDeleteUserInformation(t *testing.T) {
 		}, {
 			name: "user information deletion failed",
 			in: storage.UserInformation{
-				UserID: "b6ddbe32-3d7e-4828-b2d7-jhf8eh88cd",
 				DeletedBy: sql.NullString{
 					String: uuid.NewString(),
 					Valid:  true,
@@ -290,41 +288,16 @@ func TestDeleteUserInformation(t *testing.T) {
 		},
 	}
 
-	uID, err := s.CreateUserInformation(context.TODO(), &storage.UserInformation{
-		Image:     "1.jpg",
-		FirstName: "Super",
-		LastName:  "Admin",
-		Mobile:    "01715039303",
-		Gender:    1,
-		Address:   "Farazipara",
-		City:      "Khulna",
-		Country:   "Bangladesh",
-		UserID:    "b6ddbe32-3d7e-4828-b2d7-da9927846e6b",
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			if tc.setup != nil {
 				tc.setup(t, s)
 			}
 
-			tc.in.ID = uID
-			fmt.Println("user id", tc.in.UserID)
-			err := s.DeleteUserInformation(context.TODO(), tc.in.UserID, tc.in.ID)
+			err := s.DeleteUserInformation(context.TODO(), tc.in.UserID, tc.in.UserID)
 			if (err != nil) != tc.wantErr {
 				t.Errorf("Storage.DeleteUserInformation() gotErr = %v, wantErr %v", err, tc.wantErr)
 				return
-			}
-
-			if !tc.wantErr {
-				t.Errorf("Storage.DeleteUserInformation() want %v", tc.in.ID)
-			}
-
-			if tc.teardown != nil {
-				tc.teardown(t, s, tc.in.ID)
 			}
 		})
 	}

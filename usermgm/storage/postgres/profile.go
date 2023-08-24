@@ -141,6 +141,10 @@ const deleteUserInformation = `
 `
 
 func (s *Storage) DeleteUserInformation(ctx context.Context, userID, deletedBy string) error {
+	if err := s.DeleteUserInformationValidation(ctx, userID); err != nil {
+		return err
+	}
+
 	stmt, err := s.db.PrepareNamedContext(ctx, deleteUserInformation)
 	if err != nil {
 		return err
