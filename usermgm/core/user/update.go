@@ -17,3 +17,15 @@ func (s *Svc) UpdateUser(ctx context.Context, user storage.User) (*storage.User,
 
 	return usr, nil
 }
+
+func (s *Svc) UpdateUserInformation(ctx context.Context, profile storage.UserInformation) (*storage.UserInformation, error) {
+	log := s.logger.WithField("method", "Core.Profile.UpdateUserInformation")
+	res, err := s.store.UpdateUserInformation(ctx, profile)
+	if err != nil {
+		errMsg := "Failed to update user information storage entry"
+		log.WithError(err).Error(errMsg)
+		return nil, err
+	}
+
+	return res, nil
+}

@@ -15,5 +15,14 @@ func (s *Svc) CreateUser(ctx context.Context, user storage.User) (string, error)
 		return "", err
 	}
 
+	_, err = s.store.CreateUserInformation(ctx, storage.UserInformation{
+		UserID: usr,
+	})
+	if err != nil {
+		errMsg := "Failed to create user information storage entry"
+		log.WithError(err).Error(errMsg)
+		return "", err
+	}
+
 	return usr, nil
 }

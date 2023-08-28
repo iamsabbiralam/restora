@@ -21,11 +21,15 @@ func New(rs UserStore, logger *logrus.Entry) *Svc {
 }
 
 type UserStore interface {
-	CreateUser(ctx context.Context, user storage.User) (string, error)
-	UpdateUser(ctx context.Context, user storage.User) (*storage.User, error)
-	DeleteUser(ctx context.Context, user storage.User) error
-	GetUserByEmail(ctx context.Context, email string) (*storage.User, error)
-	GetUserByID(ctx context.Context, id string) (*storage.User, error)
-	GetUserByUsername(ctx context.Context, username string) (*storage.User, error)
-	ListUsers(ctx context.Context, p storage.FilterUser) ([]storage.User, error)
+	CreateUser(context.Context, storage.User) (string, error)
+	UpdateUser(context.Context, storage.User) (*storage.User, error)
+	DeleteUser(context.Context, storage.User) error
+	GetUserByEmail(context.Context, string) (*storage.User, error)
+	GetUserByID(context.Context, string) (*storage.User, error)
+	GetUserByUsername(context.Context, string) (*storage.User, error)
+	ListUsers(context.Context, storage.FilterUser) ([]storage.User, error)
+	CreateUserInformation(context.Context, storage.UserInformation) (string, error)
+	GetUserInformation(context.Context, string) (*storage.UserInformation, error)
+	UpdateUserInformation(context.Context, storage.UserInformation) (*storage.UserInformation, error)
+	DeleteUserInformation(context.Context, string, string) error
 }

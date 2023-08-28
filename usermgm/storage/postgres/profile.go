@@ -3,37 +3,20 @@ package postgres
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	"github.com/iamsabbiralam/restora/usermgm/storage"
 )
 
 const insertUserInformation = `
 	INSERT INTO user_information (
-		user_id,
-		image,
-		first_name,
-		last_name,
-		mobile,
-		dob,
-		address,
-		city,
-		country
+		user_id
 	) VALUES (
-		:user_id,
-		:image,
-		:first_name,
-		:last_name,
-		:mobile,
-		:dob,
-		:address,
-		:city,
-		:country
+		:user_id
 	) RETURNING
 		id
 `
 
-func (s *Storage) CreateUserInformation(ctx context.Context, ui *storage.UserInformation) (string, error) {
+func (s *Storage) CreateUserInformation(ctx context.Context, ui storage.UserInformation) (string, error) {
 	if err := s.CreateUserInformationValidation(ctx, ui); err != nil {
 		return "", storage.InvalidArgument
 	}
@@ -83,7 +66,6 @@ func (s *Storage) GetUserInformation(ctx context.Context, userID string) (*stora
 		"user_id": userID,
 	}
 	if err := stmt.Get(&profile, arg); err != nil {
-		fmt.Println("err", err.Error())
 		return nil, err
 	}
 
@@ -156,7 +138,6 @@ func (s *Storage) DeleteUserInformation(ctx context.Context, userID, deletedBy s
 		"deleted_by": deletedBy,
 	}
 	if _, err := stmt.Exec(arg); err != nil {
-		fmt.Println("err", err)
 		return err
 	}
 
