@@ -81,7 +81,7 @@ message GetUserByIDResponse {
       string Image = 7;
       string PhoneNumber = 8;
       int64  Gender = 9;
-      string Birthday = 10;
+      google.protobuf.Timestamp Birthday = 10;
       string Address = 11;
       string City = 12;
       string Country = 13;
@@ -106,7 +106,7 @@ message GetUserByEmailResponse {
       string Image = 7;
       string PhoneNumber = 8;
       int64  Gender = 9;
-      string Birthday = 10;
+      google.protobuf.Timestamp Birthday = 10;
       string Address = 11;
       string City = 12;
       string Country = 13;
@@ -131,7 +131,7 @@ message GetUserByUsernameResponse {
       string Image = 7;
       string PhoneNumber = 8;
       int64  Gender = 9;
-      string Birthday = 10;
+      google.protobuf.Timestamp Birthday = 10;
       string Address = 11;
       string City = 12;
       string Country = 13;
@@ -153,7 +153,7 @@ message UpdateUserRequest {
       string Image = 7;
       string PhoneNumber = 8;
       int64  Gender = 9;
-      string Birthday = 10;
+      google.protobuf.Timestamp Birthday = 10;
       string Address = 11;
       string City = 12;
       string Country = 13;
@@ -170,7 +170,7 @@ message UpdateUserResponse {
       string Image = 7;
       string PhoneNumber = 8;
       int64  Gender = 9;
-      string Birthday = 10;
+      google.protobuf.Timestamp Birthday = 10;
       string Address = 11;
       string City = 12;
       string Country = 13;

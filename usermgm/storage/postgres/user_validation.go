@@ -9,21 +9,14 @@ import (
 	"github.com/iamsabbiralam/restora/usermgm/storage"
 )
 
-func (s *Storage) CreateUserInformationValidation(ctx context.Context, req *storage.UserInformation) error {
-	if req == nil {
+func (s *Storage) CreateUserInformationValidation(ctx context.Context, req storage.UserInformation) error {
+	if req == (storage.UserInformation{}) {
 		return errors.New("invalid request")
 	}
 
 	required := validation.Required
-	if err := validation.ValidateStruct(req,
-		validation.Field(&req.FirstName, required),
-		validation.Field(&req.LastName, required),
-		validation.Field(&req.Image, required),
-		validation.Field(&req.Mobile, required),
-		validation.Field(&req.Gender, required),
-		validation.Field(&req.Address, required),
-		validation.Field(&req.City, required),
-		validation.Field(&req.Country, required),
+	if err := validation.ValidateStruct(&req,
+		validation.Field(&req.UserID, required),
 	); err != nil {
 		return err
 	}

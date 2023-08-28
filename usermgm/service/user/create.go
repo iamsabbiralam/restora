@@ -17,7 +17,7 @@ func (h *Handler) CreateUser(ctx context.Context, req *upb.CreateUserRequest) (*
 	if req == nil {
 		return nil, uErr.HandleServiceErr(errors.New("request is nil"))
 	}
-
+	
 	if err := h.ValidateRequestedData(ctx, storage.User{
 		Username: req.GetUserName(),
 		Email:    req.GetEmail(),

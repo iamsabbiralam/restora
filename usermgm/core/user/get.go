@@ -45,3 +45,15 @@ func (s *Svc) GetUserByUsername(ctx context.Context, username string) (*storage.
 
 	return res, nil
 }
+
+func (s *Svc) GetUserInformation(ctx context.Context, id string) (*storage.UserInformation, error) {
+	log := s.logger.WithField("method", "Core.Profile.GetUserInformation")
+	res, err := s.store.GetUserInformation(ctx, id)
+	if err != nil {
+		errMsg := "Failed to get user information storage entry"
+		log.WithError(err).Error(errMsg)
+		return nil, err
+	}
+
+	return res, nil
+}
