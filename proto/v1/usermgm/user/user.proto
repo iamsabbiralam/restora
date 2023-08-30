@@ -32,7 +32,7 @@ message User {
       string Image = 7;
       string PhoneNumber = 8;
       int64  Gender = 9;
-      string Birthday = 10;
+      google.protobuf.Timestamp Birthday = 10;
       string Address = 11;
       string City = 12;
       string Country = 13;
@@ -52,7 +52,7 @@ message CreateUserRequest {
       string Image = 6;
       string PhoneNumber = 7;
       int64  Gender = 8;
-      string Birthday = 9;
+      google.protobuf.Timestamp Birthday = 9;
       string Address = 10;
       string City = 11;
       string Country = 12;
