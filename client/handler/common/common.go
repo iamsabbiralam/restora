@@ -3,6 +3,7 @@ package common
 import (
 	"errors"
 	"html/template"
+	"os"
 
 	"github.com/benbjohnson/hashfs"
 	"github.com/gorilla/schema"
@@ -60,6 +61,8 @@ var (
 	InvCodeExists = errors.New("invitation code already exists")
 )
 
+var store = sessions.NewCookieStore([]byte(os.Getenv("secret")))
+
 const (
 	SessionCookieName          = "restora-session"
 	SessionCookieState         = "state"
@@ -90,7 +93,7 @@ const (
 	ErrorPath = "/error"
 
 	RegistrationPath = "/registration"
-	LoginPath      = "/login"
+	LoginPath        = "/login"
 
 	ProfilePath            = "/profile"
 	ResendOtpPath          = "/resend-otp"

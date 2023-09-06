@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -15,12 +16,11 @@ import (
 )
 
 var (
-	IgnorePath       = []string{LoginPath, RegistrationPath}
+	IgnorePath = []string{LoginPath, RegistrationPath}
 )
 
-
 type SessionUser struct {
-	Id              string
+	ID              string
 	Email           string
 	Image           string
 	RoleID          string
@@ -43,16 +43,23 @@ func HashPassword(password string) (string, error) {
 }
 
 func (s *Server) GetSessionUser(r *http.Request) *SessionUser {
-	sess, err := s.Sess.Store().Get(r, SessionCookieName)
-	if err != nil || sess.Values[SessionUserID] == nil {
+	sess, err := store.Get(r, SessionCookieName)
+	fmt.Println("err", err)
+	if err != nil {
 		s.Logger.Infof("Unable to get session %+v", err)
 		return &SessionUser{}
 	}
 
+	userID := fmt.Sprintf("%v", sess.Values["authUserID"])
+	if userID == "" {
+		s.Logger.Infof("Session does not contain user id %+v", err)
+		return &SessionUser{}
+	}
+
 	return &SessionUser{
-		Id:       sess.Values[SessionUserID].(string),
-		Email:    sess.Values[SessionEmail].(string),
-		UserName: sess.Values[SessionUserName].(string),
+		ID:       userID,
+		Email:    fmt.Sprintf("%v", sess.Values[SessionEmail]),
+		UserName: fmt.Sprintf("%v", sess.Values[SessionUserName]),
 	}
 }
 

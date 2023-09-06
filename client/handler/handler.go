@@ -18,6 +18,7 @@ import (
 	urlAuth "github.com/iamsabbiralam/restora/client/handler/auth"
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	guest "github.com/iamsabbiralam/restora/client/handler/home"
+	"github.com/iamsabbiralam/restora/client/handler/user/profile"
 	loginG "github.com/iamsabbiralam/restora/proto/v1/usermgm/auth"
 	"github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 	"github.com/iamsabbiralam/restora/utility/middleware"
@@ -74,6 +75,11 @@ func NewServer(
 	}
 
 	mw, err = dashboard.Register(cs, mw)
+	if err != nil {
+		return nil, err
+	}
+
+	mw, err = profile.Register(cs, mw)
 	if err != nil {
 		return nil, err
 	}
