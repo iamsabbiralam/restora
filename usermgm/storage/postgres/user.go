@@ -253,7 +253,7 @@ func (s *Storage) ListUsers(ctx context.Context, f storage.FilterUser) ([]storag
 
 		return nil, err
 	}
-	
+
 	return usrs, nil
 }
 

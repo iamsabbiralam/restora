@@ -28,6 +28,7 @@ type CoreUser interface {
 	GetUserByID(context.Context, string) (*storage.User, error)
 	GetUserByUsername(context.Context, string) (*storage.User, error)
 	ListUsers(context.Context, storage.FilterUser) ([]storage.User, error)
+	GetUserInformationByUserID(context.Context, string) (*storage.UserInformation, error)
 }
 
 func New(usr CoreUser, logger *logrus.Entry) *Handler {

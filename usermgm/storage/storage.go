@@ -69,9 +69,11 @@ type (
 	UserInformation struct {
 		ID        string         `db:"id"`
 		UserID    string         `db:"user_id"`
+		Username  string         `db:"username"`
 		Image     string         `db:"image"`
 		FirstName string         `db:"first_name"`
 		LastName  string         `db:"last_name"`
+		Email     string         `db:"email"`
 		Mobile    string         `db:"mobile"`
 		Gender    int            `db:"gender"`
 		DOB       time.Time      `db:"dob"`

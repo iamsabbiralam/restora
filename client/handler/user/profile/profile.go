@@ -21,6 +21,7 @@ type Profile struct {
 	UserID    string
 	FirstName string
 	LastName  string
+	Email     string
 	Image     string
 	Mobile    string
 	Gender    int

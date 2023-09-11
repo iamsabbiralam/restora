@@ -1,6 +1,7 @@
 package profile
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/iamsabbiralam/restora/client/handler/common"
@@ -14,6 +15,9 @@ func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
 	res, err := s.User.GetUserByID(ctx, &userG.GetUserByIDRequest{
 		ID: loggedUser.ID,
 	})
+	fmt.Println("---res---")
+	fmt.Println(res)
+	fmt.Println("---res---")
 	if err != nil {
 		errMsg := "unable to get profile data"
 		log.WithError(err).Error(errMsg)
@@ -24,6 +28,7 @@ func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
 		Form: Profile{
 			FirstName: res.FirstName,
 			LastName:  res.LastName,
+			Email:     res.Email,
 			Mobile:    res.PhoneNumber,
 			Gender:    int(res.Gender),
 			Address:   res.Address,

@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"github.com/iamsabbiralam/restora/usermgm/storage"
 )
@@ -36,23 +37,14 @@ func (s *Storage) CreateUserInformation(ctx context.Context, ui storage.UserInfo
 
 const getUserInformation = `
 	SELECT
-		id,
-		image,
-		first_name,
-		last_name,
-		mobile,
-		gender,
-		dob,
-		address,
-		city,
-		country,
-		user_id
+		userinfo.*
 	FROM
-		user_information
+		user_information as userinfo
+    		LEFT JOIN users as usr on usr.id = userinfo.user_id
 	WHERE
-		user_id = :user_id
+		user_id = 'b6ddbe32-3d7e-4828-b2d7-da9927846e6b'
 	AND
-		deleted_at IS NULL
+		userinfo.deleted_at IS NULL
 `
 
 func (s *Storage) GetUserInformation(ctx context.Context, userID string) (*storage.UserInformation, error) {
@@ -72,7 +64,9 @@ func (s *Storage) GetUserInformation(ctx context.Context, userID string) (*stora
 	if err == sql.ErrNoRows {
 		return nil, storage.ErrNotFound
 	}
-
+	fmt.Println("---profile---")
+	fmt.Println(profile)
+	fmt.Println("---profile---")
 	return &profile, nil
 }
 
