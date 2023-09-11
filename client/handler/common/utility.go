@@ -44,7 +44,6 @@ func HashPassword(password string) (string, error) {
 
 func (s *Server) GetSessionUser(r *http.Request) *SessionUser {
 	sess, err := store.Get(r, SessionCookieName)
-	fmt.Println("err", err)
 	if err != nil {
 		s.Logger.Infof("Unable to get session %+v", err)
 		return &SessionUser{}
@@ -57,9 +56,11 @@ func (s *Server) GetSessionUser(r *http.Request) *SessionUser {
 	}
 
 	return &SessionUser{
-		ID:       userID,
-		Email:    fmt.Sprintf("%v", sess.Values[SessionEmail]),
-		UserName: fmt.Sprintf("%v", sess.Values[SessionUserName]),
+		ID:        userID,
+		FirstName: fmt.Sprintf("%v", sess.Values[SessionFirstName]),
+		LastName:  fmt.Sprintf("%v", sess.Values[SessionLastName]),
+		Email:     fmt.Sprintf("%v", sess.Values[SessionEmail]),
+		UserName:  fmt.Sprintf("%v", sess.Values[SessionUserName]),
 	}
 }
 
