@@ -60,16 +60,34 @@ func (h *Handler) GetUserByID(ctx context.Context, req *upb.GetUserByIDRequest) 
 		return nil, uErr.HandleServiceErr(errors.New("error with getting user by id"))
 	}
 
+	userInfo, err := h.usr.GetUserInformationByUserID(ctx, r.ID)
+	if err != nil {
+		errMsg := "failed to get user information by user id"
+		log.WithError(err).Error(errMsg)
+		return nil, uErr.HandleServiceErr(err)
+	}
+
+	if userInfo == nil {
+		return nil, uErr.HandleServiceErr(errors.New("error with getting user information by user id"))
+	}
+
 	resp := &upb.GetUserByIDResponse{
-		ID:        r.ID,
-		Email:     r.Email,
-		UserName:  r.Username,
-		Password:  r.Password,
-		Status:    upb.Status(r.Status),
-		CreatedAt: timestamppb.New(r.CreatedAt),
-		CreatedBy: r.CreatedBy,
-		UpdatedAt: timestamppb.New(r.UpdatedAt),
-		UpdatedBy: r.UpdatedBy.String,
+		ID:          r.ID,
+		FirstName:   userInfo.FirstName,
+		LastName:    userInfo.LastName,
+		Email:       r.Email,
+		UserName:    r.Username,
+		Password:    r.Password,
+		PhoneNumber: userInfo.Mobile,
+		Gender:      int64(userInfo.Gender),
+		Address:     userInfo.Address,
+		City:        userInfo.City,
+		Country:     userInfo.Country,
+		Status:      upb.Status(r.Status),
+		CreatedAt:   timestamppb.New(r.CreatedAt),
+		CreatedBy:   r.CreatedBy,
+		UpdatedAt:   timestamppb.New(r.UpdatedAt),
+		UpdatedBy:   r.UpdatedBy.String,
 	}
 
 	return resp, nil
@@ -95,51 +113,6 @@ func (h *Handler) GetUserByUsername(ctx context.Context, req *upb.GetUserByUsern
 
 	resp := &upb.GetUserByUsernameResponse{
 		ID:        r.ID,
-		Email:     r.Email,
-		UserName:  r.Username,
-		Password:  r.Password,
-		Status:    upb.Status(r.Status),
-		CreatedAt: timestamppb.New(r.CreatedAt),
-		CreatedBy: r.CreatedBy,
-		UpdatedAt: timestamppb.New(r.UpdatedAt),
-		UpdatedBy: r.UpdatedBy.String,
-	}
-
-	return resp, nil
-}
-
-func (h *Handler) GetUserInformationByUserID(ctx context.Context, req *upb.GetUserByIDRequest) (*upb.GetUserByIDResponse, error) {
-	log := h.logger.WithField("method", "service.user.GetUserInformationByUserID")
-	if req == nil {
-		return nil, uErr.HandleServiceErr(errors.New("request is required"))
-	}
-
-	r, err := h.usr.GetUserByID(ctx, req.GetID())
-	if err != nil {
-		errMsg := "failed to get user by id"
-		log.WithError(err).Error(errMsg)
-		return nil, uErr.HandleServiceErr(err)
-	}
-
-	if r == nil {
-		return nil, uErr.HandleServiceErr(errors.New("error with getting user by id"))
-	}
-
-	userInfo, err := h.usr.GetUserInformationByUserID(ctx, r.ID)
-	if err != nil {
-		errMsg := "failed to get user information by user id"
-		log.WithError(err).Error(errMsg)
-		return nil, uErr.HandleServiceErr(err)
-	}
-
-	if userInfo == nil {
-		return nil, uErr.HandleServiceErr(errors.New("error with getting user information by user id"))
-	}
-
-	resp := &upb.GetUserByIDResponse{
-		ID:        r.ID,
-		FirstName: userInfo.FirstName,
-		LastName:  userInfo.LastName,
 		Email:     r.Email,
 		UserName:  r.Username,
 		Password:  r.Password,

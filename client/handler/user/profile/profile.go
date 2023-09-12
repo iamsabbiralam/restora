@@ -8,7 +8,6 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/iamsabbiralam/restora/client/handler/common"
 )
@@ -25,7 +24,7 @@ type Profile struct {
 	Image     string
 	Mobile    string
 	Gender    int
-	DOB       *timestamppb.Timestamp
+	DOB       string
 	Address   string
 	City      string
 	Country   string
@@ -53,7 +52,7 @@ func Register(h *common.Server, mw *mux.Router) (*mux.Router, error) {
 	}
 
 	mw.HandleFunc(common.ProfilePath, s.getProfileHandler).Methods("GET").Name("profile")
-	mw.HandleFunc(common.ProfileEditPath, s.editProfileHandler).Methods("GET").Name("profile.edit")
+	mw.HandleFunc(common.ProfileEditPath, s.updateProfileHandler).Methods("POST").Name("profile.update")
 	return mw, nil
 }
 
