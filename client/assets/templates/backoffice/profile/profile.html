@@ -61,148 +61,170 @@
                         </div>
                   </div>
                   <div class="col-span-12 xl:col-span-9">
-                        <div class="box">
-                              <div class="box-body p-0">
-                                    <div id="profile-settings-1" role="tabpanel"
-                                          aria-labelledby="profile-settings-item-1">
-                                          <div class="box border-0 shadow-none mb-0">
-                                                <div class="box-header">
-                                                      <h5 class="box-title leading-none flex"><i
-                                                                  class="ri ri-shield-user-line ltr:mr-2 rtl:ml-2"></i>
-                                                            Personal Settings</h5>
-                                                </div>
-                                                <div class="box-body">
-                                                      <div>
-                                                            <div class="grid lg:grid-cols-2 gap-6">
-                                                                  <div class="space-y-2"> <label
-                                                                              class="ti-form-label mb-0">First
-                                                                              Name</label> <input type="text"
-                                                                              class="my-auto ti-form-input"
-                                                                              placeholder="Enter first name"
-                                                                              name="FirstName"
-                                                                              value="{{.Form.FirstName}}">
-                                                                        {{with .FormErrors.FirstName}}
-                                                                        <p class="text-red-500">{{.}}</p>
-                                                                        {{end}}
-                                                                  </div>
-                                                                  <div class="space-y-2"> <label
-                                                                              class="ti-form-label mb-0">Last
-                                                                              Name</label> <input type="text"
-                                                                              class="my-auto ti-form-input"
-                                                                              placeholder="Enter last name"
-                                                                              name="LastName"
-                                                                              value="{{.Form.LastName}}"> </div>
-                                                                  <div class="space-y-2"> <label
-                                                                              class="ti-form-label mb-0">Phone
-                                                                              Number</label> <input type="number"
-                                                                              class="my-auto ti-form-input"
-                                                                              placeholder="+91 123-456-789"
-                                                                              name="Mobile" {{.Form.Mobile}}>
-                                                                  </div>
-                                                                  <div class="space-y-2"> <label
-                                                                              class="ti-form-label mb-0">Email
-                                                                              Address</label> <input type="email"
-                                                                              class="my-auto ti-form-input"
-                                                                              placeholder="your@site.com" name="email"
-                                                                              value="{{.Form.Email}}">
-                                                                  </div>
-                                                                  <div class="space-y-2"> <label
-                                                                              class="ti-form-label mb-0">Date
-                                                                              Of Birth</label> <input type="date"
-                                                                              class="ti-form-input flatpickr-input date"
-                                                                              placeholder="Choose date" name="DOB"
-                                                                              value="">
-                                                                  </div>
-                                                                  <div class="space-y-2"> <label
-                                                                              class="ti-form-label mb-0">Gender</label>
-                                                                        <ul class="flex flex-col sm:flex-row">
-                                                                              <li
-                                                                                    class="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                                                    <div
-                                                                                          class="relative flex items-start w-full">
+                        <form action="/profile/edit" method="post" enctype="multipart/form-data">
+                              {{.CSRFField}}
+                              <div class="box">
+                                    <div class="box-body p-0">
+                                          <div id="profile-settings-1" role="tabpanel"
+                                                aria-labelledby="profile-settings-item-1">
+                                                <div class="box border-0 shadow-none mb-0">
+                                                      <div class="box-header">
+                                                            <h5 class="box-title leading-none flex"><i
+                                                                        class="ri ri-shield-user-line ltr:mr-2 rtl:ml-2"></i>
+                                                                  Personal Settings</h5>
+                                                      </div>
+
+                                                      <div class="box-body">
+                                                            <div>
+                                                                  <div class="grid lg:grid-cols-2 gap-6">
+                                                                        <div class="space-y-2"> <label
+                                                                                    class="ti-form-label mb-0">First
+                                                                                    Name</label> <input type="text"
+                                                                                    class="my-auto ti-form-input"
+                                                                                    placeholder="Enter first name"
+                                                                                    name="FirstName"
+                                                                                    value="{{.Form.FirstName}}">
+                                                                              {{with .FormErrors.FirstName}}
+                                                                              <p class="text-red-500">{{.}}</p>
+                                                                              {{end}}
+                                                                        </div>
+                                                                        <div class="space-y-2"> <label
+                                                                                    class="ti-form-label mb-0">Last
+                                                                                    Name</label> <input type="text"
+                                                                                    class="my-auto ti-form-input"
+                                                                                    placeholder="Enter last name"
+                                                                                    name="LastName"
+                                                                                    value="{{.Form.LastName}}"> </div>
+                                                                        <div class="space-y-2"> <label
+                                                                                    class="ti-form-label mb-0">Phone
+                                                                                    Number</label> <input type="text"
+                                                                                    class="my-auto ti-form-input"
+                                                                                    placeholder="Enter number"
+                                                                                    name="Mobile"
+                                                                                    value="{{ .Form.Mobile }}">
+                                                                        </div>
+                                                                        <div class="space-y-2"> <label
+                                                                                    class="ti-form-label mb-0">Email
+                                                                                    Address</label> <input type="email"
+                                                                                    class="my-auto ti-form-input"
+                                                                                    placeholder="your@site.com"
+                                                                                    name="email"
+                                                                                    value="{{.Form.Email}}">
+                                                                        </div>
+                                                                        <div class="space-y-2"> <label
+                                                                                    class="ti-form-label mb-0">Date
+                                                                                    Of Birth</label> <input type="date"
+                                                                                    class="ti-form-input flatpickr-input date"
+                                                                                    placeholder="Choose date" name="DOB"
+                                                                                    value="{{ .Form.DOB }}">
+                                                                        </div>
+                                                                        <div class="space-y-2"> <label
+                                                                                    class="ti-form-label mb-0">Gender</label>
+                                                                              <ul class="flex flex-col sm:flex-row">
+                                                                                    <li
+                                                                                          class="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
                                                                                           <div
-                                                                                                class="flex items-center h-5">
-                                                                                                <input id="female"
-                                                                                                      name="Gender"
-                                                                                                      type="radio"
-                                                                                                      class="ti-form-radio"
-                                                                                                      value="female"
-                                                                                                      checked>
-                                                                                          </div> <label for="Gender"
-                                                                                                class="ltr:ml-3 rtl:mr-3 block w-full text-sm text-gray-600 dark:text-white/70">
-                                                                                                Female
-                                                                                          </label>
-                                                                                    </div>
-                                                                              </li>
-                                                                              <li
-                                                                                    class="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                                                    <div
-                                                                                          class="relative flex items-start w-full">
+                                                                                                class="relative flex items-start w-full">
+                                                                                                <div
+                                                                                                      class="flex items-center h-5">
+                                                                                                      <input id="female"
+                                                                                                            name="Gender"
+                                                                                                            type="radio"
+                                                                                                            class="ti-form-radio"
+                                                                                                            value="1"
+                                                                                                            {{if eq .Form.Gender 1}}
+                                                                                                            checked
+                                                                                                            {{end}}>
+                                                                                                </div> <label
+                                                                                                      for="Gender"
+                                                                                                      class="ltr:ml-3 rtl:mr-3 block w-full text-sm text-gray-600 dark:text-white/70">
+                                                                                                      Female
+                                                                                                </label>
+                                                                                          </div>
+                                                                                    </li>
+                                                                                    <li
+                                                                                          class="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
                                                                                           <div
-                                                                                                class="flex items-center h-5">
-                                                                                                <input id="male"
-                                                                                                      name="Gender"
-                                                                                                      type="radio"
-                                                                                                      value="male"
-                                                                                                      class="ti-form-radio">
-                                                                                          </div> <label for="Gender"
-                                                                                                class="ltr:ml-3 rtl:mr-3 block w-full text-sm text-gray-600 dark:text-white/70">
-                                                                                                Male
-                                                                                          </label>
-                                                                                    </div>
-                                                                              </li>
-                                                                              <li
-                                                                                    class="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                                                    <div
-                                                                                          class="relative flex items-start w-full">
+                                                                                                class="relative flex items-start w-full">
+                                                                                                <div
+                                                                                                      class="flex items-center h-5">
+                                                                                                      <input id="male"
+                                                                                                            name="Gender"
+                                                                                                            type="radio"
+                                                                                                            value="2"
+                                                                                                            class="ti-form-radio"
+                                                                                                            {{if eq .Form.Gender 2}}
+                                                                                                            checked
+                                                                                                            {{end}}>
+                                                                                                </div> <label
+                                                                                                      for="Gender"
+                                                                                                      class="ltr:ml-3 rtl:mr-3 block w-full text-sm text-gray-600 dark:text-white/70">
+                                                                                                      Male
+                                                                                                </label>
+                                                                                          </div>
+                                                                                    </li>
+                                                                                    <li
+                                                                                          class="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
                                                                                           <div
-                                                                                                class="flex items-center h-5">
-                                                                                                <input id="other"
-                                                                                                      name="Gender"
-                                                                                                      type="radio"
-                                                                                                      value="other"
-                                                                                                      class="ti-form-radio">
-                                                                                          </div> <label for="Gender"
-                                                                                                class="ltr:ml-3 rtl:mr-3 block w-full text-sm text-gray-600 dark:text-white/70">
-                                                                                                Others
-                                                                                          </label>
-                                                                                    </div>
-                                                                              </li>
-                                                                        </ul>
+                                                                                                class="relative flex items-start w-full">
+                                                                                                <div
+                                                                                                      class="flex items-center h-5">
+                                                                                                      <input id="other"
+                                                                                                            name="Gender"
+                                                                                                            type="radio"
+                                                                                                            value="other"
+                                                                                                            class="ti-form-radio"
+                                                                                                            {{if eq .Form.Gender 3}}
+                                                                                                            checked
+                                                                                                            {{end}}>
+                                                                                                </div> <label
+                                                                                                      for="Gender"
+                                                                                                      class="ltr:ml-3 rtl:mr-3 block w-full text-sm text-gray-600 dark:text-white/70">
+                                                                                                      Others
+                                                                                                </label>
+                                                                                          </div>
+                                                                                    </li>
+                                                                              </ul>
+                                                                        </div>
                                                                   </div>
-                                                            </div>
-                                                            <div class="my-5">
-                                                                  <div class="space-y-2"> <label
-                                                                              class="ti-form-label mb-0">Address</label>
-                                                                        <input type="text" class="my-auto ti-form-input"
-                                                                              placeholder="Enter address"
-                                                                              name="Address">
+                                                                  <div class="my-5">
+                                                                        <div class="space-y-2"> <label
+                                                                                    class="ti-form-label mb-0">Address</label>
+                                                                              <input type="text"
+                                                                                    class="my-auto ti-form-input"
+                                                                                    placeholder="Enter address"
+                                                                                    name="Address"
+                                                                                    value="{{ .Form.Address }}">
+                                                                        </div>
                                                                   </div>
-                                                            </div>
-                                                            <div class="grid lg:grid-cols-2 gap-6">
-                                                                  <div class="space-y-2"> <label
-                                                                              class="ti-form-label mb-0">City</label>
-                                                                        <input type="text" class="my-auto ti-form-input"
-                                                                              placeholder="Enter city" name="City">
-                                                                  </div>
-                                                                  <div class="space-y-2"> <label
-                                                                              class="ti-form-label mb-0">Country</label>
-                                                                        <input type="text" class="my-auto ti-form-input"
-                                                                              placeholder="Enter country"
-                                                                              name="Country">
+                                                                  <div class="grid lg:grid-cols-2 gap-6">
+                                                                        <div class="space-y-2"> <label
+                                                                                    class="ti-form-label mb-0">City</label>
+                                                                              <input type="text"
+                                                                                    class="my-auto ti-form-input"
+                                                                                    placeholder="Enter city" name="City"
+                                                                                    value="{{ .Form.City }}">
+                                                                        </div>
+                                                                        <div class="space-y-2"> <label
+                                                                                    class="ti-form-label mb-0">Country</label>
+                                                                              <input type="text"
+                                                                                    class="my-auto ti-form-input"
+                                                                                    placeholder="Enter country"
+                                                                                    name="Country"
+                                                                                    value="{{ .Form.Country }}">
+                                                                        </div>
                                                                   </div>
                                                             </div>
                                                       </div>
                                                 </div>
                                           </div>
-                                    </div>
-                                    <div id="profile-settings-3" class="hidden" role="tabpanel"
-                                          aria-labelledby="profile-settings-item-3">
-                                          <div class="box border-0 shadow-none mb-0">
-                                                <div class="box-header">
-                                                      <h5 class="box-title leading-none flex"><i
+                                          <!-- <div id="profile-settings-3" class="hidden" role="tabpanel"
+                                                aria-labelledby="profile-settings-item-3">
+                                                <div class="box border-0 shadow-none mb-0">
+                                                      <div class="box-header">
+                                                            <h5 class="box-title leading-none flex"><i
                                                                   class="ri ri-lock-line ltr:mr-2 rtl:ml-2"></i>
-                                                            Password Settings</h5>
+                                                                  Password Settings</h5>
                                                 </div>
                                                 <div class="box-body p-0">
                                                       <div class="grid grid-cols-12">
@@ -442,16 +464,18 @@
                                                       </div>
                                                 </div>
                                           </div>
+                                    </div> -->
                                     </div>
-                              </div>
-                              <div class="box-footer text-end space-x-3 rtl:space-x-reverse"> <a
-                                          href="javascript:void(0);" class="ti-btn m-0 ti-btn-soft-primary"><i
-                                                class="ri ri-refresh-line"></i> Update</a> <a href="javascript:void(0);"
-                                          class="ti-btn m-0 ti-btn-soft-secondary"><i
-                                                class="ri ri-close-circle-line"></i> Cancel</a> </div>
-                        </div>
+                                    <div class="box-footer text-end space-x-3 rtl:space-x-reverse">
+                                          <button type="submit" class="ti-btn m-0 ti-btn-soft-primary"><i
+                                                      class="fas fa-light fa-arrows-rotate"></i> Update</button>
+                                          <a href="javascript:void(0);" class="ti-btn m-0 ti-btn-soft-secondary"><i
+                                                      class="ri ri-close-circle-line"></i> Cancel</a>
+                                    </div>
+                        </form>
                   </div>
             </div>
       </div>
+</div>
 </div>
 {{template "backoffice_footer"}}

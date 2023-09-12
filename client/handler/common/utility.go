@@ -243,3 +243,13 @@ func (s *Server) GetAuthMiddleware(next http.Handler) http.Handler {
 		http.Redirect(w, r, HomePath, http.StatusSeeOther)
 	})
 }
+
+func (s *Server) StringToDate(date string) time.Time {
+	layout := "2006-01-02"
+	fDate, err := time.Parse(layout, date)
+	if err != nil {
+		log.Println(err)
+	}
+
+	return fDate
+}

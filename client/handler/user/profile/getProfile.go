@@ -6,6 +6,7 @@ import (
 
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	userG "github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
@@ -15,9 +16,6 @@ func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
 	res, err := s.User.GetUserByID(ctx, &userG.GetUserByIDRequest{
 		ID: loggedUser.ID,
 	})
-	fmt.Println("---res---")
-	fmt.Println(res)
-	fmt.Println("---res---")
 	if err != nil {
 		errMsg := "unable to get profile data"
 		log.WithError(err).Error(errMsg)
@@ -31,6 +29,7 @@ func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
 			Email:     res.Email,
 			Mobile:    res.PhoneNumber,
 			Gender:    int(res.Gender),
+			DOB:       res.Birthday.AsTime().Format("2006-01-02"),
 			Address:   res.Address,
 			City:      res.City,
 			Country:   res.Country,
@@ -40,8 +39,9 @@ func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
 	s.loadProfileTemplate(w, r, data, "profile.html")
 }
 
-func (s *Svc) editProfileHandler(w http.ResponseWriter, r *http.Request) {
-	log := s.Logger.WithField("method", "handler.Profile.editProfileHandler")
+func (s *Svc) updateProfileHandler(w http.ResponseWriter, r *http.Request) {
+	log := s.Logger.WithField("method", "handler.Profile.updateProfileHandler")
+	fmt.Println("updateProfileHandler")
 	ctx := r.Context()
 	loggedUser := s.GetSessionUser(r).ID
 	var form Profile
@@ -62,6 +62,7 @@ func (s *Svc) editProfileHandler(w http.ResponseWriter, r *http.Request) {
 		LastName:    form.LastName,
 		PhoneNumber: form.Mobile,
 		Gender:      int64(form.Gender),
+		Birthday:    timestamppb.New(s.StringToDate(form.DOB)),
 		Address:     form.Address,
 		City:        form.City,
 		Country:     form.Country,
