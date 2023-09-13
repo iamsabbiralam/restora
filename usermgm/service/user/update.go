@@ -21,8 +21,6 @@ func (h *Handler) UpdateUser(ctx context.Context, req *upb.UpdateUserRequest) (*
 		ID:       req.GetID(),
 		Username: req.GetUserName(),
 		Email:    req.GetEmail(),
-		Status:   int32(req.GetStatus()),
-		Password: req.GetPassword(),
 	}, req.GetID()); err != nil {
 		log.WithError(err).Error("validation error while updating user")
 		return nil, uErr.HandleServiceErr(err)
@@ -35,7 +33,6 @@ func (h *Handler) UpdateUser(ctx context.Context, req *upb.UpdateUserRequest) (*
 		Email:    req.GetEmail(),
 		Username: req.GetUserName(),
 	}
-
 	res, err := h.usr.UpdateUser(ctx, dbUser)
 	if err != nil {
 		errMsg := "failed to update user"
@@ -47,6 +44,27 @@ func (h *Handler) UpdateUser(ctx context.Context, req *upb.UpdateUserRequest) (*
 		return nil, uErr.HandleServiceErr(errors.New("update user response is nil"))
 	}
 
+	dbUserInfo := storage.UserInformation{
+		UserID:    req.GetID(),
+		FirstName: req.GetFirstName(),
+		LastName:  req.GetLastName(),
+		Mobile:    req.GetPhoneNumber(),
+		DOB:       req.GetBirthday().AsTime(),
+		Address:   req.GetAddress(),
+		City:      req.GetCity(),
+		Country:   req.GetCountry(),
+	}
+	userInfo, err := h.usr.UpdateUserInformationByUserID(ctx, dbUserInfo)
+	if err != nil {
+		errMsg := "failed to update user information by user id"
+		log.WithError(err).Error(errMsg)
+		return nil, uErr.HandleServiceErr(err)
+	}
+
+	if userInfo == nil {
+		return nil, uErr.HandleServiceErr(errors.New("update user information response is nil"))
+	}
+
 	var password string
 	if req.GetPassword() == "" {
 		password = res.Password
@@ -56,10 +74,15 @@ func (h *Handler) UpdateUser(ctx context.Context, req *upb.UpdateUserRequest) (*
 
 	return &upb.UpdateUserResponse{
 		ID:        res.ID,
+		FirstName: userInfo.FirstName,
+		LastName:  userInfo.LastName,
 		Email:     res.Email,
 		UserName:  res.Username,
 		Password:  password,
 		Status:    upb.Status(res.Status),
+		Address:   userInfo.Address,
+		City:      userInfo.City,
+		Country:   userInfo.Country,
 		UpdatedAt: timestamppb.New(res.UpdatedAt),
 		UpdatedBy: res.UpdatedBy.String,
 	}, nil

@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -29,6 +30,7 @@ type CoreUser interface {
 	GetUserByUsername(context.Context, string) (*storage.User, error)
 	ListUsers(context.Context, storage.FilterUser) ([]storage.User, error)
 	GetUserInformationByUserID(context.Context, string) (*storage.UserInformation, error)
+	UpdateUserInformationByUserID(context.Context, storage.UserInformation) (*storage.UserInformation, error)
 }
 
 func New(usr CoreUser, logger *logrus.Entry) *Handler {
@@ -82,6 +84,8 @@ func (h *Handler) validateUserName(value string, id string) validation.Rule {
 func (h *Handler) validateUserEmail(email string, id string) validation.Rule {
 	return validation.By(func(interface{}) error {
 		res, err := h.usr.GetUserByEmail(context.Background(), email)
+		fmt.Println("email", res.Email)
+		fmt.Println("id", id)
 		if err != nil && status.Convert(err).Code().String() != "NotFound" {
 			return err
 		}
@@ -106,8 +110,7 @@ func (h *Handler) ValidateRequestedData(ctx context.Context, req storage.User, i
 	vre := validation.Required.Error
 	return validation.ValidateStruct(&req,
 		validation.Field(&req.Username, vre("Username is required"), h.validateUserName(req.Username, id)),
-		validation.Field(&req.Password, vre("Password is required")),
 		validation.Field(&req.Email, vre("Email is required"), is.EmailFormat.Error("The email is not valid"), h.validateUserEmail(req.Email, id)),
-		validation.Field(&req.Status, vre("The status is required"), validation.Min(1).Error("Status is Invalid"), validation.Max(2).Error("Status is Invalid")),
+		validation.Field(&req.Status, validation.Min(1).Error("Status is Invalid"), validation.Max(2).Error("Status is Invalid")),
 	)
 }

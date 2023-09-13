@@ -20,6 +20,7 @@ type Profile struct {
 	UserID    string
 	FirstName string
 	LastName  string
+	UserName  string
 	Email     string
 	Image     string
 	Mobile    string
