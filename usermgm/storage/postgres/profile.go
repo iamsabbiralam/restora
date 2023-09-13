@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	"github.com/iamsabbiralam/restora/usermgm/storage"
 )
@@ -64,9 +63,7 @@ func (s *Storage) GetUserInformation(ctx context.Context, userID string) (*stora
 	if err == sql.ErrNoRows {
 		return nil, storage.ErrNotFound
 	}
-	fmt.Println("---profile---")
-	fmt.Println(profile)
-	fmt.Println("---profile---")
+
 	return &profile, nil
 }
 

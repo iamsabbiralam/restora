@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gorilla/csrf"
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	userG "github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -23,10 +24,12 @@ func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := ProfileTempData{
+		CSRFField: csrf.TemplateField(r),
 		Form: Profile{
 			FirstName: res.FirstName,
 			LastName:  res.LastName,
 			Email:     res.Email,
+			UserName:  res.UserName,
 			Mobile:    res.PhoneNumber,
 			Gender:    int(res.Gender),
 			DOB:       res.Birthday.AsTime().Format("2006-01-02"),
@@ -41,7 +44,6 @@ func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Svc) updateProfileHandler(w http.ResponseWriter, r *http.Request) {
 	log := s.Logger.WithField("method", "handler.Profile.updateProfileHandler")
-	fmt.Println("updateProfileHandler")
 	ctx := r.Context()
 	loggedUser := s.GetSessionUser(r).ID
 	var form Profile
@@ -51,6 +53,8 @@ func (s *Svc) updateProfileHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 	}
 
+	fmt.Println("form", form)
+
 	errMessage := form.ValidateProfile(s.Server, r, loggedUser)
 	if errMessage != nil {
 		s.validateMsg(w, r, errMessage, form)
@@ -58,9 +62,12 @@ func (s *Svc) updateProfileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err := s.User.UpdateUser(ctx, &userG.UpdateUserRequest{
+		ID:          loggedUser,
 		FirstName:   form.FirstName,
 		LastName:    form.LastName,
 		PhoneNumber: form.Mobile,
+		UserName:    form.UserName,
+		Email:       form.Email,
 		Gender:      int64(form.Gender),
 		Birthday:    timestamppb.New(s.StringToDate(form.DOB)),
 		Address:     form.Address,
