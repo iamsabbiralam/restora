@@ -1,7 +1,6 @@
 package profile
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/csrf"
@@ -52,8 +51,6 @@ func (s *Svc) updateProfileHandler(w http.ResponseWriter, r *http.Request) {
 		log.WithError(err).Error(errMsg)
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 	}
-
-	fmt.Println("form", form)
 
 	errMessage := form.ValidateProfile(s.Server, r, loggedUser)
 	if errMessage != nil {

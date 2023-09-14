@@ -50,6 +50,7 @@ func (h *Handler) UpdateUser(ctx context.Context, req *upb.UpdateUserRequest) (*
 		LastName:  req.GetLastName(),
 		Mobile:    req.GetPhoneNumber(),
 		DOB:       req.GetBirthday().AsTime(),
+		Gender:    int(req.GetGender()),
 		Address:   req.GetAddress(),
 		City:      req.GetCity(),
 		Country:   req.GetCountry(),

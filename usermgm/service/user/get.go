@@ -80,6 +80,7 @@ func (h *Handler) GetUserByID(ctx context.Context, req *upb.GetUserByIDRequest) 
 		Password:    r.Password,
 		PhoneNumber: userInfo.Mobile,
 		Gender:      int64(userInfo.Gender),
+		Birthday:    timestamppb.New(userInfo.DOB),
 		Address:     userInfo.Address,
 		City:        userInfo.City,
 		Country:     userInfo.Country,
