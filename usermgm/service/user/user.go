@@ -3,8 +3,7 @@ package user
 import (
 	"context"
 	"errors"
-	"fmt"
-
+	
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/sirupsen/logrus"
@@ -84,8 +83,6 @@ func (h *Handler) validateUserName(value string, id string) validation.Rule {
 func (h *Handler) validateUserEmail(email string, id string) validation.Rule {
 	return validation.By(func(interface{}) error {
 		res, err := h.usr.GetUserByEmail(context.Background(), email)
-		fmt.Println("email", res.Email)
-		fmt.Println("id", id)
 		if err != nil && status.Convert(err).Code().String() != "NotFound" {
 			return err
 		}

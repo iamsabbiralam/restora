@@ -112,7 +112,8 @@
                                                                                     value="{{.Form.Email}}">
                                                                         </div>
                                                                         <div class="space-y-2"> <label
-                                                                                    class="ti-form-label mb-0">Username</label> <input type="text"
+                                                                                    class="ti-form-label mb-0">Username</label>
+                                                                              <input type="text"
                                                                                     class="my-auto ti-form-input"
                                                                                     placeholder="Enter username"
                                                                                     name="UserName"
@@ -179,7 +180,7 @@
                                                                                                       <input id="other"
                                                                                                             name="Gender"
                                                                                                             type="radio"
-                                                                                                            value="other"
+                                                                                                            value="3"
                                                                                                             class="ti-form-radio"
                                                                                                             {{if eq .Form.Gender 3}}
                                                                                                             checked
@@ -225,253 +226,7 @@
                                                       </div>
                                                 </div>
                                           </div>
-                                          <!-- <div id="profile-settings-3" class="hidden" role="tabpanel"
-                                                aria-labelledby="profile-settings-item-3">
-                                                <div class="box border-0 shadow-none mb-0">
-                                                      <div class="box-header">
-                                                            <h5 class="box-title leading-none flex"><i
-                                                                  class="ri ri-lock-line ltr:mr-2 rtl:ml-2"></i>
-                                                                  Password Settings</h5>
-                                                </div>
-                                                <div class="box-body p-0">
-                                                      <div class="grid grid-cols-12">
-                                                            <div
-                                                                  class="col-span-12 xl:col-span-6 xl:ltr:border-r xl:rtl:border-l xl:border-b-0 border-b p-6 border-gray-200 dark:border-white/10">
-                                                                  <div class="space-y-4">
-                                                                        <div class="space-y-2"> <label
-                                                                                    class="ti-form-label mb-0">Email
-                                                                                    Id<sup
-                                                                                          class="text-danger">*</sup></label>
-                                                                              <input type="email"
-                                                                                    class="my-auto ti-form-input"
-                                                                                    placeholder="Email Id" required>
-                                                                        </div>
-                                                                        <div class="space-y-2"> <label
-                                                                                    class="ti-form-label mb-0">Current
-                                                                                    Password<sup
-                                                                                          class="text-danger">*</sup></label>
-                                                                              <input type="password"
-                                                                                    class="my-auto ti-form-input"
-                                                                                    autocomplete="off"
-                                                                                    placeholder="Current Password"
-                                                                                    required>
-                                                                        </div>
-                                                                        <div class="space-y-2"> <label
-                                                                                    class="ti-form-label mb-0">New
-                                                                                    Password<sup
-                                                                                          class="text-danger">*</sup></label>
-                                                                              <input type="password"
-                                                                                    class="my-auto ti-form-input"
-                                                                                    autocomplete="off"
-                                                                                    placeholder="New Password" required>
-                                                                        </div>
-                                                                        <div class="space-y-2"> <label
-                                                                                    class="ti-form-label mb-0">Confirm
-                                                                                    Password<sup
-                                                                                          class="text-danger">*</sup></label>
-                                                                              <input type="password"
-                                                                                    class="my-auto ti-form-input"
-                                                                                    autocomplete="off"
-                                                                                    placeholder="Confirm Password"
-                                                                                    required>
-                                                                        </div>
-                                                                        <p
-                                                                              class="text-xs text-gray-500 dark:text-white/70">
-                                                                              Password should be min of <b
-                                                                                    class="text-success">10
-                                                                                    characters <sup>*</sup>
-                                                                              </b> (and up to 100
-                                                                              characters),<b class="text-success">One
-                                                                                    Upper Case
-                                                                                    Character<sup>*</sup></b>
-                                                                              and <b class="text-success">One
-                                                                                    Special
-                                                                                    Character<sup>*</sup></b>
-                                                                              e.g., ! @ # ? included.</p>
-                                                                  </div>
-                                                            </div>
-                                                            <div class="col-span-12 xl:col-span-6">
-                                                                  <div class="box border-0 shadow-none">
-                                                                        <div class="box-header">
-                                                                              <div class="sm:flex space-y-4">
-                                                                                    <h5 class="box-title my-auto">
-                                                                                          Web Linked Devices
-                                                                                    </h5> <button type="button"
-                                                                                          class="py-1 px-3 ti-btn ti-btn-primary text-sm m-0">Log
-                                                                                          out From All
-                                                                                          Devices </button>
-                                                                              </div>
-                                                                        </div>
-                                                                        <div class="box-body">
-                                                                              <ul class="flex flex-col">
-                                                                                    <li
-                                                                                          class="ti-list-group bg-white text-gray-800 dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                                                          <div
-                                                                                                class="sm:flex w-full space-y-2">
-                                                                                                <div
-                                                                                                      class="flex space-x-3 rtl:space-x-reverse">
-                                                                                                      <div
-                                                                                                            class="avatar rounded-sm avatar-sm bg-gray-100 dark:bg-black/20 p-2.5">
-                                                                                                            <i
-                                                                                                                  class="ri ri-smartphone-line text-xl leading-none text-gray-500 dark:text-white/70"></i>
-                                                                                                      </div>
-                                                                                                      <div class="">
-                                                                                                            <p
-                                                                                                                  class="mb-0 text-sm">
-                                                                                                                  Mobile-Poco-M2-Pro
-                                                                                                            </p>
-                                                                                                            <p
-                                                                                                                  class="mb-0 text-gray-500 dark:text-white/70 text-xs">
-                                                                                                                  Manchester,
-                                                                                                                  UK-Nov
-                                                                                                                  30,
-                                                                                                                  04:45PM
-                                                                                                            </p>
-                                                                                                      </div>
-                                                                                                </div>
-                                                                                                <div
-                                                                                                      class="ltr:ml-auto rtl:mr-auto my-auto text-end">
-                                                                                                      <button
-                                                                                                            type="button"
-                                                                                                            class="px-2 py-1 ti-btn ti-btn-soft-info text-xs">ReWoke</button>
-                                                                                                      <button
-                                                                                                            type="button"
-                                                                                                            class="px-2 py-1 ti-btn ti-btn-soft-danger text-xs">Logout</button>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </li>
-                                                                                    <li
-                                                                                          class="ti-list-group bg-white text-gray-800 dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                                                          <div
-                                                                                                class="sm:flex w-full space-y-2">
-                                                                                                <div
-                                                                                                      class="flex space-x-3 rtl:space-x-reverse">
-                                                                                                      <div
-                                                                                                            class="avatar rounded-sm avatar-sm bg-gray-100 dark:bg-black/20 p-2.5">
-                                                                                                            <i
-                                                                                                                  class="ri ri-tablet-line text-xl leading-none text-gray-500 dark:text-white/70"></i>
-                                                                                                      </div>
-                                                                                                      <div class="">
-                                                                                                            <p
-                                                                                                                  class="mb-0 text-sm">
-                                                                                                                  Apple
-                                                                                                                  Tablet
-                                                                                                            </p>
-                                                                                                            <p
-                                                                                                                  class="mb-0 text-gray-500 dark:text-white/70 text-xs">
-                                                                                                                  Manchester,
-                                                                                                                  UK-Nov
-                                                                                                                  30,
-                                                                                                                  02:45PM
-                                                                                                            </p>
-                                                                                                      </div>
-                                                                                                </div>
-                                                                                                <div
-                                                                                                      class="ltr:ml-auto rtl:mr-auto my-auto text-end">
-                                                                                                      <button
-                                                                                                            type="button"
-                                                                                                            class="px-2 py-1 ti-btn ti-btn-soft-info text-xs">ReWoke</button>
-                                                                                                      <button
-                                                                                                            type="button"
-                                                                                                            class="px-2 py-1 ti-btn ti-btn-soft-danger text-xs">Logout</button>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </li>
-                                                                                    <li
-                                                                                          class="ti-list-group bg-white text-gray-800 dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                                                          <div
-                                                                                                class="sm:flex w-full space-y-2">
-                                                                                                <div
-                                                                                                      class="flex space-x-3 rtl:space-x-reverse">
-                                                                                                      <div
-                                                                                                            class="avatar rounded-sm avatar-sm bg-gray-100 dark:bg-black/20 p-2.5">
-                                                                                                            <i
-                                                                                                                  class="ri ri-airplay-line text-xl leading-none text-gray-500 dark:text-white/70"></i>
-                                                                                                      </div>
-                                                                                                      <div class="">
-                                                                                                            <p
-                                                                                                                  class="mb-0 text-sm">
-                                                                                                                  Dell
-                                                                                                                  Desktop
-                                                                                                            </p>
-                                                                                                            <p
-                                                                                                                  class="mb-0 text-gray-500 dark:text-white/70 text-xs">
-                                                                                                                  Manchester,
-                                                                                                                  UK-Nov
-                                                                                                                  30,
-                                                                                                                  02:45PM
-                                                                                                            </p>
-                                                                                                      </div>
-                                                                                                </div>
-                                                                                                <div
-                                                                                                      class="ltr:ml-auto rtl:mr-auto my-auto text-end">
-                                                                                                      <button
-                                                                                                            type="button"
-                                                                                                            class="px-2 py-1 ti-btn ti-btn-soft-info text-xs">ReWoke</button>
-                                                                                                      <button
-                                                                                                            type="button"
-                                                                                                            class="px-2 py-1 ti-btn ti-btn-soft-danger text-xs">Logout</button>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </li>
-                                                                                    <li
-                                                                                          class="ti-list-group bg-white text-gray-800 dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                                                          <div
-                                                                                                class="sm:flex w-full space-y-2">
-                                                                                                <div
-                                                                                                      class="flex space-x-3 rtl:space-x-reverse">
-                                                                                                      <div
-                                                                                                            class="avatar rounded-sm avatar-sm bg-gray-100 dark:bg-black/20 p-2.5">
-                                                                                                            <i
-                                                                                                                  class="ri ri-macbook-line text-xl leading-none text-gray-500 dark:text-white/70"></i>
-                                                                                                      </div>
-                                                                                                      <div class="">
-                                                                                                            <p
-                                                                                                                  class="mb-0 text-sm">
-                                                                                                                  Lenovo
-                                                                                                                  Laptop
-                                                                                                            </p>
-                                                                                                            <p
-                                                                                                                  class="mb-0 text-gray-500 dark:text-white/70 text-xs">
-                                                                                                                  Manchester,
-                                                                                                                  UK-Nov
-                                                                                                                  30,
-                                                                                                                  02:45PM
-                                                                                                            </p>
-                                                                                                      </div>
-                                                                                                </div>
-                                                                                                <div
-                                                                                                      class="ltr:ml-auto rtl:mr-auto my-auto text-end">
-                                                                                                      <button
-                                                                                                            type="button"
-                                                                                                            class="px-2 py-1 ti-btn ti-btn-soft-info text-xs">ReWoke</button>
-                                                                                                      <button
-                                                                                                            type="button"
-                                                                                                            class="px-2 py-1 ti-btn ti-btn-soft-danger text-xs">Logout</button>
-                                                                                                </div>
-                                                                                          </div>
-                                                                                    </li>
-                                                                              </ul>
-                                                                        </div>
-                                                                  </div>
-                                                                  <div class="my-5 px-6">
-                                                                        <div
-                                                                              class="sm:space-x-6 rtl:space-x-reverse sm:flex space-y-4">
-                                                                              <label class="ti-form-label my-auto">Account
-                                                                                    :</label> <button type="button"
-                                                                                    class="ti-btn ti-btn-danger">
-                                                                                    Deactivate Account
-                                                                              </button> <button type="button"
-                                                                                    class="ti-btn-disabled ti-btn ti-btn-success">
-                                                                                    Activate Account
-                                                                              </button>
-                                                                        </div>
-                                                                  </div>
-                                                            </div>
-                                                      </div>
-                                                </div>
-                                          </div>
-                                    </div> -->
+                                          {{ template "edit_password"}}
                                     </div>
                                     <div class="box-footer text-end space-x-3 rtl:space-x-reverse">
                                           <button type="submit" class="ti-btn m-0 ti-btn-soft-primary"><i
@@ -479,6 +234,7 @@
                                           <a href="javascript:void(0);" class="ti-btn m-0 ti-btn-soft-secondary"><i
                                                       class="ri ri-close-circle-line"></i> Cancel</a>
                                     </div>
+                              </div>
                         </form>
                   </div>
             </div>
