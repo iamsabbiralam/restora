@@ -1,12 +1,15 @@
 package profile
 
 import (
+	"encoding/json"
 	"net/http"
 
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/gorilla/csrf"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	userG "github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
@@ -78,4 +81,86 @@ func (s *Svc) updateProfileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, common.ProfilePath, http.StatusSeeOther)
+}
+
+func (s *Svc) uploadProfileImageHandler(w http.ResponseWriter, r *http.Request) {
+	log := s.Logger.WithField("method", "handler.Profile.UserProfileEditHandler")
+	ctx := r.Context()
+	loggedUser := s.GetSessionUser(r).ID
+	if err := r.ParseMultipartForm(10 << 20); err != nil {
+		errMsg := "parsing form"
+		log.WithError(err).Error(errMsg)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	var form Profile
+	if err := s.Decoder.Decode(&form, r.PostForm); err != nil {
+		log.WithError(err).Error("decoding form")
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	res, err := s.User.GetUserByID(ctx, &userG.GetUserByIDRequest{
+		ID: loggedUser,
+	})
+	if err != nil {
+		errMsg := "unable to get profile info"
+		log.WithError(err).Error(errMsg)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	if res == nil {
+		errMsg := "user not found"
+		log.WithError(err).Error(errMsg)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	if err := validation.Validate(validateImage(s, r, loggedUser)); err != nil {
+		errMsg := "image is required"
+		log.WithError(err).Error(errMsg)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	file, fileHeader, err := r.FormFile("Image")
+	if err != nil {
+		errMsg := "unable to get file"
+		log.WithError(err).Error(errMsg)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	image, err := s.SaveImage(file, fileHeader, "assets/images/profile/")
+	if err != nil {
+		errMsg := "unable to save file"
+		log.WithError(err).Error(errMsg)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	form.Image = image
+	_, err = s.User.UpdateUser(ctx, &userG.UpdateUserRequest{
+		Image: image,
+	})
+	if err != nil {
+		errMsg := "unable to update profile image"
+		log.WithError(err).Error(errMsg)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	dataImage := map[string]string{
+		"Image":   image,
+		"Message": "Successfully update Image",
+	}
+	if err := s.SessionResetLoginData(r, w); err != nil {
+		log.Error("error with update session user: %+v", err)
+		json.NewEncoder(w).Encode(err.Error())
+		return
+	}
+
+	json.NewEncoder(w).Encode(dataImage)
 }
