@@ -54,6 +54,7 @@ func Register(h *common.Server, mw *mux.Router) (*mux.Router, error) {
 
 	mw.HandleFunc(common.ProfilePath, s.getProfileHandler).Methods("GET").Name("profile")
 	mw.HandleFunc(common.ProfileEditPath, s.updateProfileHandler).Methods("POST").Name("profile.update")
+	mw.HandleFunc(common.UploadProfileImagePath, s.uploadProfileImageHandler).Methods("POST").Name("profileUpdateImage")
 	return mw, nil
 }
 
@@ -98,4 +99,28 @@ func (s *Svc) validateMsg(w http.ResponseWriter, r *http.Request, err error, for
 
 	s.loadProfileTemplate(w, r, data, "profile-edit.html")
 	return nil
+}
+
+func validateImage(s *Svc, r *http.Request, id string) validation.Rule {
+	log := s.Logger.WithField("method", "handler.utility.validateImage")
+	return validation.By(func(interface{}) error {
+		_, _, err := r.FormFile("Image")
+		if err != nil {
+			errMsg := "Image is required"
+			log.WithError(err).Error(errMsg)
+			return nil
+		}
+
+		if id != "" {
+			return nil
+		}
+
+		if err := s.ValidateSingleFileType(r, "Image", common.ValidateImgFileType); err != nil {
+			errMsg := "Image is invalid"
+			log.WithError(err).Error(errMsg)
+			return nil
+		}
+
+		return nil
+	})
 }
