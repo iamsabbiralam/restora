@@ -37,3 +37,5 @@
 > User can show the dashboard with the following data:
 
 ![Dashboard](doc-images/dashboard.png)
+
+![Profile](doc-images/profile.png)
