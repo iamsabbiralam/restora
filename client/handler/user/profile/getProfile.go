@@ -5,8 +5,9 @@ import (
 
 	"github.com/gorilla/csrf"
 	"github.com/iamsabbiralam/restora/client/handler/common"
-	userG "github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	userG "github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 )
 
 func (s *Svc) getProfileHandler(w http.ResponseWriter, r *http.Request) {
