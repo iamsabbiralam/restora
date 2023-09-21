@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+option go_package = "./proto/v1/server/category";
+
+package category;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+enum Status {
+      Unknown = 0;
+      Active = 1;
+      Inactive = 2;
+}
+
+enum SortBy {
+      DESC = 0;
+      ASC = 1;
+}
+
+enum SortByColumn {
+      Name = 0;
+}
+
+message Category {
+      string ID = 1;
+      string Name = 2;
+      Status Status = 3;
+      google.protobuf.Timestamp CreatedAt = 4;
+      string CreatedBy = 5;
+      google.protobuf.Timestamp UpdatedAt = 6;
+      string UpdatedBy = 7;
+      google.protobuf.Timestamp DeletedAt = 8;
+      string DeletedBy = 9;
+}
+
+message CreateCategoryRequest {
+      string Name = 1;
+      Status Status = 2;
+      google.protobuf.Timestamp CreatedAt = 3;
+      string CreatedBy = 4;
+      google.protobuf.Timestamp UpdatedAt = 5;
+      string UpdatedBy = 6;
+}
+
+message CreateCategoryResponse {
+      string ID = 1;
+}
+
+message GetCategoryRequest {
+      string ID = 1;
+}
+
+message GetCategoryResponse {
+      string ID = 1;
+      string Name = 2;
+      Status Status = 3;
+      google.protobuf.Timestamp CreatedAt = 4;
+      string CreatedBy = 5;
+      google.protobuf.Timestamp UpdatedAt = 6;
+      string UpdatedBy = 7;
+}
+
+message UpdateCategoryRequest {
+      string ID = 1;
+      string Name = 2;
+      Status Status = 3;
+      google.protobuf.Timestamp UpdatedAt = 4;
+      string UpdatedBy = 5;
+}
+
+message UpdateCategoryResponse {
+      string ID = 1;
+      string Name = 2;
+      Status Status = 3;
+      google.protobuf.Timestamp UpdatedAt = 4;
+      string UpdatedBy = 5;
+}
+
+message ListCategoryRequest {
+      SortBy       SortBy = 1;
+	SortByColumn SortByColumn = 2;
+	Status       Status = 3;
+	int32        Limit = 4;
+	int32        Offset = 5;
+	string       SearchTerm = 6;
+	string       StartDate = 7;    
+	string       EndDate = 8;
+}
+
+message ListCategoryResponse {
+      repeated Category Categories = 1;
+      int32 Total = 2;
+}
+
+message DeleteCategoryRequest {
+      string ID = 1;
+}
+
+service CategoryService {
+      rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse) {}
+      rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse) {}
+      rpc UpdateCategory(UpdateCategoryRequest) returns (UpdateCategoryResponse) {}
+      rpc ListCategory(ListCategoryRequest) returns (ListCategoryResponse) {}
+      rpc DeleteCategory(DeleteCategoryRequest) returns (google.protobuf.Empty) {}
+}

@@ -18,10 +18,8 @@ func TestMain(m *testing.M) {
 	}
 
 	var teardown func()
-	_testStorage, teardown = NewTestStorage(ddlConnStr, filepath.Join("..", "..", "migrations", "sql"))
-
+	_testStorage, teardown = NewTestStorage(ddlConnStr, filepath.Join("..", "..", "migrations"))
 	exitCode := m.Run()
-
 	if teardown != nil {
 		teardown()
 	}
