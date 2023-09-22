@@ -98,7 +98,7 @@ func (s *Storage) UpdateCategory(ctx context.Context, sc storage.Category) (*sto
 
 	defer stmt.Close()
 	var cat storage.Category
-	if err := stmt.Get(&cat, sc); err != nil {
+	if err := stmt.Get(&cat, sc); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 
