@@ -42,6 +42,7 @@ type (
 		ID     string `db:"id"`
 		Name   string `db:"name"`
 		Status int32  `db:"status"`
+		Count  int32
 		CRUDTimeDate
 	}
 
@@ -54,5 +55,11 @@ type (
 		SortByColumn string
 		StartDate    string
 		EndDate      string
+	}
+
+	ResAct struct {
+		Resource string
+		Action   string
+		Public   bool
 	}
 )
