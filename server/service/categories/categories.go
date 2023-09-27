@@ -16,12 +16,6 @@ type Svc struct {
 	logger *logrus.Entry
 }
 
-/* func New(cc CoreCategory) *Svc {
-	return &Svc{
-		cc: cc,
-	}
-} */
-
 type CoreCategory interface {
 	CreateCategory(context.Context, storage.Category) (string, error)
 	GetCategoryByID(context.Context, string) (*storage.Category, error)

@@ -18,10 +18,6 @@ enum SortBy {
       ASC = 1;
 }
 
-enum SortByColumn {
-      Name = 0;
-}
-
 message Category {
       string ID = 1;
       string Name = 2;
@@ -79,7 +75,7 @@ message UpdateCategoryResponse {
 
 message ListCategoryRequest {
       SortBy       SortBy = 1;
-	SortByColumn SortByColumn = 2;
+	string       SortByColumn = 2;
 	Status       Status = 3;
 	int32        Limit = 4;
 	int32        Offset = 5;

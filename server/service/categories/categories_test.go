@@ -136,7 +136,7 @@ func TestCategories(t *testing.T) {
 			tops:       cmp.Options{cmpopts.IgnoreFields(catG.Category{}, "ID", "CreatedAt", "UpdatedAt", "DeletedAt"), cmpopts.IgnoreUnexported(catG.ListCategoryResponse{}, catG.Category{}, timestamppb.Timestamp{})},
 			in: &catG.ListCategoryRequest{
 				SortBy:       catG.SortBy_DESC,
-				SortByColumn: catG.SortByColumn_Name,
+				SortByColumn: "",
 				SearchTerm:   "",
 				StartDate:    "",
 				EndDate:      "",
@@ -158,7 +158,7 @@ func TestCategories(t *testing.T) {
 			tops:       cmp.Options{cmpopts.IgnoreFields(catG.Category{}, "ID", "CreatedAt", "UpdatedAt", "DeletedAt"), cmpopts.IgnoreUnexported(catG.ListCategoryResponse{}, catG.Category{}, timestamppb.Timestamp{})},
 			in: &catG.ListCategoryRequest{
 				SortBy:       catG.SortBy_ASC,
-				SortByColumn: catG.SortByColumn_Name,
+				SortByColumn: "",
 				SearchTerm:   "",
 				StartDate:    "",
 				EndDate:      "",
@@ -180,7 +180,7 @@ func TestCategories(t *testing.T) {
 			tops:       cmp.Options{cmpopts.IgnoreFields(catG.Category{}, "ID", "CreatedAt", "UpdatedAt", "DeletedAt"), cmpopts.IgnoreUnexported(catG.ListCategoryResponse{}, catG.Category{}, timestamppb.Timestamp{})},
 			in: &catG.ListCategoryRequest{
 				SortBy:       catG.SortBy_ASC,
-				SortByColumn: catG.SortByColumn_Name,
+				SortByColumn: "",
 				SearchTerm:   "BdNews",
 				StartDate:    "",
 				EndDate:      "",
@@ -202,7 +202,7 @@ func TestCategories(t *testing.T) {
 			tops:       cmp.Options{cmpopts.IgnoreFields(catG.Category{}, "ID", "CreatedAt", "UpdatedAt", "DeletedAt"), cmpopts.IgnoreUnexported(catG.ListCategoryResponse{}, catG.Category{}, timestamppb.Timestamp{})},
 			in: &catG.ListCategoryRequest{
 				SortBy:       catG.SortBy_ASC,
-				SortByColumn: catG.SortByColumn_Name,
+				SortByColumn: "",
 				SearchTerm:   "",
 				StartDate:    "",
 				EndDate:      "",

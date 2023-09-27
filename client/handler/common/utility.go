@@ -268,6 +268,27 @@ func (s *Server) StringToDate(date string) time.Time {
 	return fDate
 }
 
+func DynamicUrlSwitch(url string, params map[string]string) string {
+	for k, v := range params {
+		url = strings.Replace(url, "{"+k+"}", v, 1)
+	}
+	return url
+}
+
+func GetStatus(st map[int32]string) []Status {
+	sts := []Status{}
+	for k, v := range st {
+		if k == 0 {
+			continue
+		}
+		sts = append(sts, Status{
+			ID:   k,
+			Name: v,
+		})
+	}
+	return sts
+}
+
 func GetQueryStringData(r *http.Request, keys []string, isNotDefault bool) *DynamicQueryString {
 	var data DynamicQueryString
 	queryParams := r.URL.Query()
