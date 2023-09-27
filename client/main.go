@@ -39,11 +39,8 @@ func main() {
 		"service":     svcName,
 		"version":     version,
 	})
-
 	conns := conn.NewConns(logger, cfg)
 	defer conns.Close()
-
-	
 	server, err := setupServer(logger, cfg, conns)
 	if err != nil {
 		logger.WithError(err).Error("failed to run setup server")
@@ -88,16 +85,4 @@ func setupServer(logger *logrus.Entry, cfg *viper.Viper, conn *conn.Conn) (*mux.
 	}
 
 	return srv, nil
-}
-
-type rt func(*http.Request) (*http.Response, error)
-
-func (t rt) RoundTrip(req *http.Request) (*http.Response, error) { return t(req) }
-
-func fakeTLS(r http.RoundTripper) http.RoundTripper {
-	return rt(func(req *http.Request) (*http.Response, error) {
-		rq := req.Clone(req.Context())
-		rq.Header.Set("X-Forwarded-Proto", "https")
-		return r.RoundTrip(rq)
-	})
 }

@@ -15,12 +15,14 @@ import (
 
 	"github.com/iamsabbiralam/restora/client/conn"
 	"github.com/iamsabbiralam/restora/client/handler/admin/adminUser"
+	"github.com/iamsabbiralam/restora/client/handler/admin/categories"
 	dashboard "github.com/iamsabbiralam/restora/client/handler/admin/dashboard"
 	urlAuth "github.com/iamsabbiralam/restora/client/handler/auth"
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	guest "github.com/iamsabbiralam/restora/client/handler/home"
 	"github.com/iamsabbiralam/restora/client/handler/user/password"
 	"github.com/iamsabbiralam/restora/client/handler/user/profile"
+	"github.com/iamsabbiralam/restora/proto/v1/server/category"
 	loginG "github.com/iamsabbiralam/restora/proto/v1/usermgm/auth"
 	"github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 	"github.com/iamsabbiralam/restora/utility/middleware"
@@ -40,13 +42,14 @@ func NewServer(
 	conn *conn.Conn,
 ) (*mux.Router, error) {
 	cs := &common.Server{
-		Config:  config,
-		Logger:  logger,
-		Assets:  hashfs.NewFS(assets),
-		Decoder: decoder,
-		Cookies: cookies,
-		User:    user.NewUserServiceClient(conn.Urm),
-		Login:   loginG.NewLoginServiceClient(conn.Urm),
+		Config:   config,
+		Logger:   logger,
+		Assets:   hashfs.NewFS(assets),
+		Decoder:  decoder,
+		Cookies:  cookies,
+		User:     user.NewUserServiceClient(conn.Urm),
+		Login:    loginG.NewLoginServiceClient(conn.Urm),
+		Category: category.NewCategoryServiceClient(conn.Server),
 	}
 
 	if err := cs.ParseTemplates(); err != nil {
@@ -67,7 +70,7 @@ func NewServer(
 	r, err := guest.Register(cs, r)
 	if err != nil {
 		return nil, err
-	}	
+	}
 
 	mw := r.NewRoute().Subrouter()
 	mw.Use(cs.GetAuthMiddleware)
@@ -92,6 +95,11 @@ func NewServer(
 	}
 
 	mw, err = adminUser.Register(cs, mw)
+	if err != nil {
+		return nil, err
+	}
+
+	mw, err = categories.Register(cs, mw)
 	if err != nil {
 		return nil, err
 	}

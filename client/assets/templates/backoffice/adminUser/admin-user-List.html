@@ -74,6 +74,9 @@
                                                 </tbody>
                                           </table>
                                     </div>
+                                    <div class="p-4">
+                                          {{ template "no-data" dict "Data" .Data}}
+                                    </div>
                                     {{ template "pagination" dict "PaginationData" .PaginationData "Data" .Data}}
                               </div>
                         </div>
