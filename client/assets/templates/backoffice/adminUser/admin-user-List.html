@@ -1,0 +1,84 @@
+{{template "backoffice_header"}}
+{{template "backoffice_top_nav"}}
+<div class="content">
+      <div class="main-content">
+            {{ template "breadcrumb" dict "BTitle" "Users"}}
+            {{with .FormMessage.SuccessMessage}}
+            <div id="alert-msg" class="duration-300 overflow-hidden">
+                  <div class="text-green-500 p-5 w-full bg-green-500 bg-opacity-20 mb-7 flex items-center">
+                        <div class="flex space-x-3 mr-3">
+                              <svg class="flex-none fill-current text-green-500 h-4 w-4" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                          d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z">
+                                    </path>
+                              </svg>
+                              <div class="text-sm text-green-500">{{.}}</div>
+                        </div>
+                        <button type="button" class="text-lg ml-auto">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                  </div>
+            </div>
+            {{end}}
+            <div class="col-span-12 lg:col-span-6">
+                  <div class="box">
+                        <div class="box-body">
+                              <div class="table-bordered rounded-sm ti-custom-table-head">
+                                    <form action="" method="GET" class="flex items-center w-full">
+                                          <div class="py-2 px-3">
+                                                <div class="relative max-w-xs"> <label for="search-term"
+                                                            class="sr-only">Search</label> <input type="text"
+                                                            value="{{.SearchTerm}}" name="search-term" id="search"
+                                                            class="p-3 ltr:pl-10 rtl:pr-10 ti-form-input"
+                                                            placeholder="Search for items">
+                                                      <div
+                                                            class="absolute inset-y-0 ltr:left-0 rtl:right-0 flex items-center pointer-events-none ltr:pl-4 rtl:pr-4">
+                                                            <svg class="h-3.5 w-3.5 text-gray-400 dark:text-white/70"
+                                                                  xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                  height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                                  <path
+                                                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                                            </svg>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </form>
+                                    <div class="overflow-auto">
+                                          <table class="ti-custom-table ti-custom-table-head">
+                                                <thead class="bg-gray-50 dark:bg-black/20">
+                                                      <tr>
+                                                            <th scope="col" class="">Full Name</th>
+                                                            <th scope="col" class="">Username</th>
+                                                            <th scope="col" class="">Email</th>
+                                                            <th scope="col" class="">Status</th>
+                                                            <th scope="col" class="">Action
+                                                            </th>
+                                                      </tr>
+                                                </thead>
+                                                <tbody class="">
+                                                      {{ range .Data}}
+                                                      <tr>
+                                                            <td class="font-medium">John Brown</td>
+                                                            <td>{{.Username}}</td>
+                                                            <td>{{.Email}}</td>
+                                                            <td
+                                                                  class="{{if eq .Status 1}}text-green-500 {{else}}text-red-500{{end}} font-medium font-14 w-28 mx-auto text-white rounded-full 2xl:p-1 p-0">
+                                                                  {{.Status}}</td>
+                                                            <td class="font-medium"> <a
+                                                                        class="text-primary hover:text-primary"
+                                                                        href="javascript:void(0);">Delete</a>
+                                                            </td>
+                                                      </tr>
+                                                      {{end}}
+                                                </tbody>
+                                          </table>
+                                    </div>
+                                    {{ template "pagination" dict "PaginationData" .PaginationData "Data" .Data}}
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</div>
+{{template "backoffice_footer"}}

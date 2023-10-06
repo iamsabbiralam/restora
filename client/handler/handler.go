@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/iamsabbiralam/restora/client/conn"
+	"github.com/iamsabbiralam/restora/client/handler/admin/adminUser"
 	dashboard "github.com/iamsabbiralam/restora/client/handler/admin/dashboard"
 	urlAuth "github.com/iamsabbiralam/restora/client/handler/auth"
 	"github.com/iamsabbiralam/restora/client/handler/common"
@@ -86,6 +87,11 @@ func NewServer(
 	}
 
 	mw, err = password.Register(cs, mw)
+	if err != nil {
+		return nil, err
+	}
+
+	mw, err = adminUser.Register(cs, mw)
 	if err != nil {
 		return nil, err
 	}
