@@ -1,0 +1,60 @@
+{{ define "pagination"}}
+<div class="w-full">
+      <div
+            class="border border-t-0 rounded-bl rounded-br border-black20 px-4 py-4 text-gray-500 text-center flex justify-between w-full">
+            <p class="flex items-center">
+                  Showing {{len .Data}} out of {{.PaginationData.Total}} data
+            </p>
+            <div class="flex justify-between sm:justify-end items-center w-full sm:w-1/2 space-x-3">
+                  {{if ne .PaginationData.Total 0}}
+                  <a {{if
+        .PaginationData.Prev}} href="{{.PaginationData.Prev.URL}}" {{end}}>
+                        <button {{if
+          eq
+          .PaginationData.CurrentPage
+          1}} disabled {{end}} {{if
+          .PaginationData.Prev}}
+                              class="relative inline-flex items-center px-4 py-2 rounded border border-white bg-gray-50 text-sm text-blue-dark-5 hover:bg-gray-50"
+                              {{else}}
+                              class="relative inline-flex items-center px-4 py-2 rounded border border-white text-sm text-gray-500 bg-gray-50"
+                              {{end}}>
+                              Previous
+                        </button>
+                  </a>
+                  {{end}}
+
+                  <div class="hidden sm:inline-block">
+                        {{range .PaginationData.Pages}} {{if .Order}}
+                        <a href="{{.URL}}"
+                              class="{{if .Current}} rounded-sm border border-white px-3 py-2 bg-blue-100 text-default-color mx-2 {{else}}text-blue-dark-5{{end}} z-10 b relative inline-flex items-center px-4 py-2 text-sm rounded-sm border border-white hover:bg-blue-100 hover:text-default-color">{{.Order}}</a>
+                        {{else}}
+                        <a href="" class="inline-block mr-4 hover:text-blue-dark-5">...</a>
+                        {{end}} {{end}}
+                  </div>
+
+                  <div class="sm:hidden block">
+                        Page {{.PaginationData.CurrentPage}} of {{countPaginate
+        .PaginationData.Total .PaginationData.PerPage}}
+                  </div>
+
+                  {{if ne .PaginationData.Total 0}}
+                  <a {{if .PaginationData.Next}}href="{{.PaginationData.Next.URL}}" {{end}}>
+                        <button {{if
+          eq
+          .PaginationData.CurrentPage
+          (countPaginate
+          .PaginationData.Total
+          .PaginationData.PerPage)}} disabled {{end}} {{if
+          .PaginationData.Next}}
+                              class="relative inline-flex items-center px-4 py-2 rounded border border-gray-400 bg-white text-sm text-blue-dark-5 hover:bg-gray-50"
+                              {{else}}
+                              class="relative inline-flex items-center px-4 py-2 rounded border border-gray-400 bg-white text-sm text-gray-500 bg-gray-50"
+                              {{end}}>
+                              Next
+                        </button>
+                  </a>
+                  {{end}}
+            </div>
+      </div>
+</div>
+{{ end }}

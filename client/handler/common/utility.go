@@ -5,7 +5,9 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"net/url"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 
@@ -34,6 +36,18 @@ type SessionUser struct {
 type Authenticator struct {
 	BaseURL   string
 	LogoutURL string
+}
+
+type DynamicQueryString struct {
+	SearchTerm   string
+	StartDate    string
+	SortBy       string
+	SortByColumn string
+	EndDate      string
+	PageNumber   int32
+	CurrentPage  int32
+	Offset       int32
+	OthersValue  map[string]string
 }
 
 func HashPassword(password string) (string, error) {
@@ -252,4 +266,74 @@ func (s *Server) StringToDate(date string) time.Time {
 	}
 
 	return fDate
+}
+
+func GetQueryStringData(r *http.Request, keys []string, isNotDefault bool) *DynamicQueryString {
+	var data DynamicQueryString
+	queryParams := r.URL.Query()
+	var err error
+	data.SearchTerm, err = url.PathUnescape(queryParams.Get("search-term"))
+	if err != nil {
+		data.SearchTerm = ""
+	}
+
+	data.StartDate, err = url.PathUnescape(queryParams.Get("start"))
+	if err != nil {
+		data.StartDate = ""
+	}
+
+	data.EndDate, err = url.PathUnescape(queryParams.Get("end"))
+	if err != nil {
+		data.EndDate = ""
+	}
+
+	data.SortBy, err = url.PathUnescape(queryParams.Get("sort-by"))
+	if err != nil {
+		data.SortBy = ""
+	}
+
+	data.SortByColumn, err = url.PathUnescape(queryParams.Get("sort-by-column"))
+	if err != nil {
+		data.SortByColumn = ""
+	}
+
+	page, err := url.PathUnescape(queryParams.Get("page"))
+	if err != nil || page == "" {
+		page = "1"
+	}
+
+	pageNumber, err := strconv.Atoi(page)
+	if err != nil {
+		pageNumber = 1
+	}
+
+	data.PageNumber = int32(pageNumber)
+	var offset int32 = 0
+	currentPage := pageNumber
+	if currentPage <= 0 {
+		currentPage = 1
+	} else {
+		offset = LimitPerPage*int32(currentPage) - LimitPerPage
+	}
+
+	data.CurrentPage = int32(currentPage)
+	data.Offset = offset
+
+	if isNotDefault {
+		data = DynamicQueryString{}
+	}
+
+	if len(keys) > 0 {
+		myMap := make(map[string]string)
+		for _, v := range keys {
+			myMap[v], err = url.PathUnescape(queryParams.Get(v))
+			if err != nil {
+				myMap[v] = ""
+			}
+		}
+
+		data.OthersValue = myMap
+	}
+
+	return &data
 }

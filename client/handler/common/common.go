@@ -108,6 +108,7 @@ const (
 	LogoutPath             = "/logout"
 
 	DashboardPath = "/dashboard"
+	UserListPath = "/user-list"
 )
 
 // regex validation
