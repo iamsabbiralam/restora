@@ -25,5 +25,5 @@ type CategoryStore interface {
 	GetCategoryByID(context.Context, string) (*storage.Category, error)
 	UpdateCategory(context.Context, storage.Category) (*storage.Category, error)
 	ListCategories(context.Context, storage.ListCategoryFilter) ([]storage.Category, error)
-	DeleteCategory(context.Context, string) error
+	DeleteCategory(context.Context, string, string) error
 }

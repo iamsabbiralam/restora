@@ -3,7 +3,6 @@ package categories
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -14,9 +13,6 @@ import (
 
 func (s *Svc) ListCategory(ctx context.Context, req *catG.ListCategoryRequest) (*catG.ListCategoryResponse, error) {
 	log := s.logger.WithField("method", "service.categories.ListCategory")
-	fmt.Println("---req----")
-	fmt.Println(req)
-	fmt.Println("---req----")
 	startDate, endDate, err := s.startDateEndDateRangeCheck(req.GetStartDate(), req.GetEndDate())
 	if err != nil {
 		return nil, uErr.HandleServiceErr(err)
@@ -46,6 +42,7 @@ func (s *Svc) ListCategory(ctx context.Context, req *catG.ListCategoryRequest) (
 				Name:      val.Name,
 				Status:    catG.Status(val.Status),
 				CreatedAt: timestamppb.New(val.CreatedAt),
+				UpdatedAt: timestamppb.New(val.UpdatedAt),
 			}
 		}
 	}

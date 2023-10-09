@@ -111,11 +111,11 @@ const (
 	LogoutPath             = "/logout"
 
 	DashboardPath = "/dashboard"
-	
+
 	UserListPath = "/user/list"
 
 	CategoryCreatePath = "/category/create"
-	CategoryUpdatePath = "/category/update/{id}"
+	CategoryEditPath   = "/category/edit/{id}"
 	CategoryListPath   = "/category/list"
 	CategoryDeletePath = "/category/delete/{id}"
 )

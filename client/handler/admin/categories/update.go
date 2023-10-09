@@ -44,7 +44,7 @@ func (s *Svc) editCategoryHandler(w http.ResponseWriter, r *http.Request) {
 			Name:   res.Name,
 			Status: res.Status,
 		},
-		FormAction: common.DynamicUrlSwitch(common.CategoryUpdatePath, map[string]string{"id": id}),
+		FormAction: common.DynamicUrlSwitch(common.CategoryEditPath, map[string]string{"id": id}),
 		Status:     common.GetStatus(catG.Status_name),
 	}
 
@@ -76,24 +76,12 @@ func (s *Svc) updateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cat, err := s.Category.GetCategory(r.Context(), &catG.GetCategoryRequest{
-		ID: id,
+	_, err := s.Category.UpdateCategory(r.Context(), &catG.UpdateCategoryRequest{
+		ID:        id,
+		Name:      form.Name,
+		Status:    form.Status,
+		UpdatedBy: s.GetSessionUser(r).ID,
 	})
-	if err != nil {
-		errMsg := "unable to get category by ID"
-		log.WithError(err).Error(errMsg)
-		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
-		return
-	}
-
-	if cat == nil {
-		errMsg := "category info is empty"
-		log.WithError(err).Error(errMsg)
-		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
-		return
-	}
-
-	_, err = s.Category.UpdateCategory(r.Context(), &catG.UpdateCategoryRequest{})
 	if err != nil {
 		hErr := cmsErr.ToHTTPError(err)
 		if hErr.Code == http.StatusUnprocessableEntity {

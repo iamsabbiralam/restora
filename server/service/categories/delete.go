@@ -15,7 +15,7 @@ import (
 func (s *Svc) DeleteCategory(ctx context.Context, req *catG.DeleteCategoryRequest) (*emptypb.Empty, error) {
 	log := s.logger.WithField("method", "service.categories.DeleteCategory")
 	if req == nil || req.GetID() == "" {
-		return nil, uErr.HandleServiceErr(errors.New("user id is required"))
+		return nil, uErr.HandleServiceErr(errors.New("id is required"))
 	}
 
 	cat := storage.Category{
@@ -27,7 +27,7 @@ func (s *Svc) DeleteCategory(ctx context.Context, req *catG.DeleteCategoryReques
 		},
 	}
 
-	err := s.cc.DeleteCategory(ctx, cat.ID)
+	err := s.cc.DeleteCategory(ctx, cat.ID, req.DeletedBy)
 	if err != nil {
 		errMsg := "failed to delete category"
 		log.WithError(err).Error(errMsg)

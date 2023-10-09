@@ -37,7 +37,7 @@ func (s *Svc) storeCategoryHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 	}
 
-	errMessage := form.ValidateCategory(s.Server, r, form.ID)
+	errMessage := form.ValidateCategory(s.Server, r, "")
 	if errMessage != nil {
 		s.validateMsg(w, r, errMessage, form, nil, "create-category.html")
 		return

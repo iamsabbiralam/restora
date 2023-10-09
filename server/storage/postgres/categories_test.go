@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"testing"
 	"time"
 
@@ -27,10 +26,8 @@ func insertTestCategory(t *testing.T, s *Storage) {
 	}
 }
 
-func deleteTestCategory(t *testing.T, s *Storage, id string) {
-	if err := s.DeleteCategory(context.TODO(), id); err != nil {
-		fmt.Println("id", id)
-		fmt.Println("err", err.Error())
+func deleteTestCategory(t *testing.T, s *Storage, id, deletedBy string) {
+	if err := s.DeleteCategory(context.TODO(), id, deletedBy); err != nil {
 		t.Fatalf("Unable to delete category: %v", err)
 	}
 }
@@ -100,7 +97,7 @@ var getCategoryByIDTestCase = []struct {
 	id       string
 	want     *storage.Category
 	wantErr  bool
-	teardown func(*testing.T, *Storage, string)
+	teardown func(*testing.T, *Storage, string, string)
 	setup    func(*testing.T, *Storage, string)
 }{
 	{
@@ -158,7 +155,7 @@ func TestGetCategoryByID(t *testing.T) {
 			}
 
 			if tc.teardown != nil {
-				tc.teardown(t, s, rID)
+				tc.teardown(t, s, rID, "")
 			}
 		})
 	}
@@ -170,7 +167,7 @@ var updateCategoryByID = []struct {
 	want     *storage.Category
 	wantErr  bool
 	setup    func(*testing.T, *Storage)
-	teardown func(*testing.T, *Storage, string)
+	teardown func(*testing.T, *Storage, string, string)
 }{
 	{
 		name: "UPDATE_CATEGORY_SUCCESS",
@@ -231,7 +228,7 @@ func TestUpdateRoleByID(t *testing.T) {
 			}
 
 			if tc.teardown != nil {
-				tc.teardown(t, s, got.ID)
+				tc.teardown(t, s, got.ID, "")
 			}
 		})
 	}
@@ -244,7 +241,7 @@ func TestDeleteCategory(t *testing.T) {
 		in       storage.Category
 		wantErr  bool
 		setup    func(*testing.T, *Storage)
-		teardown func(*testing.T, *Storage, string)
+		teardown func(*testing.T, *Storage, string, string)
 	}{
 		{
 			name: "CATEGORY_DELETATION_SUCCESS",
@@ -286,7 +283,7 @@ func TestDeleteCategory(t *testing.T) {
 				tc.setup(t, s)
 			}
 
-			err := s.DeleteCategory(context.TODO(), tc.in.ID)
+			err := s.DeleteCategory(context.TODO(), tc.in.ID, "")
 			if (err != nil) != tc.wantErr {
 				t.Errorf("Storage.DeleteCategory() gotErr = %v, wantErr %v", err, tc.wantErr)
 				return

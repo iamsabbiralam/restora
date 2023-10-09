@@ -7,27 +7,29 @@
                   <div class="box">
                         <div class="box-body">
                               <div class="table-bordered rounded-sm ti-custom-table-head">
-                                    <div class="py-2 px-3 flex justify-between">
-                                          <div class="relative max-w-xs"> <label for="hs-table-search2"
-                                                      class="sr-only">Search</label> <input type="text"
-                                                      name="hs-table-search2" id="hs-table-search2"
-                                                      class="p-3 ltr:pl-10 rtl:pr-10 ti-form-input"
-                                                      placeholder="Search for items">
-                                                <div
-                                                      class="absolute inset-y-0 ltr:left-0 rtl:right-0 flex items-center pointer-events-none ltr:pl-4 rtl:pr-4">
-                                                      <svg class="h-3.5 w-3.5 text-gray-400 dark:text-white/70"
-                                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor" viewBox="0 0 16 16">
-                                                            <path
-                                                                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                                      </svg>
+                                    <form action="" method="GET">
+                                          <div class="py-2 px-3 flex justify-between">
+                                                <div class="relative max-w-xs"> <label for="search-term"
+                                                            class="sr-only">Search</label> <input type="text"
+                                                            value="{{.SearchTerm}}" name="search-term" id="search"
+                                                            class="p-3 ltr:pl-10 rtl:pr-10 ti-form-input"
+                                                            placeholder="Search for items">
+                                                      <div
+                                                            class="absolute inset-y-0 ltr:left-0 rtl:right-0 flex items-center pointer-events-none ltr:pl-4 rtl:pr-4">
+                                                            <svg class="h-3.5 w-3.5 text-gray-400 dark:text-white/70"
+                                                                  xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                  height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                                  <path
+                                                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                                            </svg>
+                                                      </div>
+                                                </div>
+                                                <div>
+                                                      <a href="/category/create" class="ti-btn ti-btn-soft-primary">Add
+                                                            New</a>
                                                 </div>
                                           </div>
-                                          <div>
-                                                <a href="/category/create"
-                                                      class="ti-btn ti-btn-soft-primary">Add New</a>
-                                          </div>
-                                    </div>
+                                    </form>
                                     <div class="overflow-auto">
                                           <table class="ti-custom-table ti-custom-table-head">
                                                 <thead class="bg-gray-50 dark:bg-black/20">
@@ -49,9 +51,24 @@
                                                                   {{.Status}}</td>
                                                             <td>{{.CreatedAt.Format "02 January 2006"}}</td>
                                                             <td>{{.UpdatedAt.Format "02 January 2006"}}</td>
-                                                            <td class="text-end font-medium"> <a
-                                                                        class="text-primary hover:text-primary"
-                                                                        href="javascript:void(0);">Delete</a>
+                                                            <td class="">
+                                                                  <div
+                                                                        class="hs-dropdown ti-dropdown block ltr:ml-auto rtl:mr-auto my-auto">
+                                                                        <button aria-label="button"
+                                                                              id="hs-dropdown-custom-icon-trigger1"
+                                                                              type="button"
+                                                                              class="hs-dropdown-toggle ti-dropdown-toggle rounded-sm p-2 bg-white !border border-gray-200 text-gray-500 hover:bg-gray-100  focus:ring-gray-200 dark:bg-black/20 dark:hover:bg-black/30 dark:border-white/10 dark:hover:border-white/20 dark:focus:ring-white/10 dark:focus:ring-offset-white/10">
+                                                                              <i
+                                                                                    class="fas fa-light fa-ellipsis"></i>
+                                                                        </button>
+                                                                        <div class="hs-dropdown-menu ti-dropdown-menu"
+                                                                              aria-labelledby="hs-dropdown-custom-icon-trigger1">
+                                                                              <a class="ti-dropdown-item"
+                                                                                    href="/category/edit/{{.ID}}">Edit</a>
+                                                                              <a class="ti-dropdown-item"
+                                                                                    href="/category/delete/{{.ID}}">Delete</a>
+                                                                        </div>
+                                                                  </div>
                                                             </td>
                                                       </tr>
                                                 </tbody>
