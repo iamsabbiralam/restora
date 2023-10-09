@@ -91,6 +91,7 @@ message ListCategoryResponse {
 
 message DeleteCategoryRequest {
       string ID = 1;
+      string DeletedBy = 2;
 }
 
 service CategoryService {
