@@ -21,7 +21,8 @@ func (s *Svc) deleteCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
 	_, err := s.Category.DeleteCategory(r.Context(), &catG.DeleteCategoryRequest{
-		ID: id,
+		ID:        id,
+		DeletedBy: s.GetSessionUser(r).ID,
 	})
 	if err != nil {
 		errMsg := "error with Delete category"

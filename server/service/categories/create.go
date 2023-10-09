@@ -17,7 +17,7 @@ func (s *Svc) CreateCategory(ctx context.Context, req *catG.CreateCategoryReques
 
 	if err := s.ValidateRequestedData(ctx, storage.Category{
 		Name:   req.GetName(),
-		Status: int32(catG.Status_Active),
+		Status: int32(req.GetStatus()),
 	}, ""); err != nil {
 		log.WithError(err).Error("validation error while creating category")
 		return nil, uErr.HandleServiceErr(err)
@@ -25,7 +25,7 @@ func (s *Svc) CreateCategory(ctx context.Context, req *catG.CreateCategoryReques
 
 	storeData := storage.Category{
 		Name:   req.GetName(),
-		Status: int32(catG.Status_Active),
+		Status: int32(req.GetStatus()),
 	}
 
 	res, err := s.cc.CreateCategory(ctx, storeData)

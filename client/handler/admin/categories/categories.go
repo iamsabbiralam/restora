@@ -55,8 +55,8 @@ func Register(h *common.Server, mw *mux.Router) (*mux.Router, error) {
 
 	mw.HandleFunc(common.CategoryCreatePath, s.createCategoryHandler).Methods("GET").Name("category.create")
 	mw.HandleFunc(common.CategoryCreatePath, s.storeCategoryHandler).Methods("POST").Name("category.store")
-	mw.HandleFunc(common.CategoryUpdatePath, s.editCategoryHandler).Methods("GET").Name("category.edit")
-	mw.HandleFunc(common.CategoryUpdatePath, s.updateCategoryHandler).Methods("POST").Name("category.update")
+	mw.HandleFunc(common.CategoryEditPath, s.editCategoryHandler).Methods("GET").Name("category.edit")
+	mw.HandleFunc(common.CategoryEditPath, s.updateCategoryHandler).Methods("POST").Name("category.update")
 	mw.HandleFunc(common.CategoryDeletePath, s.deleteCategoryHandler).Methods("GET").Name("category.delete")
 	mw.HandleFunc(common.CategoryListPath, s.listCategoryHandler).Methods("GET").Name("category.list")
 	return mw, nil
@@ -78,7 +78,7 @@ func (s *Svc) loadCategoryTemplate(w http.ResponseWriter, r *http.Request, data 
 	}
 }
 
-func (c *Category) ValidateCategory(server *common.Server, r *http.Request, id string) error {
+func (c Category) ValidateCategory(server *common.Server, r *http.Request, id string) error {
 	vre := validation.Required.Error
 	return validation.ValidateStruct(&c,
 		validation.Field(&c.Name, vre("The category name is required"), validation.Length(3, 100), validation.Match(regexp.MustCompile(common.TextValidation)).Error("Category name is invalid, only text is allowed.")),

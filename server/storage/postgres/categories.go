@@ -187,13 +187,18 @@ func (s *Storage) ListCategories(ctx context.Context, req storage.ListCategoryFi
 }
 
 const deleteCategory = `
-	DELETE FROM 
-		categories
-	WHERE 
-		id = :id
+UPDATE
+	categories
+SET
+	deleted_at = now(),
+	deleted_by = :deleted_by
+WHERE 
+	id = :id
+AND
+	deleted_at IS NULL
 `
 
-func (s *Storage) DeleteCategory(ctx context.Context, id string) error {
+func (s *Storage) DeleteCategory(ctx context.Context, id, deletedBy string) error {
 	stmt, err := s.db.PrepareNamedContext(ctx, deleteCategory)
 	if err != nil {
 		return err
@@ -201,7 +206,8 @@ func (s *Storage) DeleteCategory(ctx context.Context, id string) error {
 
 	defer stmt.Close()
 	arg := map[string]interface{}{
-		"id": id,
+		"id":         id,
+		"deleted_by": deletedBy,
 	}
 
 	row, err := stmt.Exec(arg)
