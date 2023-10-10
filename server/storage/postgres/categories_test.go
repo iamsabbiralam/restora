@@ -184,7 +184,7 @@ var updateCategoryByID = []struct {
 	},
 }
 
-func TestUpdateRoleByID(t *testing.T) {
+func TestUpdateCategoryByID(t *testing.T) {
 	s := newTestStorage(t)
 	opts := cmp.Options{
 		cmpopts.IgnoreFields(
