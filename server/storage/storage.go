@@ -57,6 +57,25 @@ type (
 		EndDate      string
 	}
 
+	Brand struct {
+		ID     string `db:"id"`
+		Name   string `db:"name"`
+		Status int32  `db:"status"`
+		Count  int32
+		CRUDTimeDate
+	}
+
+	ListBrandFilter struct {
+		SortBy       string
+		SearchTerm   string
+		Limit        int32
+		Offset       int32
+		Status       ActiveStatus
+		SortByColumn string
+		StartDate    string
+		EndDate      string
+	}
+
 	ResAct struct {
 		Resource string
 		Action   string
