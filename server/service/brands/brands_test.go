@@ -143,7 +143,7 @@ func TestBrands(t *testing.T) {
 				EndDate:      "",
 			},
 			want: &braG.ListBrandResponse{
-				Categories: []*braG.Brand{
+				Brands: []*braG.Brand{
 					{
 						Name:   "test brand",
 						Status: 1,
@@ -165,7 +165,7 @@ func TestBrands(t *testing.T) {
 				EndDate:      "",
 			},
 			want: &braG.ListBrandResponse{
-				Categories: []*braG.Brand{
+				Brands: []*braG.Brand{
 					{
 						Name:   "test brand",
 						Status: 1,
@@ -187,7 +187,7 @@ func TestBrands(t *testing.T) {
 				EndDate:      "",
 			},
 			want: &braG.ListBrandResponse{
-				Categories: []*braG.Brand{
+				Brands: []*braG.Brand{
 					{
 						Name:   "test brand",
 						Status: 1,
@@ -209,7 +209,7 @@ func TestBrands(t *testing.T) {
 				EndDate:      "",
 			},
 			want: &braG.ListBrandResponse{
-				Categories: []*braG.Brand{
+				Brands: []*braG.Brand{
 					{
 						Name:   "test brand",
 						Status: 1,

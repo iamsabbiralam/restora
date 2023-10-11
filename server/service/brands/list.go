@@ -57,7 +57,7 @@ func (s *Svc) ListBrand(ctx context.Context, req *braG.ListBrandRequest) (*braG.
 	}
 
 	return &braG.ListBrandResponse{
-		Categories: list,
-		Total:      total,
+		Brands: list,
+		Total:  total,
 	}, nil
 }

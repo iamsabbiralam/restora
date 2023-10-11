@@ -16,6 +16,7 @@ import (
 	"github.com/iamsabbiralam/restora/proto/v1/usermgm/auth"
 	"github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 
+	"github.com/iamsabbiralam/restora/proto/v1/server/brand"
 	"github.com/iamsabbiralam/restora/proto/v1/server/category"
 )
 
@@ -32,6 +33,7 @@ type Server struct {
 	User      user.UserServiceClient
 	Login     auth.LoginServiceClient
 	Category  category.CategoryServiceClient
+	Brand     brand.BrandServiceClient
 }
 
 type (
@@ -118,6 +120,11 @@ const (
 	CategoryEditPath   = "/category/edit/{id}"
 	CategoryListPath   = "/category/list"
 	CategoryDeletePath = "/category/delete/{id}"
+
+	BrandCreatePath = "/brand/create"
+	BrandEditPath   = "/brand/edit/{id}"
+	BrandListPath   = "/brand/list"
+	BrandDeletePath = "/brand/delete/{id}"
 )
 
 // regex validation
