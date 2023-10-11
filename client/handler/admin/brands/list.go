@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/gorilla/csrf"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"github.com/gorilla/csrf"
 
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	"github.com/iamsabbiralam/restora/client/handler/paginator"
@@ -33,7 +33,7 @@ func (s *Svc) listBrandHandler(w http.ResponseWriter, r *http.Request) {
 	if queryString.SortBy == "ASC" {
 		sortBy = 1
 	}
-	
+
 	var formErr string
 	fT, lT, err := s.startDateEndDateRangeCheck(queryString.StartDate, queryString.EndDate)
 	if err != nil {

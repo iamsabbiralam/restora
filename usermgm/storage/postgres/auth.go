@@ -16,6 +16,7 @@ const login = `
 		status = 1 AND
 		deleted_at IS NULL
 `
+
 func (s *Storage) Login(ctx context.Context, user storage.User) (*storage.User, error) {
 	stmt, err := s.db.PrepareNamed(login)
 	if err != nil {

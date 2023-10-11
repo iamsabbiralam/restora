@@ -22,7 +22,7 @@ func (h *Handler) DeleteUser(ctx context.Context, req *upb.DeleteUserRequest) (*
 		ID: req.GetID(),
 		DeletedBy: sql.NullString{
 			// String: hydra.GetUserID(ctx),
-			Valid:  true,
+			Valid: true,
 		},
 	}
 

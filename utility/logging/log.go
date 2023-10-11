@@ -73,7 +73,7 @@ func NewLogger(c *viper.Viper) *logrus.Logger {
 	}
 
 	logger.SetReportCaller(true)
-	
+
 	return logger
 }
 

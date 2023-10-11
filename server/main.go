@@ -13,10 +13,10 @@ import (
 	"github.com/iamsabbiralam/restora/utility"
 	"github.com/iamsabbiralam/restora/utility/logging"
 
-	"github.com/iamsabbiralam/restora/utility/middleware"
 	catG "github.com/iamsabbiralam/restora/proto/v1/server/category"
 	catC "github.com/iamsabbiralam/restora/server/core/categories"
 	catS "github.com/iamsabbiralam/restora/server/service/categories"
+	"github.com/iamsabbiralam/restora/utility/middleware"
 
 	braG "github.com/iamsabbiralam/restora/proto/v1/server/brand"
 	braC "github.com/iamsabbiralam/restora/server/core/brands"
@@ -34,35 +34,35 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	logger := logging.NewLogger(cfg).WithFields(logrus.Fields{
 		"service": svcName,
 		"version": version,
 	})
-	
+
 	dbString := utility.NewDBString(cfg)
 	db, err := postgres.NewStorage(dbString, logger)
 	if err != nil {
 		logger.WithError(err).Error("unable to connect DB")
 		return
 	}
-	
+
 	if err := db.RunMigration(cfg.GetString("database.migrationDir")); err != nil {
 		logger.WithError(err).Error("migration failed")
 	}
-	
+
 	grpcServer, err := setupGRPCServer(db, cfg, logger)
 	if err != nil {
 		logger.WithError(err).Error("unable to setup grpc service")
 		return
 	}
-	
+
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.GetInt("server.port")))
 	if err != nil {
 		logger.WithError(err).Error("unable to listen port")
 		return
 	}
-	
+
 	log.Printf("server %s listening at: %+v", svcName, lis.Addr())
 	if err := grpcServer.Serve(lis); err != nil {
 		logger.WithError(err).Error("unable to serve the GRPC server")

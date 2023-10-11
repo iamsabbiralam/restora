@@ -14,7 +14,7 @@ import (
 func insertTestUserInformation(t *testing.T, s *Storage) {
 	// insert test user into the "users" table
 	got, err := s.CreateUserInformation(context.TODO(), storage.UserInformation{
-		UserID:    "b6ddbe32-3d7e-4828-b2d7-da9927846e6b",
+		UserID: "b6ddbe32-3d7e-4828-b2d7-da9927846e6b",
 	})
 	if err != nil {
 		t.Fatalf("Unable to create user: %v", err)

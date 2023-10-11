@@ -16,14 +16,14 @@ func (h *Handler) Login(ctx context.Context, req *login.LoginRequest) (*login.Lo
 	}
 
 	if err := h.ValidateRequestedLoginData(ctx, storage.User{
-		Email:    req.Login.Email,
+		Email: req.Login.Email,
 	}); err != nil {
 		log.WithError(err).Error("validation error while login to the system")
 		return nil, uErr.HandleServiceErr(err)
 	}
 
 	loginData := storage.User{
-		Email:    req.Login.Email,
+		Email: req.Login.Email,
 	}
 
 	res, err := h.login.Login(ctx, loginData)

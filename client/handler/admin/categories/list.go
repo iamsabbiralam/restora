@@ -33,7 +33,7 @@ func (s *Svc) listCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	if queryString.SortBy == "ASC" {
 		sortBy = 1
 	}
-	
+
 	var formErr string
 	fT, lT, err := s.startDateEndDateRangeCheck(queryString.StartDate, queryString.EndDate)
 	if err != nil {

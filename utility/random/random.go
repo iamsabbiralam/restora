@@ -19,7 +19,7 @@ func CIntn(ln, n int) []int {
 			c[j] = int(num.Int64())
 		}
 	}
-	
+
 	return c
 }
 
@@ -49,7 +49,7 @@ func InvitationCode(n int) string {
 	for i, j := range CIntn(n, len(letters)) {
 		b[i] = letters[j]
 	}
-	
+
 	return string(b)
 }
 
