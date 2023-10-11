@@ -1,4 +1,4 @@
-package categories
+package brands
 
 import (
 	"net/http"
@@ -6,15 +6,15 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
 	"github.com/gorilla/csrf"
+
 	"github.com/iamsabbiralam/restora/client/handler/common"
 	"github.com/iamsabbiralam/restora/client/handler/paginator"
-	catG "github.com/iamsabbiralam/restora/proto/v1/server/category"
+	braG "github.com/iamsabbiralam/restora/proto/v1/server/brand"
 )
 
-func (s *Svc) listCategoryHandler(w http.ResponseWriter, r *http.Request) {
-	s.Logger.WithField("method", "departmentListHandler")
+func (s *Svc) listBrandHandler(w http.ResponseWriter, r *http.Request) {
+	s.Logger.WithField("method", "handler.admin.brand.listBrandHandler")
 	stu, err := url.PathUnescape(r.URL.Query().Get("status"))
 	var status int32
 	if err != nil || stu != "" {
@@ -40,9 +40,9 @@ func (s *Svc) listCategoryHandler(w http.ResponseWriter, r *http.Request) {
 		formErr = "Invalid start and end date range"
 	}
 
-	catList, err := s.Category.ListCategory(r.Context(), &catG.ListCategoryRequest{
-		SortBy:       catG.SortBy(sortBy),
-		Status:       catG.Status(status),
+	braList, err := s.Brand.ListBrand(r.Context(), &braG.ListBrandRequest{
+		SortBy:       braG.SortBy(sortBy),
+		Status:       braG.Status(status),
 		SortByColumn: queryString.SortByColumn,
 		StartDate:    fT,
 		EndDate:      lT,
@@ -54,46 +54,46 @@ func (s *Svc) listCategoryHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 	}
 
-	categories := []Category{}
-	if catList != nil {
-		for _, item := range catList.GetCategories() {
-			catAppendData := Category{
+	brands := []Brand{}
+	if braList != nil {
+		for _, item := range braList.GetBrands() {
+			braAppendData := Brand{
 				ID:        item.ID,
 				Name:      item.Name,
 				Status:    item.Status,
 				CreatedAt: item.CreatedAt.AsTime(),
 				UpdatedAt: item.UpdatedAt.AsTime(),
 			}
-			categories = append(categories, catAppendData)
+			brands = append(brands, braAppendData)
 		}
 	}
 
 	formMSG := map[string]string{}
-	if queryString.SearchTerm != "" && len(catList.GetCategories()) > 0 {
+	if queryString.SearchTerm != "" && len(braList.GetBrands()) > 0 {
 		formMSG = map[string]string{"FoundMessage": "Data Found"}
-	} else if queryString.SearchTerm != "" && len(catList.GetCategories()) == 0 {
+	} else if queryString.SearchTerm != "" && len(braList.GetBrands()) == 0 {
 		formMSG = map[string]string{"NotFoundMessage": "Data Not Found"}
 	}
 
-	data := CategoryTempData{
+	data := BrandTempData{
 		CSRFField:     csrf.TemplateField(r),
-		Data:          categories,
+		Data:          brands,
 		FormMessage:   formMSG,
 		SearchTerm:    queryString.SearchTerm,
 		StartDate:     queryString.StartDate,
 		SortBy:        queryString.SortBy,
 		SortByColumn:  queryString.SortByColumn,
 		PramStatus:    stu,
-		Status:        common.GetStatus(catG.Status_name),
+		Status:        common.GetStatus(braG.Status_name),
 		EndDate:       queryString.EndDate,
 		FilterFormErr: formErr,
 	}
 
-	if len(categories) > 0 {
-		data.PaginationData = paginator.NewPaginator(int32(queryString.CurrentPage), common.LimitPerPage, catList.Total, r)
+	if len(brands) > 0 {
+		data.PaginationData = paginator.NewPaginator(int32(queryString.CurrentPage), common.LimitPerPage, braList.Total, r)
 	}
 
-	s.loadCategoryTemplate(w, r, data, "category-list.html")
+	s.loadBrandTemplate(w, r, data, "brand-list.html")
 }
 
 func (s *Svc) startDateEndDateRangeCheck(fromTime, toTime string) (string, string, error) {

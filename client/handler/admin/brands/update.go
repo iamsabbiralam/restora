@@ -1,4 +1,4 @@
-package categories
+package brands
 
 import (
 	"net/http"
@@ -8,11 +8,11 @@ import (
 
 	cmsErr "github.com/iamsabbiralam/restora/client/error"
 	"github.com/iamsabbiralam/restora/client/handler/common"
-	catG "github.com/iamsabbiralam/restora/proto/v1/server/category"
+	braG "github.com/iamsabbiralam/restora/proto/v1/server/brand"
 )
 
-func (s *Svc) editCategoryHandler(w http.ResponseWriter, r *http.Request) {
-	log := s.Logger.WithField("method", "handler.admin.category.editCategoryHandler")
+func (s *Svc) editBrandHandler(w http.ResponseWriter, r *http.Request) {
+	log := s.Logger.WithField("method", "handler.admin.brand.editBrandHandler")
 	params := mux.Vars(r)
 	id := params["id"]
 	if id == "" {
@@ -20,11 +20,11 @@ func (s *Svc) editCategoryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := s.Category.GetCategory(r.Context(), &catG.GetCategoryRequest{
+	res, err := s.Brand.GetBrand(r.Context(), &braG.GetBrandRequest{
 		ID: id,
 	})
 	if err != nil {
-		errMsg := "error to get category by ID"
+		errMsg := "error to get brand by ID"
 		log.WithError(err).Error(errMsg)
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 		return
@@ -37,22 +37,22 @@ func (s *Svc) editCategoryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := CategoryTempData{
+	data := BrandTempData{
 		CSRFField: csrf.TemplateField(r),
-		Form: Category{
+		Form: Brand{
 			ID:     res.ID,
 			Name:   res.Name,
 			Status: res.Status,
 		},
-		FormAction: common.DynamicUrlSwitch(common.CategoryEditPath, map[string]string{"id": id}),
-		Status:     common.GetStatus(catG.Status_name),
+		FormAction: common.DynamicUrlSwitch(common.BrandEditPath, map[string]string{"id": id}),
+		Status:     common.GetStatus(braG.Status_name),
 	}
 
-	s.loadCategoryTemplate(w, r, data, "edit-category.html")
+	s.loadBrandTemplate(w, r, data, "edit-brand.html")
 }
 
-func (s *Svc) updateCategoryHandler(w http.ResponseWriter, r *http.Request) {
-	log := s.Logger.WithField("method", "handler.admin.categories.updateCategoryHandler")
+func (s *Svc) updateBrandHandler(w http.ResponseWriter, r *http.Request) {
+	log := s.Logger.WithField("method", "handler.admin.brand.updateBrandHandler")
 	params := mux.Vars(r)
 	id := params["id"]
 	if err := r.ParseForm(); err != nil {
@@ -62,7 +62,7 @@ func (s *Svc) updateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var form Category
+	var form Brand
 	if err := s.Decoder.Decode(&form, r.PostForm); err != nil {
 		errMsg := "error with decode form"
 		log.WithError(err).Error(errMsg)
@@ -70,13 +70,13 @@ func (s *Svc) updateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	errMessage := form.ValidateCategory(s.Server, r, form.ID)
+	errMessage := form.ValidateBrand(s.Server, r, form.ID)
 	if errMessage != nil {
-		s.validateMsg(w, r, errMessage, form, nil, "edit-category.html")
+		s.validateMsg(w, r, errMessage, form, nil, "edit-brand.html")
 		return
 	}
 
-	_, err := s.Category.UpdateCategory(r.Context(), &catG.UpdateCategoryRequest{
+	_, err := s.Brand.UpdateBrand(r.Context(), &braG.UpdateBrandRequest{
 		ID:        id,
 		Name:      form.Name,
 		Status:    form.Status,
@@ -85,15 +85,15 @@ func (s *Svc) updateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		hErr := cmsErr.ToHTTPError(err)
 		if hErr.Code == http.StatusUnprocessableEntity {
-			s.validateMsg(w, r, hErr, form, hErr.ValidationErrors, "edit-category.html")
+			s.validateMsg(w, r, hErr, form, hErr.ValidationErrors, "edit-brand.html")
 			return
 		}
 
-		errMsg := "error with update category"
+		errMsg := "error with update brand"
 		log.WithError(err).Error(errMsg)
 		http.Redirect(w, r, common.ErrorPath, http.StatusSeeOther)
 		return
 	}
 
-	http.Redirect(w, r, common.CategoryListPath, http.StatusSeeOther)
+	http.Redirect(w, r, common.BrandListPath, http.StatusSeeOther)
 }

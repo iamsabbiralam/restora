@@ -17,6 +17,10 @@ import (
 	catG "github.com/iamsabbiralam/restora/proto/v1/server/category"
 	catC "github.com/iamsabbiralam/restora/server/core/categories"
 	catS "github.com/iamsabbiralam/restora/server/service/categories"
+
+	braG "github.com/iamsabbiralam/restora/proto/v1/server/brand"
+	braC "github.com/iamsabbiralam/restora/server/core/brands"
+	braS "github.com/iamsabbiralam/restora/server/service/brands"
 )
 
 var (
@@ -81,6 +85,10 @@ func setupGRPCServer(store *postgres.Storage, config *viper.Viper, logger *logru
 	coreCat := catC.New(store, logger)
 	svcCat := catS.New(coreCat, logger)
 	catG.RegisterCategoryServiceServer(grpcServer, svcCat)
+
+	corebra := braC.New(store, logger)
+	svcBra := braS.New(corebra, logger)
+	braG.RegisterBrandServiceServer(grpcServer, svcBra)
 
 	return grpcServer, nil
 }

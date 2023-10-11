@@ -16,6 +16,7 @@ import (
 	"github.com/iamsabbiralam/restora/client/conn"
 	"github.com/iamsabbiralam/restora/client/handler/admin/adminUser"
 	"github.com/iamsabbiralam/restora/client/handler/admin/categories"
+	"github.com/iamsabbiralam/restora/client/handler/admin/brands"
 	dashboard "github.com/iamsabbiralam/restora/client/handler/admin/dashboard"
 	urlAuth "github.com/iamsabbiralam/restora/client/handler/auth"
 	"github.com/iamsabbiralam/restora/client/handler/common"
@@ -23,6 +24,7 @@ import (
 	"github.com/iamsabbiralam/restora/client/handler/user/password"
 	"github.com/iamsabbiralam/restora/client/handler/user/profile"
 	"github.com/iamsabbiralam/restora/proto/v1/server/category"
+	"github.com/iamsabbiralam/restora/proto/v1/server/brand"
 	loginG "github.com/iamsabbiralam/restora/proto/v1/usermgm/auth"
 	"github.com/iamsabbiralam/restora/proto/v1/usermgm/user"
 	"github.com/iamsabbiralam/restora/utility/middleware"
@@ -50,6 +52,7 @@ func NewServer(
 		User:     user.NewUserServiceClient(conn.Urm),
 		Login:    loginG.NewLoginServiceClient(conn.Urm),
 		Category: category.NewCategoryServiceClient(conn.Server),
+		Brand:    brand.NewBrandServiceClient(conn.Server),
 	}
 
 	if err := cs.ParseTemplates(); err != nil {
@@ -100,6 +103,11 @@ func NewServer(
 	}
 
 	mw, err = categories.Register(cs, mw)
+	if err != nil {
+		return nil, err
+	}
+
+	mw, err = brands.Register(cs, mw)
 	if err != nil {
 		return nil, err
 	}
