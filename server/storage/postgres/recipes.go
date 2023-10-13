@@ -108,18 +108,18 @@ const updateRecipe = `
 	UPDATE 
 		recipes
 	SET
-		title = COALESCE(NULLIF(:title, ''), title),
-		ingredient = COALESCE(NULLIF(:ingredient, ''), ingredient),
-		image = COALESCE(NULLIF(:image, ''), image),
-		description = COALESCE(NULLIF(:description, ''), description),
-		author_social_link = COALESCE(NULLIF(:author_social_link, ''), author_social_link),
-		read_count = COALESCE(NULLIF(:read_count, 0), read_count),
-		serving_amount = COALESCE(NULLIF(:serving_amount, 0), serving_amount),
-		cooking_time = COALESCE(NULLIF(:cooking_time, 0), cooking_time),
-		is_used = COALESCE(NULLIF(:is_used, 0), is_used),
-		user_id = COALESCE(NULLIF(:user_id, 0), user_id),
-		status = COALESCE(NULLIF(:status, 0), status),
-		updated_by = COALESCE(NULLIF(:updated_by, ''), updated_by),
+		title = :title,
+		ingredient = :ingredient,
+		image = :image,
+		description = :description,
+		author_social_link = :author_social_link,
+		read_count = :read_count,
+		serving_amount = :serving_amount,
+		cooking_time = :cooking_time,
+		is_used = :is_used,
+		user_id = :user_id,
+		status = :status,
+		updated_by = :updated_by,
 		updated_at = now()
 	WHERE
 		id = :id
