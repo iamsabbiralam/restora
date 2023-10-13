@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+option go_package = "./proto/v1/server/recipe";
+
+package recipe;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+enum Status {
+      Unknown = 0;
+      Active = 1;
+      Inactive = 2;
+}
+
+enum SortBy {
+      DESC = 0;
+      ASC = 1;
+}
+
+message Recipe {
+      string ID = 1;
+      string Title = 2;
+      string Ingredient = 3;
+      string Image = 4;
+      string Description = 5;
+      string UserID = 6;
+      string AuthorSocialLink = 7;
+      int64 ReadCount = 8;
+      int64 ServingAmount = 9;
+      google.protobuf.Timestamp CookingTime = 10;
+      bool IsUsed = 11;
+      Status Status = 12;
+      google.protobuf.Timestamp CreatedAt = 13;
+      string CreatedBy = 14;
+      google.protobuf.Timestamp UpdatedAt = 15;
+      string UpdatedBy = 16;
+      google.protobuf.Timestamp DeletedAt = 17;
+      string DeletedBy = 18;
+}
+
+message CreateRecipeRequest {
+      string Title = 1;
+      string Ingredient = 2;
+      string Image = 3;
+      string Description = 4;
+      string UserID = 5;
+      string AuthorSocialLink = 6;
+      int64 ReadCount = 7;
+      int64 ServingAmount = 8;
+      google.protobuf.Timestamp CookingTime = 9;
+      bool IsUsed = 10;
+      Status Status = 11;
+      google.protobuf.Timestamp CreatedAt = 12;
+      string CreatedBy = 13;
+      google.protobuf.Timestamp UpdatedAt = 14;
+      string UpdatedBy = 15;
+}
+
+message CreateRecipeResponse {
+      string ID = 1;
+}
+
+message GetRecipeRequest {
+      string ID = 1;
+}
+
+message GetRecipeResponse {
+      string ID = 1;
+      string Title = 2;
+      string Ingredient = 3;
+      string Image = 4;
+      string Description = 5;
+      string UserID = 6;
+      string AuthorSocialLink = 7;
+      int64 ReadCount = 8;
+      int64 ServingAmount = 9;
+      google.protobuf.Timestamp CookingTime = 10;
+      bool IsUsed = 11;
+      Status Status = 12;
+      google.protobuf.Timestamp CreatedAt = 13;
+      string CreatedBy = 14;
+      google.protobuf.Timestamp UpdatedAt = 15;
+      string UpdatedBy = 16;
+}
+
+message UpdateRecipeRequest {
+      string ID = 1;
+      string Title = 2;
+      string Ingredient = 3;
+      string Image = 4;
+      string Description = 5;
+      string UserID = 6;
+      string AuthorSocialLink = 7;
+      int64 ReadCount = 8;
+      int64 ServingAmount = 9;
+      google.protobuf.Timestamp CookingTime = 10;
+      bool IsUsed = 11;
+      Status Status = 12;
+      google.protobuf.Timestamp UpdatedAt = 13;
+      string UpdatedBy = 14;
+}
+
+message UpdateRecipeResponse {
+      string ID = 1;
+      string Title = 2;
+      string Ingredient = 3;
+      string Image = 4;
+      string Description = 5;
+      string UserID = 6;
+      string AuthorSocialLink = 7;
+      int64 ReadCount = 8;
+      int64 ServingAmount = 9;
+      google.protobuf.Timestamp CookingTime = 10;
+      bool IsUsed = 11;
+      Status Status = 12;
+      google.protobuf.Timestamp UpdatedAt = 13;
+      string UpdatedBy = 14;
+}
+
+message ListRecipeRequest {
+      SortBy       SortBy = 1;
+	string       SortByColumn = 2;
+	Status       Status = 3;
+	int32        Limit = 4;
+	int32        Offset = 5;
+	string       SearchTerm = 6;
+	string       StartDate = 7;    
+	string       EndDate = 8;
+}
+
+message ListRecipeResponse {
+      repeated Recipe Recipes = 1;
+      int32 Total = 2;
+}
+
+message DeleteRecipeRequest {
+      string ID = 1;
+      string DeletedBy = 2;
+}
+
+service RecipeService {
+      rpc CreateRecipe(CreateRecipeRequest) returns (CreateRecipeResponse) {}
+      rpc GetRecipe(GetRecipeRequest) returns (GetRecipeResponse) {}
+      rpc UpdateRecipe(UpdateRecipeRequest) returns (UpdateRecipeResponse) {}
+      rpc ListRecipe(ListRecipeRequest) returns (ListRecipeResponse) {}
+      rpc DeleteRecipe(DeleteRecipeRequest) returns (google.protobuf.Empty) {}
+}

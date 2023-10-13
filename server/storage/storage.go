@@ -76,6 +76,34 @@ type (
 		EndDate      string
 	}
 
+	Recipe struct {
+		ID               string    `db:"id"`
+		Title            string    `db:"title"`
+		Ingredient       string    `db:"ingredient"`
+		Image            string    `db:"image"`
+		Description      string    `db:"description"`
+		UserID           string    `db:"user_id"`
+		AuthorSocialLink string    `db:"author_social_link"`
+		ReadCount        int32     `db:"read_count"`
+		ServingAmount    int32     `db:"serving_amount"`
+		CookingTime      time.Time `db:"cooking_time"`
+		IsUsed           int32     `db:"is_used"`
+		Status           int32     `db:"status"`
+		Count            int32
+		CRUDTimeDate
+	}
+
+	ListRecipeFilter struct {
+		SortBy       string
+		SearchTerm   string
+		Limit        int32
+		Offset       int32
+		Status       ActiveStatus
+		SortByColumn string
+		StartDate    string
+		EndDate      string
+	}
+
 	ResAct struct {
 		Resource string
 		Action   string
