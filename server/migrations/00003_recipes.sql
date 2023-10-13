@@ -3,10 +3,19 @@
 -- This has to be run at one time. no need to include the following command into the other file
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE IF NOT EXISTS categories
+CREATE TABLE IF NOT EXISTS recipes
 (
     id                          VARCHAR(100) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name                        VARCHAR(255) NOT NULL DEFAULT '',
+    title                       VARCHAR(255) NOT NULL DEFAULT '',
+    ingredient                  JSONB        NOT NULL DEFAULT '{}'::jsonb,
+    image                       VARCHAR(255) NOT NULL DEFAULT '',
+    description                 TEXT         NOT NULL DEFAULT '',
+    user_id                     VARCHAR(100) NOT NULL DEFAULT '',
+    author_social_link          VARCHAR(100) NOT NULL DEFAULT '',
+    read_count                  INT                   DEFAULT 0,
+    serving_amount              VARCHAR(100) NOT NULL DEFAULT '',
+    cooking_time                TIMESTAMP    NOT NULL DEFAULT current_timestamp,
+    is_used                     SMALLINT              DEFAULT 0,
     status                      SMALLINT              DEFAULT 0,
     created_at                  TIMESTAMP             DEFAULT current_timestamp,
     created_by                  VARCHAR(100) NOT NULL DEFAULT '',
@@ -18,4 +27,4 @@ CREATE TABLE IF NOT EXISTS categories
 
 -- +goose Down
 -- SQL in this section is executed when the migration is rolled back.
-DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS recipes;
