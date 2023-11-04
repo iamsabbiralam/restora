@@ -39,11 +39,11 @@ func (h *Svc) RegisterSvc(srv *grpc.Server) error {
 
 func Permission(ctx context.Context) map[string]storage.ResAct {
 	p := map[string]storage.ResAct{
-		"CreateBrand":  {Resource: "Brand", Action: "Create"},
-		"GetBrandByID": {Resource: "Brand", Action: "Read", Public: true},
-		"UpdateBrand":  {Resource: "Brand", Action: "Update"},
-		"DeleteBrand":  {Resource: "Brand", Action: "Delete"},
-		"ListBrand":    {Resource: "Brand", Action: "Read"},
+		"CreateBrand":  {Resource: "brand", Action: "Create"},
+		"GetBrandByID": {Resource: "brand", Action: "Read", Public: true},
+		"UpdateBrand":  {Resource: "brand", Action: "Update"},
+		"DeleteBrand":  {Resource: "brand", Action: "Delete"},
+		"ListBrand":    {Resource: "brand", Action: "Read"},
 	}
 	return p
 }
